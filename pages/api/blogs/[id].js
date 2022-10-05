@@ -1,4 +1,9 @@
+import mongoose from "mongoose";
+import { blogModel } from "../../../components/api/models/blog";
+
 export default function handler(req, res) {
+
+  
   let blogs = [
     {
       id: 1,

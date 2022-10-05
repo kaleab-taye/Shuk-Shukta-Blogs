@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from '../../../components/Button';
 
-export default function editBlog(props) {
+export default function EditBlog(props) {
     
     const [title, setTitle] = useState(props.blog.title);
     const [body, setBody] = useState(props.blog.body);
