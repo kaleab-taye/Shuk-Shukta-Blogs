@@ -3,6 +3,7 @@ import {
   faArrowAltCircleUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import Button from './Button';
 
 export default function BlogMetaSection(props) {
@@ -25,15 +26,15 @@ export default function BlogMetaSection(props) {
           <div className="grid gap-3 px-4 py-4">
             <div className="font-commonFont text-l lg:text-xl ">
               Author :{' '}
-              <span className="text-xl lg:text-2xl">{props.blogMeta.author}</span>
+              <span className="text-xl lg:text-2xl">{props.blog.blogMeta.author}</span>
             </div>
             <div className="font-commonFont text-l lg:text-xl ">
               Date :{' '}
-              <span className="text-xl lg:text-2xl">{props.blogMeta.date}</span>
+              <span className="text-xl lg:text-2xl">{props.blog.blogMeta.date}</span>
             </div>
             <div className="font-commonFont text-l lg:text-xl ">
               Interacted readers :{' '}
-              <span className="text-xl lg:text-2xl">{props.blogMeta.seen}</span>
+              <span className="text-xl lg:text-2xl">{props.blog.blogMeta.seen}</span>
             </div>
           </div>
         </div>
@@ -53,32 +54,36 @@ export default function BlogMetaSection(props) {
           <div className="grid gap-3 px-4 py-4">
             <div className="font-commonFont text-l lg:text-xl ">
               Up votes :{' '}
-              <span className="text-xl lg:text-2xl">{props.blogMeta.upVote}</span>
+              <span className="text-xl lg:text-2xl">{props.blog.blogMeta.upVote}</span>
             </div>
             <div className="font-commonFont text-l lg:text-xl ">
               Down votes :{' '}
-              <span className="text-xl lg:text-2xl">{props.blogMeta.downVote}</span>
+              <span className="text-xl lg:text-2xl">{props.blog.blogMeta.downVote}</span>
             </div>
             <div className="font-commonFont text-l lg:text-xl ">
               Comments :{' '}
               <span className="text-xl lg:text-2xl">
-                {props.blogMeta.comment}
+                {props.blog.blogMeta.comment}
               </span>
             </div>
           </div>
         </div>
         <div>
-          <Button
-            icon={
-              <FontAwesomeIcon
-                className="w-6 sm:w-6 "
-                icon={faArrowAltCircleDown}
-              />
-            }
-            placeholder="Edit"
-            width="w-28 sm:w-32"
-            margin=""
-          />
+        <Link href={`/blogs/${props.blog.id}/edit`}>
+        <a>
+        <Button
+          icon={
+            <FontAwesomeIcon
+              className="w-6 sm:w-6 "
+              icon={faArrowAltCircleDown}
+            />
+          }
+          placeholder="Edit"
+          width="w-28 sm:w-32"
+          margin=""
+        />
+        </a>
+        </Link>
           <div className="py-1 font-commonFont text-l lg:text-xl ">
             only for Author
           </div>

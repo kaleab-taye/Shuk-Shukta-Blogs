@@ -23,14 +23,14 @@ export default function HomeBlogCard({blog}) {
               icon={faEye}
               className="w-8 sm:w-8 text-onSecondary"
             />
-            <span className="m-auto p-2">{blog.seen}</span>
+            <span className="m-auto p-2">{blog.blogMeta.seen}</span>
           </div>
           <div className="flex ">
             <FontAwesomeIcon
               icon={faArrowAltCircleUp}
               className="w-8 sm:w-8 text-success"
             />
-            <span className="m-auto p-2">{blog.upVote}</span>
+            <span className="m-auto p-2">{blog.blogMeta.upVote}</span>
           </div>
           <div className="flex ">
             <FontAwesomeIcon
@@ -38,7 +38,7 @@ export default function HomeBlogCard({blog}) {
               className="w-8 sm:w-8 text-failure"
             />
 
-            <span className="m-auto p-2">{blog.downVote}</span>
+            <span className="m-auto p-2">{blog.blogMeta.downVote}</span>
           </div>
         </div>
       </div>
