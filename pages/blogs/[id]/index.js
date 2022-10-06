@@ -20,7 +20,7 @@ export default function blog(props) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   let url = process.env.url;
 
   let res = await fetch(`${url}/api/blogs/${context.params.id}`);
@@ -33,21 +33,21 @@ export async function getStaticProps(context) {
   };
 }
 
-export async function getStaticPaths() {
-  let url = process.env.url;
+// export async function getStaticPaths() {
+//   let url = process.env.url;
 
-  let res = await fetch(`${url}/api/blogs`);
-  let blogs = await res.json();
+//   let res = await fetch(`${url}/api/blogs`);
+//   let blogs = await res.json();
 
-  const ids = blogs.map((blog) => blog.id);
-  const paths = ids.map((id) => ({
-    params: {
-      id: id.toString(),
-    },
-  }));
+//   const ids = blogs.map((blog) => blog.id);
+//   const paths = ids.map((id) => ({
+//     params: {
+//       id: id.toString(),
+//     },
+//   }));
 
-  return {
-    paths,
-    fallback: false,
-  };
-}
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// }

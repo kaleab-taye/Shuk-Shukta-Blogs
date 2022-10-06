@@ -7,14 +7,13 @@ export default function NewBlog() {
 
   const router = useRouter()
   const [status, setStatus] = useState('unPublished');
-  const [error, setError] = useState('');
+  const [error, setError] = useState('mm');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [author, setAuthor] = useState('');
 
   const publishBlog = async (form) => {
     form.preventDefault();
-    console.log('ff', form.target.title.value);
     let webUrl = process.env.url;
 
     let headersList = {
@@ -118,6 +117,9 @@ export default function NewBlog() {
             </div>
           </div>
           <Button placeholder="Publish" type="submit" />
+          <div>
+          {error.length>1 ? error : null}
+          </div>
         </form>
         <div>{status === 'published' ? 'published' : null}</div>
       </div>

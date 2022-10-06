@@ -12,7 +12,7 @@ export default function index(props) {
   )
 }
 
-export const getStaticProps = async ()=>{
+export const getServerSideProps = async ()=>{
 
     let url = process.env.url
 
