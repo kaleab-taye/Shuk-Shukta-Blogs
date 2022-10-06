@@ -3,29 +3,28 @@ import { useState } from 'react';
 import Button from '../../components/Button';
 
 export default function NewBlog() {
-
-
-  const router = useRouter()
+  const router = useRouter();
   const [status, setStatus] = useState('unPublished');
-  const [error, setError] = useState('mm');
+  const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [author, setAuthor] = useState('');
 
   const publishBlog = async (form) => {
     form.preventDefault();
+    setStatus('publishing')
     let webUrl = process.env.url;
 
     let headersList = {
       'Content-Type': 'application/json',
     };
 
-    // if(form.target.title.value.length<1){
+    if (form.target.author.value.length < 1) {
+      form.target.author.value = 'Anonymous';
+      setStatus('unPublished')
 
-    //   setError('the fie')
-    //   return;
-    // }
-
+      return;
+    }
 
     let bodyContent = JSON.stringify({
       title: form.target.title.value,
@@ -41,7 +40,6 @@ export default function NewBlog() {
       },
     });
 
-
     try {
       let response = await fetch(`${webUrl}/api/blogs`, {
         method: 'POST',
@@ -51,15 +49,15 @@ export default function NewBlog() {
 
       if (response.status === 200) {
         setStatus('published');
-        console.log('200d')
-        router.push('/')
+        router.push('/');
       } else {
+        setError('error publishing content @1 please try again');
         setStatus('unPublished');
       }
     } catch (error) {
-      console.log(error);
+      console.log('error',error);
       setStatus('unPublished');
-      setError(error);
+      setError(`error ${error}`);
     }
   };
 
@@ -73,7 +71,7 @@ export default function NewBlog() {
         <form onSubmit={(form) => publishBlog(form)}>
           <div className="grid grid-cols-1 gap-6 my-8">
             <div>
-              <label for="title" className="text-onSecondary font-semibold">
+              <label htmlFor="title" className="text-onSecondary font-semibold">
                 {' '}
                 Title*
               </label>
@@ -88,7 +86,7 @@ export default function NewBlog() {
               />
             </div>
             <div>
-              <label for="blog" className="text-onSecondary font-semibold">
+              <label htmlFor="blog" className="text-onSecondary font-semibold">
                 {' '}
                 Blog*
               </label>
@@ -103,7 +101,10 @@ export default function NewBlog() {
               />
             </div>
             <div>
-              <label for="author" className="text-onSecondary font-semibold">
+              <label
+                htmlFor="author"
+                className="text-onSecondary font-semibold"
+              >
                 {' '}
                 Author
               </label>
@@ -116,12 +117,17 @@ export default function NewBlog() {
               />
             </div>
           </div>
-          <Button placeholder="Publish" type="submit" />
-          <div>
-          {error.length>1 ? error : null}
+          <Button
+            placeholder={status === 'publishing' ? 'Publishing . . .' : 'Publish'}
+            type="submit"
+          />
+          <div className="text-center">
+            <div className="inline-flex text-failure">
+              {error.length > 1 ? error : null}
+              <span className='text-success'>{status === 'published' ? 'published' : null}</span>
+            </div>
           </div>
         </form>
-        <div>{status === 'published' ? 'published' : null}</div>
       </div>
       <hr />
     </div>
