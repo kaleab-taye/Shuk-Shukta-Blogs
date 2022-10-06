@@ -1,6 +1,5 @@
-import BlogMetaSection from "../../../components/BlogMetaSection";
-import CommentSection from "../../../components/CommentSection";
-
+import BlogMetaSection from '../../../components/BlogMetaSection';
+import CommentSection from '../../../components/CommentSection';
 
 export default function blog(props) {
   return (
@@ -16,7 +15,7 @@ export default function blog(props) {
       <BlogMetaSection blog={props.blog} />
       <hr />
       <CommentSection comments={props.blog.comment} />
-      <hr/>
+      <hr />
     </div>
   );
 }

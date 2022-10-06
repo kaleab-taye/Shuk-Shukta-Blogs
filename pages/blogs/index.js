@@ -18,7 +18,6 @@ export const getStaticProps = async ()=>{
 
     let res = await fetch(`${url}/api/blogs`);
     let blogs = await res.json();
-    console.log('dd', blogs)
   
     return {
         props : {

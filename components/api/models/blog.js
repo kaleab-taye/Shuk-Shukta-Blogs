@@ -1,28 +1,5 @@
-// const dataBaseLink = process.env.mongoDB;
-
 import  Mongoose  from "mongoose";
 
-// Mongoose.connect(dataBaseLink);
-
-// const blogSchema = Mongoose.Schema({
-//     id: { type: String, required: true },
-//     content: [
-//       {
-//         name: String,
-//         value: String,
-//       },
-//     ],
-//     postFormatTemplate: { type: String, required: true },
-//     createdDate: String,
-//     updatedDate: String,
-//     publishedOn: [String],
-//     publishedInfo: [
-//       {
-//         connectedPlatformId: String,
-//         contentId: String,
-//       },
-//     ],
-//   });
 const blogSchema = Mongoose.Schema({
   id: { type: String, required: true },
   title: String,
@@ -42,6 +19,4 @@ const blogSchema = Mongoose.Schema({
   },
 });
 
-const blogModel = Mongoose.model('blog', blogSchema);
-
-export { blogModel };
+export const blogModel = Mongoose.models.blog || Mongoose.model('blog', blogSchema);
