@@ -17,7 +17,6 @@ const blogSchema = Mongoose.Schema({
     upVote: String,
     downVote: String,
     date: String,
-    comment: String,
   },
 });
 

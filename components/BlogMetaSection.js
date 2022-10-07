@@ -11,8 +11,10 @@ export default function BlogMetaSection(props) {
   const webUrl = process.env.url;
 
   const [blogMeta, setBlogMeta] = useState(props.blog.blogMeta);
+  const [vote, setVote] = useState('');
 
   async function upVote() {
+    setVote('downVoting');
     let headersList = {
       'Content-Type': 'application/json',
     };
@@ -35,28 +37,67 @@ export default function BlogMetaSection(props) {
       }
       let data = await response.text();
       console.log(data);
+      setVote('upVoted');
     } catch (error) {
       console.log(error);
+      setVote('');
     }
   }
-
+  async function downVote() {
+    setVote('downVoting');
+    let headersList = {
+      'Content-Type': 'application/json',
+    };
+    let bodyContent = JSON.stringify({});
+    try {
+      let response = await fetch(
+        `${webUrl}/api/blogs/${props.blog.id}/downVote`,
+        {
+          method: 'POST',
+          body: bodyContent,
+          headers: headersList,
+        }
+      );
+      if (response.status === 200) {
+        let newBlogMeta = {
+          ...blogMeta,
+          downVote: parseInt(blogMeta.downVote) + 1,
+        };
+        setBlogMeta(newBlogMeta);
+      }
+      let data = await response.text();
+      console.log(data);
+      setVote('downVoted');
+    } catch (error) {
+      console.log(error);
+      setVote('');
+    }
+  }
   return (
     <div className="py-10 grid grid-cols-2">
       <div className="">
-        <Button
-          icon={
-            <FontAwesomeIcon
-              className="w-6 sm:w-6 "
-              icon={faArrowAltCircleUp}
-            />
-          }
-          placeholder={'Up vote'}
-          background="bg-success"
-          width="w-40 sm:w-64"
-          margin=""
-          onClick={() => upVote()}
-        />
-
+        <div className="flex ">
+          <Button
+            icon={
+              <FontAwesomeIcon
+                className="w-6 sm:w-6 "
+                icon={faArrowAltCircleUp}
+              />
+            }
+            placeholder={'Up vote'}
+            background="bg-success"
+            width="w-40 sm:w-64"
+            margin=""
+            disable = {vote === 'upVoting' ? true : null}
+            onClick={() => upVote()}
+          />
+          <span className="mx-2 my-auto text-success">
+            {vote === 'upVoted' ? 'voted' : null}
+          </span>
+          <span className="mx-2 my-auto text-accent">
+            {vote === 'upVoting' ? 'voting' : null}
+          </span>
+        </div>
         <div className="grid gap-3 px-4 py-4">
           <div className="font-commonFont text-l lg:text-xl ">
             Author :{' '}
@@ -72,18 +113,29 @@ export default function BlogMetaSection(props) {
         </div>
       </div>
       <div>
-        <Button
-          icon={
-            <FontAwesomeIcon
-              className="w-6 sm:w-6 "
-              icon={faArrowAltCircleDown}
-            />
-          }
-          placeholder="Down vote"
-          background="bg-failure"
-          width="w-32 sm:w-64"
-          margin=""
-        />
+        <div className='flex'>
+          <Button
+            icon={
+              <FontAwesomeIcon
+                className="w-6 sm:w-6 "
+                icon={faArrowAltCircleDown}
+              />
+            }
+            placeholder="Down vote"
+            background="bg-failure"
+            width="w-32 sm:w-64"
+            margin=""
+            disable = {vote === 'downVoting' ? true : null}
+            // {vote === 'downVoted' ? '' : null}
+            onClick={() => downVote()}
+          />
+          <span className="mx-2 my-auto text-accent">
+            {vote === 'upVoting' ? 'voting' : null}
+          </span>
+          <span className="mx-2 my-auto text-failure">
+            {vote === 'downVoted' ? 'voted' : null}
+          </span>
+        </div>
         <div className="grid gap-3 px-4 py-4">
           <div className="font-commonFont text-l lg:text-xl ">
             Up votes :{' '}
@@ -96,7 +148,7 @@ export default function BlogMetaSection(props) {
           <div className="font-commonFont text-l lg:text-xl ">
             Comments :{' '}
             <span className="text-xl lg:text-2xl">
-              {props.blog.blogMeta.comment}
+              {props.blog.comment.length}
             </span>
           </div>
         </div>
