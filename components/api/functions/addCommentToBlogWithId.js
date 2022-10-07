@@ -13,15 +13,17 @@ export default async function addCommentToBlogWithId(id, comment) {
       throw 'blog not found';
     }
 
-    blog.comment.push({
-      id: uuidV4(),
-      ...comment,
-    });
+    let newBlog = {
+      id:  uuidV4(),
+      ...comment
+    }
+    
+    blog.comment.push(newBlog);
 
     blog.overwrite(blog);
     await blog.save();
     console.log(blog);
-    return { comment: blog.comment };
+    return newBlog;
   } catch (error) {
     console.log(error);
     throw error;
