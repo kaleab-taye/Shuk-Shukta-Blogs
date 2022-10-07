@@ -22,6 +22,10 @@ export default function CommentSection(props) {
     if (form.target.name.value.length < 1) {
       form.target.name.value = 'Anonymous';
     }
+    if (form.target.comment.value.length < 1) {
+      setStatus('uncommented');
+      return;
+    }
 
     let bodyContent = JSON.stringify({
       by: form.target.name.value,
@@ -40,8 +44,9 @@ export default function CommentSection(props) {
       if (response.status === 200) {
         setStatus('commented');
         let newComments = [...comments, JSON.parse(data)];
-        console.log('cc', newComments);
         setComments(newComments);
+        form.target.name.value = '';
+        form.target.comment.value = '';
       } else {
         setError('error publishing content @1 please try again');
         setStatus('uncommented');
@@ -53,6 +58,7 @@ export default function CommentSection(props) {
     }
   }
 
+ 
   return (
     <div className="py-5">
       <div className="text-xl lg:text-2xl font-commonFont flex gap-3">
@@ -80,8 +86,12 @@ export default function CommentSection(props) {
         <div className="py-5 flex ">
           <div className="w-3/4 m-1 ">
             <div>
-              {error.length > 1 ? error : null}
-              {status === 'commenting' ? 'Loading . . .' : null}
+              <div className="text-failure">
+                {error.length > 1 ? error : null}
+              </div>
+              <div className="text-accent">
+                {status === 'commenting' ? 'Loading . . .' : null}
+              </div>
             </div>
             <input
               placeholder="@Name"
@@ -94,9 +104,9 @@ export default function CommentSection(props) {
               className="border p-1 m-1 w-full h-28 align-top"
             />
           </div>
-          <button type="submit">
+          <button type="submit" className="mx-5">
             <FontAwesomeIcon
-              className="mt-0 w-8 text-accent mx-5"
+              className="mt-0 w-8 text-accent "
               icon={faPaperPlane}
             />
           </button>
