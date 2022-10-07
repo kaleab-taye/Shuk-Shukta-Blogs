@@ -1,4 +1,5 @@
 import addCommentToBlogWithId from '../../../../components/api/functions/addCommentToBlogWithId';
+import addSeenToBlogWithId from '../../../../components/api/functions/addSeenToBlogWithId';
 import downVoteBlogWithId from '../../../../components/api/functions/downVoteBlogWithId';
 import upVoteBlogWithId from '../../../../components/api/functions/upVoteBlogWithId';
 
@@ -19,6 +20,11 @@ export default async function handler(req, res) {
       else if (req.query.action === 'comment') {
         let comment = req.body;
         const result = await addCommentToBlogWithId(req.query.id, comment);
+        res.status(200).json(result);
+      }
+      //   seen
+      else if (req.query.action === 'seen') {
+        const result = await addSeenToBlogWithId(req.query.id);
         res.status(200).json(result);
       }
 

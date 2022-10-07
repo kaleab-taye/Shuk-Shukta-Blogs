@@ -14,7 +14,7 @@ export default function BlogMetaSection(props) {
   const [vote, setVote] = useState('');
 
   async function upVote() {
-    setVote('downVoting');
+    setVote('upVoting');
     let headersList = {
       'Content-Type': 'application/json',
     };
@@ -51,7 +51,7 @@ export default function BlogMetaSection(props) {
     let bodyContent = JSON.stringify({});
     try {
       let response = await fetch(
-        `${webUrl}/api/blogs/${props.blog.id}/downVote`,
+        `${webUrl}/api/blogs/${props.blog.id}/downvote`,
         {
           method: 'POST',
           body: bodyContent,
@@ -130,7 +130,7 @@ export default function BlogMetaSection(props) {
             onClick={() => downVote()}
           />
           <span className="mx-2 my-auto text-accent">
-            {vote === 'upVoting' ? 'voting' : null}
+            {vote === 'downVoting' ? 'voting' : null}
           </span>
           <span className="mx-2 my-auto text-failure">
             {vote === 'downVoted' ? 'voted' : null}

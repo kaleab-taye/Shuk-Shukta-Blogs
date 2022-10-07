@@ -74,7 +74,7 @@ export default function CommentSection(props) {
           return (
             <div className="" key={comment.id}>
               <div className="py-3 text-xl lg:text-2xl font-commonFont">
-                <div className="py-3 px-4">{comment.by}</div>
+                <div className="py-3 px-4">@{comment.by}</div>
                 <div>{comment.comment}</div>
               </div>
               <hr />
