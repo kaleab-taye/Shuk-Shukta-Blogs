@@ -4,15 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 export default function CommentSection(props) {
-  const [comments,setComments] = useState(props.comments)
+  const [comments, setComments] = useState(props.comments);
   const id = props.id;
-  const [status,setStatus] = useState('uncommented')
-  const [ error , setError] = useState('')
+  const [status, setStatus] = useState('uncommented');
+  const [error, setError] = useState('');
 
   async function sendComment(form) {
-    form.preventDefault()
-    setStatus('commenting')
-    console.log(form.target.comment.value)
+    form.preventDefault();
+    setStatus('commenting');
+    console.log(form.target.comment.value);
     let webUrl = process.env.url;
 
     let headersList = {
@@ -21,12 +21,11 @@ export default function CommentSection(props) {
 
     if (form.target.name.value.length < 1) {
       form.target.name.value = 'Anonymous';
-      
     }
 
     let bodyContent = JSON.stringify({
-      by : form.target.name.value,
-      comment : form.target.comment.value
+      by: form.target.name.value,
+      comment: form.target.comment.value,
     });
 
     try {
@@ -36,23 +35,23 @@ export default function CommentSection(props) {
         headers: headersList,
       });
 
+      let data = await response.text();
+
       if (response.status === 200) {
         setStatus('commented');
-        let newComments = [...comments,response]
-        console.log('cc', newComments)
-        setComments(newComments)
+        let newComments = [...comments, data];
+        console.log('cc', newComments);
+        setComments(newComments);
       } else {
         setError('error publishing content @1 please try again');
         setStatus('uncommented');
       }
     } catch (error) {
-      console.log('error',error);
+      console.log('error', error);
       setStatus('uncommented');
       setError(`error ${error.toString()}`);
     }
-  };
-  
-  
+  }
 
   return (
     <div className="py-5">
@@ -77,16 +76,18 @@ export default function CommentSection(props) {
           );
         })}
       </div>
-      <form onSubmit={(e)=>sendComment(e)}>
+      <form onSubmit={(e) => sendComment(e)}>
         <div className="py-5 flex ">
           <div className="w-3/4 m-1 ">
-          <div>{
-            error.length > 1 ? error : null
-          }{
-            status==='commenting' ? 'Loading . . .' : null
-          }
-          </div>
-            <input placeholder="@Name" id='name' className="p-1 m-1 border w-full" />
+            <div>
+              {error.length > 1 ? error : null}
+              {status === 'commenting' ? 'Loading . . .' : null}
+            </div>
+            <input
+              placeholder="@Name"
+              id="name"
+              className="p-1 m-1 border w-full"
+            />
             <textarea
               placeholder="Comment Here !"
               id="comment"
