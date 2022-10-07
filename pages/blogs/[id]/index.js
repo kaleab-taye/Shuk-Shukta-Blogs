@@ -6,7 +6,7 @@ export default function Blog(props) {
   const webUrl = process.env.url;
   useEffect(() => {
     // console.log('a', localStorage.getItem(props.blog.id));
-    localStorage.removeItem(props.blog.id);
+    // localStorage.removeItem(props.blog.id);
     if (localStorage.getItem(props.blog.id) === null) {
       localStorage.setItem(props.blog.id, { seen: true });
       addSeen();
