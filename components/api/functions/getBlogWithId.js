@@ -7,8 +7,11 @@ export default async function getBlogWithId({id}) {
     mongoose.connect(mongoDb_url)
 
   try {
-    let response = await blogModel.findOne({id : id});
-    return response;
+    let blog = await blogModel.findOne({id : id});
+    if (blog === null) {
+      throw 'blog not found';
+    }
+    return blog;
   } catch (error) {
     console.log(error);
     throw error;

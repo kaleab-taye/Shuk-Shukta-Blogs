@@ -8,11 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default function HomeBlogCard({blog}) {
   return (
     <>
-      <div className="grid my-5   py-4 px-5 shadow-xl">
-        <h1 className="text-3xl sm:text-4xl pt-2 pb-5 text-onSecondary font-commonFont">
-          {blog.title}
+      <div className="grid my-5 py-4 px-5 shadow-xl">
+        <h1 className="break-all text-3xl sm:text-4xl pt-2 pb-5 text-onSecondary font-commonFont">
+          {blog.title.length > 92 ? blog.title.substr(1,92) +  ' . . .' : blog.title}
         </h1>
-        <p className="text-base sm:text-lg  ">
+        <p className="text-base sm:text-lg break-all ">
           {' '}
           { blog.emphasis ? blog.empasis : blog.body.substr(1,500) +  ' . . .'
           }

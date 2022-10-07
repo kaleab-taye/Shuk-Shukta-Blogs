@@ -21,9 +21,7 @@ export default function NewBlog() {
 
     if (form.target.author.value.length < 1) {
       form.target.author.value = 'Anonymous';
-      setStatus('unPublished')
-
-      return;
+      
     }
 
     let bodyContent = JSON.stringify({

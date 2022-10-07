@@ -13,7 +13,6 @@ export async function createNewBlog(blog) {
         ... blog
 
     });
-    console.log('r',response)
     return response;
   } catch (error) {
     console.log(error);

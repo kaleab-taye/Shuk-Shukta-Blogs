@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     } catch (error) {
       res.status(300).json({
         error: {
-          message: error,
+          message: error.toString(),
         },
       });
     }
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       res.status(300).json({
 
         error: {
-          message: error,
+          message: error.toString(),
         },
       });
     }

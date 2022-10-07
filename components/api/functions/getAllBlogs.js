@@ -5,8 +5,11 @@ export async function getAllBlogs() {
   mongoose.connect(mongoDbUrl);
 
   try {
-    let response =await blogModel.find().lean();
-    return response;
+    let blogs =await blogModel.find().lean();
+    if (blogs === null || blogs.length === 0) {
+      throw 'no blog found';
+    }
+    return blogs;
   } catch (error) {
     console.log(error);
     throw error;
