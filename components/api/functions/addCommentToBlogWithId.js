@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { blogModel } from '../models/blog';
-import {v4 as uuidV4} from 'uuid';
-
+import { v4 as uuidV4 } from 'uuid';
 
 export default async function addCommentToBlogWithId(id, comment) {
   try {
@@ -22,7 +21,7 @@ export default async function addCommentToBlogWithId(id, comment) {
     blog.overwrite(blog);
     await blog.save();
     console.log(blog);
-    return { comment : blog.comment };
+    return { comment: blog.comment };
   } catch (error) {
     console.log(error);
     throw error;

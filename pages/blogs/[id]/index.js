@@ -30,7 +30,7 @@ export default function Blog(props) {
       <hr />
       <BlogMetaSection blog={props.blog} />
       <hr />
-      <CommentSection comments={props.blog.comment} />
+      <CommentSection id = {props.blog.id} comments={props.blog.comment} />
       <hr />
     </div>
   );
