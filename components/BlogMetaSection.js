@@ -13,6 +13,8 @@ export default function BlogMetaSection(props) {
   const [blogMeta, setBlogMeta] = useState(props.blog.blogMeta);
   const [vote, setVote] = useState('');
 
+  let date = new Date(parseInt(blogMeta.date));
+
   async function upVote() {
     setVote('upVoting');
     let headersList = {
@@ -88,7 +90,7 @@ export default function BlogMetaSection(props) {
             background="bg-success"
             width="w-40 sm:w-64"
             margin=""
-            disable = {vote === 'upVoting' ? true : null}
+            disable={vote === 'upVoting' ? true : null}
             onClick={() => upVote()}
           />
           <span className="mx-2 my-auto text-success">
@@ -104,7 +106,22 @@ export default function BlogMetaSection(props) {
             <span className="text-xl lg:text-2xl">{blogMeta.author}</span>
           </div>
           <div className="font-commonFont text-l lg:text-xl ">
-            Date : <span className="text-xl lg:text-2xl">{blogMeta.date}</span>
+            Date :{'  '}
+            <span className="text-xl lg:text-2xl">
+              {' ' +
+                date.getDate() +
+                '/' +
+                (date.getMonth() + 1) +
+                '/' +
+                date.getFullYear() 
+                // +'  ' +
+                // date.getHours() +
+                // ':' +
+                // date.getMinutes() +
+                // ':' +
+                // date.getSeconds()
+              }
+            </span>
           </div>
           <div className="font-commonFont text-l lg:text-xl ">
             Interacted readers :{' '}
@@ -113,7 +130,7 @@ export default function BlogMetaSection(props) {
         </div>
       </div>
       <div>
-        <div className='flex'>
+        <div className="flex">
           <Button
             icon={
               <FontAwesomeIcon
@@ -125,7 +142,7 @@ export default function BlogMetaSection(props) {
             background="bg-failure"
             width="w-32 sm:w-64"
             margin=""
-            disable = {vote === 'downVoting' ? true : null}
+            disable={vote === 'downVoting' ? true : null}
             // {vote === 'downVoted' ? '' : null}
             onClick={() => downVote()}
           />
