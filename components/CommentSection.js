@@ -39,7 +39,7 @@ export default function CommentSection(props) {
 
       if (response.status === 200) {
         setStatus('commented');
-        let newComments = [...comments, data];
+        let newComments = [...comments, JSON.parse(data)];
         console.log('cc', newComments);
         setComments(newComments);
       } else {
