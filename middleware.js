@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
 export function middleware( NextRequest) {
-    // console.log(NextRequest)
+    // console.log(NextRequest,NextResponse)
   return ;
 }
 

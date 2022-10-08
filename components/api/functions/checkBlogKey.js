@@ -10,8 +10,7 @@ export default async function checkBlogKey(id,key) {
     if (blog === null) {
       throw 'blog not found';
     }
-
-    if(blog.blogKey===key){
+    if(blog.blogKey===key.blogKey){
 
         return { key: 'pass' };
     }

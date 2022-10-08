@@ -50,6 +50,7 @@ export async function getServerSideProps(context) {
   let url = process.env.url;
 
   let res = await fetch(`${url}/api/blogs/${context.params.id}`);
+  console.log('rest', res);
   let blog = await res.json();
 
   return {

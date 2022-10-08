@@ -4,14 +4,23 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Button from './Button';
 
 export default function BlogMetaSection(props) {
   const webUrl = process.env.url;
+  const router = useRouter();
 
   const [blogMeta, setBlogMeta] = useState(props.blog.blogMeta);
   const [vote, setVote] = useState('');
+  const [error, setError] = useState('');
+  const [status, setStatus] = useState('');
+  const statusEnum = {
+    processing: 'Processing . . .',
+    success: 'Success',
+    failure: 'Process Failed',
+  };
 
   let date = new Date(parseInt(blogMeta.date));
 
@@ -75,9 +84,33 @@ export default function BlogMetaSection(props) {
       setVote('');
     }
   }
-  async function editBlog(e){
-let insertedKey = prompt("Please enter the blog key to edit")
-console.log(insertedKey)
+  async function editBlog(e) {
+    let insertedKey = prompt('Please enter the blog key to edit');
+
+    try {
+      setStatus(statusEnum.processing);
+      setError('')
+      let headersList = {
+        'Content-Type': 'application/json',
+      };
+      let bodyContent = JSON.stringify({
+        blogKey: insertedKey,
+      });
+      var response = await fetch(`${webUrl}/api/blogs/${props.blog.id}/key`, {
+        method: 'POST',
+        body: bodyContent,
+        headers: headersList,
+      });
+      if (response.status === 200) {
+        setStatus(statusEnum.success);
+        router.push(`/blogs/${props.blog.id}/edit`);
+      } else {
+        setStatus(statusEnum.failure);
+        setError('Wrong Pass Key');
+      }
+    } catch (error) {
+      setError(`error : ${error}`);
+    }
   }
   return (
     <div className="py-10 grid grid-cols-2">
@@ -190,10 +223,23 @@ console.log(insertedKey)
           placeholder="Edit"
           width="w-28 sm:w-32"
           margin=""
-          onClick={(e)=>editBlog(e)}
+          onClick={(e) => editBlog(e)}
         />
         <div className="py-1 font-commonFont text-l lg:text-xl ">
           only for Author
+          <br />
+          <div
+            className={
+              status === statusEnum.failure
+                ? `text-failure`
+                : status == statusEnum.success
+                ? 'text-success'
+                : 'text-accent'
+            }
+          >
+            {status.length > 1 ? status : null}
+          </div>
+          <div className="text-failure">{error.length > 1 ? error : null}</div>
         </div>
       </div>
     </div>
