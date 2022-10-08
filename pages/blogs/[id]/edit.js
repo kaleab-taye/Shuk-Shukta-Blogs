@@ -1,34 +1,51 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import Button from '../../../components/Button';
 
 export default function EditBlog(props) {
+  const webUrl = process.env.url;
   const router = useRouter();
+
 
   const [title, setTitle] = useState(props.blog.title);
   const [body, setBody] = useState(props.blog.body);
-  const [author, setAuthor] = useState(props.blog.blogMeta.author);
+  const [author, setAuthor] = useState(props.blog.author);
+  const [blogKey, setBlogKey] = useState('***');
 
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
 
   async function publishUpdate(form) {
     form.preventDefault();
+
+    
+
     setStatus('publishing');
-    let webUrl = process.env.url;
 
     let headersList = {
       'Content-Type': 'application/json',
     };
 
+    //checks if name is filled and add anonymous in not
     if (form.target.author.value.length < 1) {
       form.target.author.value = 'Anonymous';
     }
 
-    let bodyContent = JSON.stringify({
-      title: form.target.title.value,
-      body: form.target.blog.value,
-    });
+    //checks if the blog key is changed & include it in request
+    if (blogKey === '***') {
+      let bodyContent = JSON.stringify({
+        title: form.target.title.value,
+        body: form.target.blog.value,
+        author: form.target.author.value,
+      });
+    } else {
+      let bodyContent = JSON.stringify({
+        title: form.target.title.value,
+        body: form.target.blog.value,
+        author: form.target.author.value,
+        blogKey: form.target.blogKey.value,
+      });
+    }
 
     try {
       let response = await fetch(`${webUrl}/api/blogs/${props.blog.id}/edit`, {
@@ -59,7 +76,7 @@ export default function EditBlog(props) {
         <form onSubmit={(e) => publishUpdate(e)}>
           <div className="grid grid-cols-1 gap-6 my-8">
             <div>
-              <label for="title" className="text-onSecondary font-semibold">
+              <label htmlFor="title" className="text-onSecondary font-semibold">
                 {' '}
                 Title
               </label>
@@ -71,7 +88,7 @@ export default function EditBlog(props) {
               />
             </div>
             <div>
-              <label for="blog" className="text-onSecondary font-semibold">
+              <label htmlFor="blog" className="text-onSecondary font-semibold">
                 {' '}
                 Blog
               </label>
@@ -83,7 +100,7 @@ export default function EditBlog(props) {
               />
             </div>
             <div>
-              <label for="author" className="text-onSecondary font-semibold">
+              <label htmlFor="author" className="text-onSecondary font-semibold">
                 {' '}
                 Author
               </label>
@@ -94,14 +111,26 @@ export default function EditBlog(props) {
                 onChange={(v) => setAuthor(v.value)}
               />
             </div>
+            <div>
+              <label htmlFor="blogKey" className="text-onSecondary font-semibold">
+                {' '}
+                Key
+              </label>
+              <input
+                id="blogKey"
+                className="border m-1 p-1 ml-5 w-1/2"
+                value={blogKey}
+                onChange={(v) => setBlogKey(v.value)}
+              />
+            </div>
           </div>
           <div>
-          <div className="text-failure">
-          {error.length > 1 ? error : null}
-          </div>  
-          <div className='text-success'>
-          {status === 'published' ? 'Published' : ''}
-          </div>
+            <div className="text-failure">
+              {error.length > 1 ? error : null}
+            </div>
+            <div className="text-success">
+              {status === 'published' ? 'Published' : ''}
+            </div>
           </div>
           <Button
             type="submit"

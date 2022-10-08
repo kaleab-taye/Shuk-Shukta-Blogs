@@ -6,9 +6,10 @@ export default function NewBlog() {
   const router = useRouter();
   const [status, setStatus] = useState('unPublished');
   const [error, setError] = useState('');
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [author, setAuthor] = useState('');
+  // const [title, setTitle] = useState('');
+  // const [body, setBody] = useState('');
+  // const [author, setAuthor] = useState('');
+  // const [blogKey, setBlogKey] = useState('');
 
   const publishBlog = async (form) => {
     form.preventDefault();
@@ -28,13 +29,14 @@ export default function NewBlog() {
       body: form.target.blog.value,
       comment: [],
       blogMeta: {
-        author: form.target.author.value,
         seen: 0,
         upVote: 0,
         downVote: 0,
         date: 0,
         comment: 0,
       },
+      author: form.target.author.value,
+      blogKey: form.target.blogKey.value
     });
 
     try {
@@ -74,9 +76,9 @@ export default function NewBlog() {
               </label>
               <input
                 id="title"
-                onChange={(e) => {
-                  setTitle(e.value);
-                }}
+                // onChange={(e) => {
+                //   setTitle(e.value);
+                // }}
                 required
                 minLength={5}
                 className="border m-1 p-1 ml-5 w-1/2"
@@ -89,9 +91,9 @@ export default function NewBlog() {
               </label>
               <textarea
                 id="blog"
-                onChange={(e) => {
-                  setBody(e.value);
-                }}
+                // onChange={(e) => {
+                //   setBody(e.value);
+                // }}
                 required
                 minLength={45}
                 className="border m-1 p-1 w-full h-80 align-top"
@@ -107,9 +109,28 @@ export default function NewBlog() {
               </label>
               <input
                 id="author"
-                onChange={(e) => {
-                  setAuthor(e.value);
-                }}
+                // onChange={(e) => {
+                //   setAuthor(e.value);
+                // }}
+                
+                className="border m-1 p-1 ml-5 w-1/2"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="blogKey"
+                className="text-onSecondary font-semibold"
+              >
+                {' '}
+                Key* <span className='font-normal'>(to edit/delete)</span>
+              </label>
+              <input
+                id="blogKey"
+                // onChange={(e) => {
+                //   setBlogKey(e.value);
+                // }}
+                required
+                minLength={5}
                 className="border m-1 p-1 ml-5 w-1/2"
               />
             </div>

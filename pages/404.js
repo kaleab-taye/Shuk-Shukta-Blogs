@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import image from '../public/404.png';
 
-export default function pageNotFound() {
+export default function PageNotFound() {
   return (
     <div className='h-screen flex align-middle'>
       <div className="max-w-xs sm:max-w-sm m-auto">

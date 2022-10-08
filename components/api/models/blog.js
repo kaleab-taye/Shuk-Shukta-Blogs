@@ -12,12 +12,13 @@ const blogSchema = Mongoose.Schema({
     },
   ],
   blogMeta: {
-    author: String,
     seen: String,
     upVote: String,
     downVote: String,
     date: String,
   },
+  author: String,
+  blogKey: String,
 });
 
 export const blogModel =

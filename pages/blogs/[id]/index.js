@@ -24,7 +24,6 @@ export default function Blog(props) {
       body: bodyContent,
       headers: headersList,
     });
-    console.log('rr',response)
 
     let resp = await response.text();
   }

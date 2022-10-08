@@ -75,9 +75,14 @@ export default function BlogMetaSection(props) {
       setVote('');
     }
   }
+  async function editBlog(e){
+let insertedKey = prompt("Please enter the blog key to edit")
+console.log(insertedKey)
+  }
   return (
     <div className="py-10 grid grid-cols-2">
       <div className="">
+        {/* up vote begin */}
         <div className="flex ">
           <Button
             icon={
@@ -100,20 +105,22 @@ export default function BlogMetaSection(props) {
             {vote === 'upVoting' ? 'voting' : null}
           </span>
         </div>
+
         <div className="grid gap-3 px-4 py-4">
           <div className="font-commonFont text-l lg:text-xl ">
             Author :{' '}
-            <span className="text-xl lg:text-2xl">{blogMeta.author}</span>
+            <span className="text-xl lg:text-2xl">{props.blog.author}</span>
           </div>
           <div className="font-commonFont text-l lg:text-xl ">
             Date :{'  '}
             <span className="text-xl lg:text-2xl">
-              {' ' +
-                date.getDate() +
-                '/' +
-                (date.getMonth() + 1) +
-                '/' +
-                date.getFullYear() 
+              {
+                ' ' +
+                  date.getDate() +
+                  '/' +
+                  (date.getMonth() + 1) +
+                  '/' +
+                  date.getFullYear()
                 // +'  ' +
                 // date.getHours() +
                 // ':' +
@@ -130,6 +137,7 @@ export default function BlogMetaSection(props) {
         </div>
       </div>
       <div>
+        {/* down vote start*/}
         <div className="flex">
           <Button
             icon={
@@ -153,6 +161,7 @@ export default function BlogMetaSection(props) {
             {vote === 'downVoted' ? 'voted' : null}
           </span>
         </div>
+
         <div className="grid gap-3 px-4 py-4">
           <div className="font-commonFont text-l lg:text-xl ">
             Up votes :{' '}
@@ -171,21 +180,18 @@ export default function BlogMetaSection(props) {
         </div>
       </div>
       <div>
-        <Link href={`/blogs/${props.blog.id}/edit`}>
-          <a>
-            <Button
-              icon={
-                <FontAwesomeIcon
-                  className="w-6 sm:w-6 "
-                  icon={faArrowAltCircleDown}
-                />
-              }
-              placeholder="Edit"
-              width="w-28 sm:w-32"
-              margin=""
+        <Button
+          icon={
+            <FontAwesomeIcon
+              className="w-6 sm:w-6 "
+              icon={faArrowAltCircleDown}
             />
-          </a>
-        </Link>
+          }
+          placeholder="Edit"
+          width="w-28 sm:w-32"
+          margin=""
+          onClick={(e)=>editBlog(e)}
+        />
         <div className="py-1 font-commonFont text-l lg:text-xl ">
           only for Author
         </div>
