@@ -1,7 +1,10 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Button from '../../../components/Button';
 
 export default function EditBlog(props) {
+  const router = useRouter();
+
   const [title, setTitle] = useState(props.blog.title);
   const [body, setBody] = useState(props.blog.body);
   const [author, setAuthor] = useState(props.blog.blogMeta.author);
@@ -28,15 +31,14 @@ export default function EditBlog(props) {
     });
 
     try {
-      let response = await fetch(`${webUrl}/api/blogs/${props.blog.id}`, {
+      let response = await fetch(`${webUrl}/api/blogs/${props.blog.id}/edit`, {
         method: 'POST',
         body: bodyContent,
         headers: headersList,
       });
-
       if (response.status === 200) {
         setStatus('published');
-        router.push('/');
+        router.push(`/#${props.blog.id}`);
       } else {
         setError('error publishing content @1 please try again');
         setStatus('unPublished');
@@ -48,58 +50,68 @@ export default function EditBlog(props) {
     }
   }
   return (
-    <div className="px-6 py-10 m-auto max-w-contentWid">
-      <div className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent">
-        Edit Blog
+    <div className="my-14">
+      <hr />
+      <div className="px-6 py-10 m-auto max-w-contentWid">
+        <div className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent">
+          Edit Blog
+        </div>
+        <form onSubmit={(e) => publishUpdate(e)}>
+          <div className="grid grid-cols-1 gap-6 my-8">
+            <div>
+              <label for="title" className="text-onSecondary font-semibold">
+                {' '}
+                Title
+              </label>
+              <input
+                id="title"
+                className="border m-1 p-1 ml-5 w-1/2"
+                value={title}
+                onChange={(v) => setTitle(v.value)}
+              />
+            </div>
+            <div>
+              <label for="blog" className="text-onSecondary font-semibold">
+                {' '}
+                Blog
+              </label>
+              <textarea
+                id="blog"
+                className="border m-1 p-1 w-full h-80 align-top"
+                value={body}
+                onChange={(v) => setBody(v.value)}
+              />
+            </div>
+            <div>
+              <label for="author" className="text-onSecondary font-semibold">
+                {' '}
+                Author
+              </label>
+              <input
+                id="author"
+                className="border m-1 p-1 ml-5 w-1/2"
+                value={author}
+                onChange={(v) => setAuthor(v.value)}
+              />
+            </div>
+          </div>
+          <div>
+          <div className="text-failure">
+          {error.length > 1 ? error : null}
+          </div>  
+          <div className='text-success'>
+          {status === 'published' ? 'Published' : ''}
+          </div>
+          </div>
+          <Button
+            type="submit"
+            placeholder={
+              status === 'publishing' ? 'Publishing . . .' : 'Publish'
+            }
+          />
+        </form>
       </div>
-      <form onSubmit={(e) => publishUpdate(e)}>
-        <div className="grid grid-cols-1 gap-6 my-8">
-          <div>
-            <label for="title" className="text-onSecondary font-semibold">
-              {' '}
-              Title
-            </label>
-            <input
-              id="title"
-              className="border m-1 p-1 ml-5 w-1/2"
-              value={title}
-              onChange={(v) => setTitle(v.value)}
-            />
-          </div>
-          <div>
-            <label for="blog" className="text-onSecondary font-semibold">
-              {' '}
-              Blog
-            </label>
-            <textarea
-              id="blog"
-              className="border m-1 p-1 w-full h-80 align-top"
-              value={body}
-              onChange={(v) => setBody(v.value)}
-            />
-          </div>
-          <div>
-            <label for="author" className="text-onSecondary font-semibold">
-              {' '}
-              Author
-            </label>
-            <input
-              id="author"
-              className="border m-1 p-1 ml-5 w-1/2"
-              value={author}
-              onChange={(v) => setAuthor(v.value)}
-            />
-          </div>
-        </div>
-        <div className="text-failure">
-        {error.length > 1 ? error : null}
-        {status === 'published' ? 'Published' : null}
-        </div>
-        <Button
-          type="submit"
-          placeholder={status === 'publishing' ? 'Publishing . . .' : 'Publish'}
-        />
-      </form>
+      <hr />
     </div>
   );
 }

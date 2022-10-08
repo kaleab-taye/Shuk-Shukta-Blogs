@@ -7,8 +7,8 @@ export default function Blog_List(props) {
     <div className=" max-w-contentWid m-auto">
         {props.blogs.map((blog) => {
           return (
-            <Link href={`blogs/${blog.id}`} key={blog.id}>
-              <a>
+            <Link href={`blogs/${blog.id}`}  key={blog.id}>
+              <a id={blog.id} >
                 <HomeBlogCard blog={blog} />
               </a>
             </Link>

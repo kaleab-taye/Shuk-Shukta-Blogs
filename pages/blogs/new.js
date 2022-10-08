@@ -12,7 +12,7 @@ export default function NewBlog() {
 
   const publishBlog = async (form) => {
     form.preventDefault();
-    setStatus('publishing')
+    setStatus('publishing');
     let webUrl = process.env.url;
 
     let headersList = {
@@ -21,7 +21,6 @@ export default function NewBlog() {
 
     if (form.target.author.value.length < 1) {
       form.target.author.value = 'Anonymous';
-      
     }
 
     let bodyContent = JSON.stringify({
@@ -47,13 +46,13 @@ export default function NewBlog() {
 
       if (response.status === 200) {
         setStatus('published');
-        router.push('/');
+        router.push(`/#${JSON.parse(await response.text()).id}`);
       } else {
         setError('error publishing content @1 please try again');
         setStatus('unPublished');
       }
     } catch (error) {
-      console.log('error',error);
+      console.log('error', error);
       setStatus('unPublished');
       setError(`error ${error}`);
     }
@@ -116,13 +115,17 @@ export default function NewBlog() {
             </div>
           </div>
           <Button
-            placeholder={status === 'publishing' ? 'Publishing . . .' : 'Publish'}
+            placeholder={
+              status === 'publishing' ? 'Publishing . . .' : 'Publish'
+            }
             type="submit"
           />
           <div className="text-center">
             <div className="inline-flex text-failure">
               {error.length > 1 ? error : null}
-              <span className='text-success'>{status === 'published' ? 'published' : null}</span>
+              <span className="text-success">
+                {status === 'published' ? 'published' : null}
+              </span>
             </div>
           </div>
         </form>
