@@ -1,13 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'https://shuk-shukta-blogs.vercel.app/api/:path*',
-      },
-    ];
-  },
+ 
   reactStrictMode: true,
   swcMinify: true,
   experimental: {

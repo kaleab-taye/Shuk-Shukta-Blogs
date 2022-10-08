@@ -49,6 +49,6 @@ export default async function handler(req, res) {
       });
     }
   }else {
-    throw '404 method not found'
+    res.status(300).json({message : '404 method not found'});
   }
 }
