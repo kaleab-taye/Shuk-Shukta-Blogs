@@ -18,7 +18,7 @@ export default async function checkBlogKey(id,key) {
         throw "key doesn't match";
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

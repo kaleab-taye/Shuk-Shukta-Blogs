@@ -18,7 +18,7 @@ export default async function upVoteBlogWithId(id) {
     await blog.save();
     return { upVote: 'true' };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

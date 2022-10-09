@@ -9,12 +9,12 @@ export default function HomeBlogCard({blog}) {
   return (
     <>
       <div className="grid my-5 py-4 px-5 shadow-xl">
-        <h1 className="break-all text-3xl sm:text-4xl pt-2 pb-5 text-onSecondary font-commonFont">
+        <h1 className=" break-word text-3xl sm:text-4xl pt-2 pb-5 text-onSecondary font-commonFont">
           {blog.title.length > 92 ? blog.title.substr(1,92) +  ' . . .' : blog.title}
         </h1>
-        <p className="text-base sm:text-lg break-all ">
+        <p className="text-base sm:text-lg break-word text-justify ">
           {' '}
-          { blog.emphasis ? blog.empasis : blog.body.substr(1,500) +  ' . . .'
+          { blog.emphasis ? blog.empasis : blog.body.substr(0,500) +  ' . . .'
           }
         </p>
         <div className="grid grid-cols-3 m-auto gap-5 p-4">

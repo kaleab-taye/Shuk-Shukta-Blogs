@@ -18,7 +18,7 @@ export default async function addSeenToBlogWithId(id) {
         await blog.save();
         return { seen: 'true' };
       } catch (error) {
-        console.log(error);
+        console.error(error);
         throw error;
       }
 }

@@ -31,12 +31,12 @@ export default function Blog(props) {
 
   return (
     <div className="max-w-contentWid m-auto my-10 xl:my-20 px-5 ">
-      <div className="break-all text-4xl lg:text-5xl xl:text-6xl font-semibold font-commonFont text-accent pb-2">
+      <div className="break-words  text-4xl lg:text-5xl font-semibold font-commonFont text-accent pb-2">
         
-        <PageHeading heading={props.blog.title} backTo={`/#${props.blog.id}`}/>
+        <PageHeading className='' heading={props.blog.title} backTo={`/#${props.blog.id}`}/>
       </div>
       <hr />
-      <div className="break-all py-10 font-commonFont text-xl lg:text-2xl xl:text-3xl">
+      <div style={{whiteSpace: "pre-wrap"}} className="text-justify break-words py-10 font-commonFont text-xl lg:text-2xl ">
         {props.blog.body}
       </div>
       <hr />

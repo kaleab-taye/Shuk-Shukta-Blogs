@@ -14,6 +14,6 @@ export default function Header( props) {
 
 Header.defaultProps = {
   title: 'Shuk-Shukta blogs',
-  icon: '/swag-lion.png',
+  icon: '/favicon.ico',
   content: 'ethiopian blogs, blogging, content writing',
 };

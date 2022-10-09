@@ -47,10 +47,9 @@ export default function BlogMetaSection(props) {
         setBlogMeta(newBlogMeta);
       }
       let data = await response.text();
-      console.log(data);
       setVote('upVoted');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setVote('');
     }
   }
@@ -77,39 +76,39 @@ export default function BlogMetaSection(props) {
         setBlogMeta(newBlogMeta);
       }
       let data = await response.text();
-      console.log(data);
       setVote('downVoted');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setVote('');
     }
   }
   async function editBlog(e) {
     let insertedKey = prompt('Please enter the blog key to edit');
-
-    try {
-      setStatus(statusEnum.processing);
-      setError('');
-      let headersList = {
-        'Content-Type': 'application/json',
-      };
-      let bodyContent = JSON.stringify({
-        blogKey: insertedKey,
-      });
-      var response = await fetch(`${webUrl}/api/blogs/${props.blog.id}/key`, {
-        method: 'POST',
-        body: bodyContent,
-        headers: headersList,
-      });
-      if (response.status === 200) {
-        setStatus(statusEnum.success);
-        router.push(`/blogs/${props.blog.id}/edit`);
-      } else {
-        setStatus(statusEnum.failure);
-        setError('Wrong Pass Key');
+    if (insertedKey) {
+      try {
+        setStatus(statusEnum.processing);
+        setError('');
+        let headersList = {
+          'Content-Type': 'application/json',
+        };
+        let bodyContent = JSON.stringify({
+          blogKey: insertedKey,
+        });
+        var response = await fetch(`${webUrl}/api/blogs/${props.blog.id}/key`, {
+          method: 'POST',
+          body: bodyContent,
+          headers: headersList,
+        });
+        if (response.status === 200) {
+          setStatus(statusEnum.success);
+          router.push(`/blogs/${props.blog.id}/edit`);
+        } else {
+          setStatus(statusEnum.failure);
+          setError('Wrong Pass Key');
+        }
+      } catch (error) {
+        setError(`error : ${error}`);
       }
-    } catch (error) {
-      setError(`error : ${error}`);
     }
   }
   return (

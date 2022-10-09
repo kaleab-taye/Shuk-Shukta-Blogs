@@ -6,7 +6,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
-import { blogsContext, fullBlogsContext, setBlogContext } from './BlogContextProvider';
+import {
+  blogsContext,
+  fullBlogsContext,
+  setBlogContext,
+} from './BlogContextProvider';
 
 export default function Nav() {
   const blogs = useContext(blogsContext);
@@ -29,13 +33,38 @@ export default function Nav() {
     });
     setBlogs(result);
   }
-  // useEffect(() => {
-  //   setSorted(fullBlogs.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1)));
-  //   setBlogs([]);
-  // }, [sortBy]);
-  // useEffect(() => {
-  //   setBlogs(sorted);
-  // }, [sorted]);
+  useEffect(() => {
+    setBlogs([]);
+    // setBlogs([fullBlogs[0]])
+    console.log('sort by', sortBy);
+    // console.log(fullBlogs.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1)))
+    console.log(blogs);
+    if (
+      sortBy === 'id' ||
+      sortBy === 'title' ||
+      sortBy === 'author' ||
+      sortBy === 'body'
+    ) {
+      let blogList = fullBlogs.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1));
+      setBlogs([...blogList]);
+    } else if (
+      sortBy === 'seen' ||
+      sortBy === 'upVote' ||
+      sortBy === 'downVote' ||
+      sortBy === 'date'
+    ) {
+      var blogList = fullBlogs.sort((a, b) =>
+        a.blogMeta[sortBy] > b.blogMeta[sortBy] ? -1 : 1
+      );
+      setBlogs([...blogList]);
+    } else {
+      setBlogs(fullBlogs);
+    }
+    //   setBlogs([]);
+    // }, [sortBy]);
+    // useEffect(() => {
+    //   setBlogs(sorted);
+  }, [sortBy, setBlogs, fullBlogs]);
   // function showSortOption() {}
 
   return (
@@ -43,7 +72,7 @@ export default function Nav() {
       <div className="max-w-contentWid mx-auto grid grid-cols-4">
         <div className="bg-secondary col-start-1 col-end-3 mx-auto rounded-2xl">
           {/* search */}
-          <div className=" py-2 px-3 flex m-auto">
+          <div className="py-2 px-3 flex m-auto">
             <div className="m-auto flex ">
               <input
                 className="bg-secondary sm:mx-2 p-1 w-16 sm:w-40 md:w-72 lg:w-96"
@@ -51,7 +80,7 @@ export default function Nav() {
                 id="search"
                 onChange={(e) => Search(e)}
               />
-              <label htmlFor="search bg-green-500 flex ">
+              <label htmlFor="search">
                 <FontAwesomeIcon
                   className="w-6 sm:w-6 text-onSecondary grid mt-1"
                   icon={faSearch}
@@ -61,21 +90,23 @@ export default function Nav() {
           </div>
         </div>
         <div className="m-auto">
-          <div className="flex">
+          {/* sort */}
+          <div className="flex ">
             <select
-            onChange={(e)=>setSortBy(e.target.value)}
+              onChange={(e) => setSortBy(e.target.value)}
               id="sort"
-              className="m-2 w-0 sm:w-auto p-1 bg-primary appearance-none overflow-hidden"
+              placeholder='sortby'
+              className="text-lg font-medium text-onSecondary form-select gap-5 rounded m-2 w-0 sm:w-auto p-1 bg-primary appearance-none overflow-hidden"
             >
-              <option value="date" selected disabled></option>
-              <option value="date" default>title</option>
-              <option value="date">date</option>
-              <option value="upVote">up votes</option>
-              <option value="seen">audience</option>
+              <option value="id" default disabled>sort by</option>
+              <option value="title">Title</option>
+              <option value="date">Date</option>
+              <option value="upVote">Up votes</option>
+              <option value="seen">Audience</option>
             </select>
             <label htmlFor="sort">
               <FontAwesomeIcon
-                className="w-6 sm:w-6 text-onSecondary"
+                className="w-6 sm:w-6 m-auto flex text-onSecondary"
                 icon={faSort}
                 // onClick={() => showSortOption()}
               />

@@ -48,7 +48,7 @@ export default function EditBlog(props) {
         throw `deleting failed ${response}`;
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
       setStatus(statusEnum.notDeleted);
       setError(`error ${error}`);
     }
@@ -96,13 +96,13 @@ export default function EditBlog(props) {
         setStatus(statusEnum.notPublished);
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
       setStatus(statusEnum.notPublished);
       setError(`error ${error}`);
     }
   }
   return (
-    <div className="my-14">
+    <div className="sm:my-14">
       <hr />
       <div className="px-6 py-10 m-auto max-w-contentWid">
         <PageHeading heading='Edit Blog' backTo={`/blogs/${props.blog.id}`} className='text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent'/>

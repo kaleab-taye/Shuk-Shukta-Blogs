@@ -22,10 +22,9 @@ export default async function addCommentToBlogWithId(id, comment) {
 
     blog.overwrite(blog);
     await blog.save();
-    console.log(blog);
     return newBlog;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

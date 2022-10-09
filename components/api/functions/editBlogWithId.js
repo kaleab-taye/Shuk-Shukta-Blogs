@@ -15,7 +15,7 @@ export default async function editBlogWithId(id, newBlog) {
     await blog.save();
     return updatedBlog;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

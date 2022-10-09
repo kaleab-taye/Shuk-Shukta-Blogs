@@ -6,7 +6,6 @@ import NoBlogAvailable from './NoBlogAvailable';
 
 export default function Blog_List() {
   const blogs = useContext(blogsContext);
-  console.log('bb', blogs);
 
   return (
     <>

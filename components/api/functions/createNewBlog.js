@@ -18,7 +18,7 @@ export async function createNewBlog(blog) {
     let response = await blogModel.create(newBlog);
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

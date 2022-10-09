@@ -55,14 +55,14 @@ export default function NewBlog() {
         setStatus('unPublished');
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
       setStatus('unPublished');
       setError(`error ${error}`);
     }
   };
 
   return (
-    <div className="my-14">
+    <div className="sm:my-14">
       <hr />
       <div className="px-6 py-10 m-auto max-w-contentWid">
         <PageHeading

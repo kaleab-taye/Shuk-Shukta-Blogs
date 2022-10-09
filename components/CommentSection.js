@@ -12,7 +12,6 @@ export default function CommentSection(props) {
   async function sendComment(form) {
     form.preventDefault();
     setStatus('commenting');
-    console.log(form.target.comment.value);
     let webUrl = process.env.url;
 
     let headersList = {
@@ -52,7 +51,7 @@ export default function CommentSection(props) {
         setStatus('uncommented');
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
       setStatus('uncommented');
       setError(`error ${error.toString()}`);
     }

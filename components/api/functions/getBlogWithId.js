@@ -11,10 +11,9 @@ export default async function getBlogWithId({id}) {
     if (blog === null) {
       throw 'blog not found';
     }
-    console.log('b',blog)
     return blog;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

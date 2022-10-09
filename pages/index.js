@@ -9,7 +9,6 @@ import NoBlogAvailable from '../components/NoBlogAvailable';
 export default function Home(props) {
   
 let blogs =useContext( blogsContext)
-console.log('blogs',blogs)
   return (
     <div className="">
       <Hero />
