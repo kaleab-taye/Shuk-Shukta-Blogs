@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import BlogMetaSection from '../../../components/BlogMetaSection';
 import CommentSection from '../../../components/CommentSection';
+import Header from '../../../components/Header';
 import PageHeading from '../../../components/PageHeading';
 
 export default function Blog(props) {
@@ -30,21 +31,30 @@ export default function Blog(props) {
   }
 
   return (
-    <div className="max-w-contentWid m-auto my-10 xl:my-20 px-5 ">
-      <div className="break-words  text-4xl lg:text-5xl font-semibold font-commonFont text-accent pb-2">
-        
-        <PageHeading className='' heading={props.blog.title} backTo={`/#${props.blog.id}`}/>
+    <>
+    <Header title={props.blog.title} description={props.blog.body}/>
+      <div className="max-w-contentWid m-auto my-10 xl:my-20 px-5 ">
+        <div className="break-words  text-4xl lg:text-5xl font-semibold font-commonFont text-accent pb-2">
+          <PageHeading
+            className=""
+            heading={props.blog.title}
+            backTo={`/#${props.blog.id}`}
+          />
+        </div>
+        <hr />
+        <div
+          style={{ whiteSpace: 'pre-wrap' }}
+          className="text-justify break-words py-10 font-commonFont text-xl lg:text-2xl "
+        >
+          {props.blog.body}
+        </div>
+        <hr />
+        <BlogMetaSection blog={props.blog} />
+        <hr />
+        <CommentSection id={props.blog.id} comments={props.blog.comment} />
+        <hr />
       </div>
-      <hr />
-      <div style={{whiteSpace: "pre-wrap"}} className="text-justify break-words py-10 font-commonFont text-xl lg:text-2xl ">
-        {props.blog.body}
-      </div>
-      <hr />
-      <BlogMetaSection blog={props.blog} />
-      <hr />
-      <CommentSection id={props.blog.id} comments={props.blog.comment} />
-      <hr />
-    </div>
+    </>
   );
 }
 
