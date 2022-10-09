@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Button from '../../components/Button';
+import PageHeading from '../../components/PageHeading';
 
 export default function NewBlog() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function NewBlog() {
         comment: 0,
       },
       author: form.target.author.value,
-      blogKey: form.target.blogKey.value
+      blogKey: form.target.blogKey.value,
     });
 
     try {
@@ -64,9 +65,12 @@ export default function NewBlog() {
     <div className="my-14">
       <hr />
       <div className="px-6 py-10 m-auto max-w-contentWid">
-        <div className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent">
-          New Blog
-        </div>
+        <PageHeading
+          heading="New Blog"
+          className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent"
+        backTo='/'
+          />
+
         <form onSubmit={(form) => publishBlog(form)}>
           <div className="grid grid-cols-1 gap-6 my-8">
             <div>
@@ -112,7 +116,7 @@ export default function NewBlog() {
                 // onChange={(e) => {
                 //   setAuthor(e.value);
                 // }}
-                
+
                 className="border m-1 p-1 ml-5 w-1/2"
               />
             </div>
@@ -122,7 +126,7 @@ export default function NewBlog() {
                 className="text-onSecondary font-semibold"
               >
                 {' '}
-                Key* <span className='font-normal'>(to edit/delete)</span>
+                Key* <span className="font-normal">(to edit/delete)</span>
               </label>
               <input
                 id="blogKey"

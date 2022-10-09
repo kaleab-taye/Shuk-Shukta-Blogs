@@ -1,6 +1,7 @@
 import addCommentToBlogWithId from '../../../../components/api/functions/addCommentToBlogWithId';
 import addSeenToBlogWithId from '../../../../components/api/functions/addSeenToBlogWithId';
 import checkBlogKey from '../../../../components/api/functions/checkBlogKey';
+import deleteBlogWithId from '../../../../components/api/functions/deleteBlogWithId';
 import downVoteBlogWithId from '../../../../components/api/functions/downVoteBlogWithId';
 import upVoteBlogWithId from '../../../../components/api/functions/upVoteBlogWithId';
 
@@ -30,8 +31,8 @@ export default async function handler(req, res) {
       }
       //   blog key check
       else if (req.query.action === 'key') {
-        let key = req.body
-        const result = await checkBlogKey(req.query.id,key);
+        let key = req.body;
+        const result = await checkBlogKey(req.query.id, key);
         res.status(200).json(result);
       }
 
@@ -48,7 +49,7 @@ export default async function handler(req, res) {
         },
       });
     }
-  }else {
-    res.status(300).json({message : '404 method not found'});
+  } else {
+    res.status(300).json({ message: '404 method not found' });
   }
 }

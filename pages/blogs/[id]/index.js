@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import BlogMetaSection from '../../../components/BlogMetaSection';
 import CommentSection from '../../../components/CommentSection';
+import PageHeading from '../../../components/PageHeading';
 
 export default function Blog(props) {
   const webUrl = process.env.url;
@@ -31,7 +32,8 @@ export default function Blog(props) {
   return (
     <div className="max-w-contentWid m-auto my-10 xl:my-20 px-5 ">
       <div className="break-all text-4xl lg:text-5xl xl:text-6xl font-semibold font-commonFont text-accent pb-2">
-        {props.blog.title}
+        
+        <PageHeading heading={props.blog.title} backTo={`/#${props.blog.id}`}/>
       </div>
       <hr />
       <div className="break-all py-10 font-commonFont text-xl lg:text-2xl xl:text-3xl">
@@ -48,10 +50,18 @@ export default function Blog(props) {
 
 export async function getServerSideProps(context) {
   let url = process.env.url;
-
-  let res = await fetch(`${url}/api/blogs/${context.params.id}`);
-  console.log('rest', res);
-  let blog = await res.json();
+  try {
+    let res = await fetch(`${url}/api/blogs/${context.params.id}`);
+    var blog = await res.json();
+    if (res.status !== 200) {
+      throw res;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

@@ -89,7 +89,7 @@ export default function BlogMetaSection(props) {
 
     try {
       setStatus(statusEnum.processing);
-      setError('')
+      setError('');
       let headersList = {
         'Content-Type': 'application/json',
       };
@@ -131,11 +131,22 @@ export default function BlogMetaSection(props) {
             disable={vote === 'upVoting' ? true : null}
             onClick={() => upVote()}
           />
-          <span className="mx-2 my-auto text-success">
-            {vote === 'upVoted' ? 'voted' : null}
-          </span>
-          <span className="mx-2 my-auto text-accent">
-            {vote === 'upVoting' ? 'voting' : null}
+          <span className="mx-2 my-auto">
+            <span
+              className={
+                vote === 'upVoted'
+                  ? 'text-success'
+                  : vote === 'upVoting'
+                  ? 'text-accent'
+                  : null
+              }
+            >
+              {vote === 'upVoted'
+                ? 'voted'
+                : vote === 'upVoting'
+                ? 'voting . . .'
+                : null}
+            </span>
           </span>
         </div>
 
@@ -187,11 +198,22 @@ export default function BlogMetaSection(props) {
             // {vote === 'downVoted' ? '' : null}
             onClick={() => downVote()}
           />
-          <span className="mx-2 my-auto text-accent">
-            {vote === 'downVoting' ? 'voting' : null}
-          </span>
-          <span className="mx-2 my-auto text-failure">
-            {vote === 'downVoted' ? 'voted' : null}
+          <span className="mx-2 my-auto">
+            <span
+              className={
+                vote === 'downVoted'
+                  ? 'text-failure'
+                  : vote === 'downVoting'
+                  ? 'text-accent'
+                  : null
+              }
+            >
+              {vote === 'downVoted'
+                ? 'voted'
+                : vote === 'downVoting'
+                ? 'voting . . .'
+                : null}
+            </span>
           </span>
         </div>
 

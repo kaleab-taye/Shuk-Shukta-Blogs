@@ -1,21 +1,28 @@
-import Link from "next/link";
-import HomeBlogCard from "./Home-Blog-Card";
+import Link from 'next/link';
+import React, { useContext } from 'react';
+import { blogsContext } from './BlogContextProvider';
+import HomeBlogCard from './Home-Blog-Card';
+import NoBlogAvailable from './NoBlogAvailable';
 
-export default function Blog_List(props) {
-    
+export default function Blog_List() {
+  const blogs = useContext(blogsContext);
+  console.log('bb', blogs);
+
   return (
-    <div className=" max-w-contentWid m-auto">
-        {props.blogs.map((blog) => {
+    <>
+    {blogs.length > 0 ?  
+      <div className=" max-w-contentWid m-auto">
+        {blogs.map((blog) => {
           return (
-            <Link href={`blogs/${blog.id}`}  key={blog.id}>
-              <a id={blog.id} >
+            <Link href={`blogs/${blog.id}`} key={blog.id}>
+              <a id={blog.id}>
                 <HomeBlogCard blog={blog} />
               </a>
             </Link>
           );
         })}
       </div>
+    : <NoBlogAvailable /> }
+    </>
   );
 }
-
-

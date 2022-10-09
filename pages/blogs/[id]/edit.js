@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
-import {  useState } from 'react';
+import { useState } from 'react';
+import BackButton from '../../../components/BackButton';
 import Button from '../../../components/Button';
+import PageHeading from '../../../components/PageHeading';
 
 export default function EditBlog(props) {
   const webUrl = process.env.url;
   const router = useRouter();
-
 
   const [title, setTitle] = useState(props.blog.title);
   const [body, setBody] = useState(props.blog.body);
@@ -13,14 +14,48 @@ export default function EditBlog(props) {
   const [blogKey, setBlogKey] = useState('***');
 
   const [status, setStatus] = useState('');
+  const statusEnum = {
+    deleting: 'Deleting . . .',
+    publishing: 'Publishing . . .',
+    deleted: 'Deleted',
+    published: 'Published',
+    notDeleted: 'Failed to delete',
+    notPublished: 'Failed to publish',
+  };
   const [error, setError] = useState('');
 
+  async function deleteBlog() {
+    setStatus(statusEnum.deleting);
+    try {
+      let headersList = {
+        'Content-Type': 'application/json',
+      };
+
+      let bodyContent = JSON.stringify({
+        key: props.blog.blogKey,
+      });
+      let response = await fetch(`${webUrl}/api/blogs/${props.blog.id}`, {
+        method: 'DELETE',
+        body: bodyContent,
+        headers: headersList,
+      });
+      if (response.status === 200) {
+        setStatus(statusEnum.deleted);
+        router.push(`/`);
+      } else {
+        // setError('error publishing content @1 please try again');
+        // setStatus('unPublished');
+        throw `deleting failed ${response}`;
+      }
+    } catch (error) {
+      console.log('error', error);
+      setStatus(statusEnum.notDeleted);
+      setError(`error ${error}`);
+    }
+  }
   async function publishUpdate(form) {
     form.preventDefault();
-
-    
-
-    setStatus('publishing');
+    setStatus(statusEnum.publishing);
 
     let headersList = {
       'Content-Type': 'application/json',
@@ -33,13 +68,13 @@ export default function EditBlog(props) {
 
     //checks if the blog key is changed & include it in request
     if (blogKey === '***') {
-      let bodyContent = JSON.stringify({
+      var bodyContent = JSON.stringify({
         title: form.target.title.value,
         body: form.target.blog.value,
         author: form.target.author.value,
       });
     } else {
-      let bodyContent = JSON.stringify({
+      var bodyContent = JSON.stringify({
         title: form.target.title.value,
         body: form.target.blog.value,
         author: form.target.author.value,
@@ -54,15 +89,15 @@ export default function EditBlog(props) {
         headers: headersList,
       });
       if (response.status === 200) {
-        setStatus('published');
+        setStatus(statusEnum.published);
         router.push(`/#${props.blog.id}`);
       } else {
         setError('error publishing content @1 please try again');
-        setStatus('unPublished');
+        setStatus(statusEnum.notPublished);
       }
     } catch (error) {
       console.log('error', error);
-      setStatus('unPublished');
+      setStatus(statusEnum.notPublished);
       setError(`error ${error}`);
     }
   }
@@ -70,9 +105,7 @@ export default function EditBlog(props) {
     <div className="my-14">
       <hr />
       <div className="px-6 py-10 m-auto max-w-contentWid">
-        <div className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent">
-          Edit Blog
-        </div>
+        <PageHeading heading='Edit Blog' backTo={`/blogs/${props.blog.id}`} className='text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent'/>
         <form onSubmit={(e) => publishUpdate(e)}>
           <div className="grid grid-cols-1 gap-6 my-8">
             <div>
@@ -100,7 +133,10 @@ export default function EditBlog(props) {
               />
             </div>
             <div>
-              <label htmlFor="author" className="text-onSecondary font-semibold">
+              <label
+                htmlFor="author"
+                className="text-onSecondary font-semibold"
+              >
                 {' '}
                 Author
               </label>
@@ -112,7 +148,10 @@ export default function EditBlog(props) {
               />
             </div>
             <div>
-              <label htmlFor="blogKey" className="text-onSecondary font-semibold">
+              <label
+                htmlFor="blogKey"
+                className="text-onSecondary font-semibold"
+              >
                 {' '}
                 Key
               </label>
@@ -126,19 +165,32 @@ export default function EditBlog(props) {
           </div>
           <div>
             <div className="text-failure">
+              {status === 'notDeleted' || status === 'unpublished'
+                ? 'Failed'
+                : ''}
               {error.length > 1 ? error : null}
             </div>
-            <div className="text-success">
-              {status === 'published' ? 'Published' : ''}
-            </div>
+            <br />
+            <div className="text-success">{status !== '' ? status : ''}</div>
           </div>
           <Button
             type="submit"
+            disabled={status !== '' ? true : false}
             placeholder={
-              status === 'publishing' ? 'Publishing . . .' : 'Publish'
+              status === statusEnum.publishing
+                ? statusEnum.publishing
+                : 'Publish'
             }
           />
         </form>
+        <Button
+          onClick={() => deleteBlog()}
+          className="mt-5"
+          background={'bg-failure'}
+          placeholder={
+            status === statusEnum.deleting ? statusEnum.deleting : 'Delete'
+          }
+        />
       </div>
       <hr />
     </div>
