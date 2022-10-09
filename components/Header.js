@@ -13,8 +13,8 @@ export default function Header(props) {
       <meta property="og:title" content={props.title} />
       <meta property="og:type" content={props.type} />
       <meta property="og:description" content={props.description} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      <meta property="og:image:width" content="2400" />
+      <meta property="og:image:height" content="1260" />
     </Head>
   );
 }
@@ -25,5 +25,5 @@ Header.defaultProps = {
   content: 'ethiopian blogs, blogging, content writing',
   type: 'article',
   description:
-    'A free blogging site where we can share our ideas, get the chance to comment and discus on ideas we would be interested in.',
+    'A free blogging site where anyone can share their ideas, get the chance to comment and discuss on points they would be interested in.',
 };
