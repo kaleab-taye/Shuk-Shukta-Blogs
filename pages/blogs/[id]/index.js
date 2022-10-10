@@ -6,14 +6,14 @@ import PageHeading from '../../../components/PageHeading';
 
 export default function Blog(props) {
   const webUrl = process.env.url;
-  
+
   useEffect(() => {
     // console.log('a', localStorage.getItem(props.blog.id));
     // localStorage.removeItem(props.blog.id);
     if (localStorage.getItem(props.blog.id) === null) {
       localStorage.setItem(props.blog.id, JSON.stringify({ seen: true }));
       addSeen();
-    } 
+    }
   }, []);
 
   async function addSeen() {
@@ -22,13 +22,17 @@ export default function Blog(props) {
     };
     let bodyContent = JSON.stringify({});
 
-    let response = await fetch(`${webUrl}/api/blogs/${props.blog.id}/seen`, {
-      method: 'POST',
-      body: bodyContent,
-      headers: headersList,
-    });
+    try {
+      let response = await fetch(`${webUrl}/api/blogs/${props.blog.id}/seen`, {
+        method: 'POST',
+        body: bodyContent,
+        headers: headersList,
+      });
 
-    let resp = await response.text();
+      let resp = await response.text();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

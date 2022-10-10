@@ -55,7 +55,7 @@ export default function Nav() {
     } else {
       setBlogs(fullBlogs);
     }
-  }, [sortBy,  fullBlogs]);
+  }, [sortBy, fullBlogs]);
   // function showSortOption() {}
 
   return (
@@ -73,7 +73,7 @@ export default function Nav() {
               />
               <label htmlFor="search">
                 <FontAwesomeIcon
-                  className="w-6 sm:w-6 text-onSecondary grid mt-1"
+                  className="cursor-pointer w-6 sm:w-6 text-onSecondary grid mt-1"
                   icon={faSearch}
                 />
               </label>
@@ -87,7 +87,7 @@ export default function Nav() {
               onChange={(e) => setSortBy(e.target.value)}
               id="sort"
               placeholder="sortby"
-              className="text-lg font-normal text-onSecondary form-select gap-5 rounded m-2 w-0 sm:w-auto p-1 bg-primary appearance-none overflow-hidden"
+              className="cursor-pointer text-lg font-normal text-onSecondary form-select gap-5 rounded m-2 w-0 sm:w-auto p-1 bg-primary appearance-none overflow-hidden"
               defaultValue={'id'}
             >
               <option value="id" disabled>
@@ -100,7 +100,7 @@ export default function Nav() {
             </select>
             <label htmlFor="sort" className="text-center m-auto">
               <FontAwesomeIcon
-                className="w-6 sm:w-6 m-auto flex text-onSecondary"
+                className="cursor-pointer w-6 sm:w-6 m-auto flex text-onSecondary"
                 icon={faSort}
               />
             </label>
@@ -109,7 +109,7 @@ export default function Nav() {
         <div className="m-auto flex">
           <Link href="/blogs/new">
             <FontAwesomeIcon
-              className="w-8 sm:w-8 text-onSecondary"
+              className="cursor-pointer w-8 sm:w-8 text-onSecondary"
               icon={faCirclePlus}
             />
           </Link>

@@ -12,7 +12,7 @@ export default function BackButton(props) {
     }
   }
   return (
-    <div onClick={() => goBack()} className="text-accent w-12 sm:w-14 m-auto">
+    <div onClick={() => goBack()} className="cursor-pointer text-accent w-12 sm:w-14 m-auto">
       <FontAwesomeIcon icon={faArrowAltCircleLeft} />
     </div>
   );

@@ -1,8 +1,9 @@
 import addCommentToBlogWithId from '../../../../components/api/functions/addCommentToBlogWithId';
 import addSeenToBlogWithId from '../../../../components/api/functions/addSeenToBlogWithId';
 import checkBlogKey from '../../../../components/api/functions/checkBlogKey';
-import deleteBlogWithId from '../../../../components/api/functions/deleteBlogWithId';
 import downVoteBlogWithId from '../../../../components/api/functions/downVoteBlogWithId';
+import undoDownvoteForBlogWithId from '../../../../components/api/functions/undoDownvoteForBlogWithId';
+import undoUpvoteForBlogWithId from '../../../../components/api/functions/undoUpvoteForBlogWithId';
 import upVoteBlogWithId from '../../../../components/api/functions/upVoteBlogWithId';
 
 export default async function handler(req, res) {
@@ -33,6 +34,16 @@ export default async function handler(req, res) {
       else if (req.query.action === 'key') {
         let key = req.body;
         const result = await checkBlogKey(req.query.id, key);
+        res.status(200).json(result);
+      }
+      //   undo upvote
+      else if (req.query.action === 'upvote_undo') {
+        const result = await undoUpvoteForBlogWithId(req.query.id);
+        res.status(200).json(result);
+      }
+      //   undo downvote
+      else if (req.query.action === 'downvote_undo') {
+        const result = await undoDownvoteForBlogWithId(req.query.id);
         res.status(200).json(result);
       }
 

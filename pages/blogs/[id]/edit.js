@@ -105,7 +105,11 @@ export default function EditBlog(props) {
     <div className="sm:my-14">
       <hr />
       <div className="px-6 py-10 m-auto max-w-contentWid">
-        <PageHeading heading='Edit Blog' backTo={`/blogs/${props.blog.id}`} className='text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent'/>
+        <PageHeading
+          heading="Edit Blog"
+          backTo={`/blogs/${props.blog.id}`}
+          className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent"
+        />
         <form onSubmit={(e) => publishUpdate(e)}>
           <div className="grid grid-cols-1 gap-6 my-8">
             <div>
