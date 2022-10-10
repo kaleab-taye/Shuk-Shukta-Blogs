@@ -18,7 +18,6 @@ export default function Nav() {
   const setBlogs = useContext(setBlogContext);
 
   const [sortBy, setSortBy] = useState('id');
-  var [sorted, setSorted] = useState([]);
 
   function Search(searchWord) {
     let result = [];
@@ -35,10 +34,6 @@ export default function Nav() {
   }
   useEffect(() => {
     setBlogs([]);
-    // setBlogs([fullBlogs[0]])
-    console.log('sort by', sortBy);
-    // console.log(fullBlogs.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1)))
-    console.log(blogs);
     if (
       sortBy === 'id' ||
       sortBy === 'title' ||
@@ -60,11 +55,7 @@ export default function Nav() {
     } else {
       setBlogs(fullBlogs);
     }
-    //   setBlogs([]);
-    // }, [sortBy]);
-    // useEffect(() => {
-    //   setBlogs(sorted);
-  }, [sortBy, setBlogs, fullBlogs]);
+  }, [sortBy,  fullBlogs]);
   // function showSortOption() {}
 
   return (
@@ -91,24 +82,26 @@ export default function Nav() {
         </div>
         <div className="m-auto">
           {/* sort */}
-          <div className="flex ">
+          <div className="flex">
             <select
               onChange={(e) => setSortBy(e.target.value)}
               id="sort"
-              placeholder='sortby'
-              className="text-lg font-medium text-onSecondary form-select gap-5 rounded m-2 w-0 sm:w-auto p-1 bg-primary appearance-none overflow-hidden"
+              placeholder="sortby"
+              className="text-lg font-normal text-onSecondary form-select gap-5 rounded m-2 w-0 sm:w-auto p-1 bg-primary appearance-none overflow-hidden"
+              defaultValue={'id'}
             >
-              <option value="id" default disabled>sort by</option>
+              <option value="id" disabled>
+                sort by
+              </option>
               <option value="title">Title</option>
               <option value="date">Date</option>
               <option value="upVote">Up votes</option>
               <option value="seen">Audience</option>
             </select>
-            <label htmlFor="sort">
+            <label htmlFor="sort" className="text-center m-auto">
               <FontAwesomeIcon
                 className="w-6 sm:w-6 m-auto flex text-onSecondary"
                 icon={faSort}
-                // onClick={() => showSortOption()}
               />
             </label>
           </div>

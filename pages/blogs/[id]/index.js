@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import BlogMetaSection from '../../../components/BlogMetaSection';
 import CommentSection from '../../../components/CommentSection';
 import Header from '../../../components/Header';
@@ -6,13 +6,14 @@ import PageHeading from '../../../components/PageHeading';
 
 export default function Blog(props) {
   const webUrl = process.env.url;
+  
   useEffect(() => {
     // console.log('a', localStorage.getItem(props.blog.id));
     // localStorage.removeItem(props.blog.id);
     if (localStorage.getItem(props.blog.id) === null) {
-      localStorage.setItem(props.blog.id, { seen: true });
+      localStorage.setItem(props.blog.id, JSON.stringify({ seen: true }));
       addSeen();
-    }
+    } 
   }, []);
 
   async function addSeen() {
@@ -32,7 +33,7 @@ export default function Blog(props) {
 
   return (
     <>
-    <Header title={props.blog.title} description={props.blog.body}/>
+      <Header title={props.blog.title} description={props.blog.body} />
       <div className="max-w-contentWid m-auto my-10 xl:my-20 px-5 ">
         <div className="break-words  text-4xl lg:text-5xl font-semibold font-commonFont text-accent pb-2">
           <PageHeading
