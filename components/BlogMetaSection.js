@@ -1,7 +1,8 @@
-import { faArrowAltCircleDown, faArrowAltCircleUp } from '@fortawesome/free-regular-svg-icons';
 import {
-  faPenToSquare,
-} from '@fortawesome/free-solid-svg-icons';
+  faArrowAltCircleDown,
+  faArrowAltCircleUp,
+} from '@fortawesome/free-regular-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -75,7 +76,7 @@ export default function BlogMetaSection(props) {
   }
 
   async function undoUpVote() {
-    await setVote(voteEnum.unVoting);
+     setVote(v=>voteEnum.unVoting);
     let headersList = {
       'Content-Type': 'application/json',
     };
@@ -95,10 +96,10 @@ export default function BlogMetaSection(props) {
           ...blogMeta,
           upVote: parseInt(blogMeta.upVote) - 1,
         }));
-        setVote(voteEnum.removed);
-        setTimeout(() => {
-          setVote(voteEnum.idle);
-        }, '3000');
+        setVote(v=>voteEnum.removed);
+        // setTimeout(() => {
+          setVote(v=>voteEnum.idle);
+        // }, '3000');
         //store vote locally
         let localData = {
           ...JSON.parse(localStorage.getItem(props.blog.id)),
@@ -111,11 +112,11 @@ export default function BlogMetaSection(props) {
     } catch (error) {
       console.error(error);
       setError(error);
-      setVote(voteEnum.failed);
+      setVote(v=>voteEnum.failed);
     }
   }
   async function undoDownVote() {
-    await setVote(voteEnum.unVoting);
+    await setVote(v=>voteEnum.unVoting);
     let headersList = {
       'Content-Type': 'application/json',
     };
@@ -139,10 +140,10 @@ export default function BlogMetaSection(props) {
           ...blogMeta,
           downVote: parseInt(blogMeta.downVote) - 1,
         }));
-        await setVote(voteEnum.removed);
-        await setTimeout(async () => {
-          await setVote(voteEnum.idle);
-        }, '3000');
+        setVote(v=>voteEnum.removed);
+      // setTimeout(async () => {
+          setVote(v=>voteEnum.idle);
+        // }, '3000');
         //store vote locally
         let localData = {
           ...JSON.parse(localStorage.getItem(props.blog.id)),
@@ -154,13 +155,13 @@ export default function BlogMetaSection(props) {
       }
     } catch (error) {
       console.error(error);
-      await setError(error);
-      await setVote(voteEnum.failed);
+       setError(error);
+       setVote(v=>voteEnum.failed);
     }
   }
 
   async function upVote() {
-    setVote(voteEnum.upVoting);
+    setVote(v=>voteEnum.upVoting);
     let headersList = {
       'Content-Type': 'application/json',
     };
@@ -186,7 +187,7 @@ export default function BlogMetaSection(props) {
         }));
       }
       let data = await response.text();
-      setVote(voteEnum.upVoted);
+      setVote(v=>voteEnum.upVoted);
       //store vote locally
       let localData = {
         ...JSON.parse(localStorage.getItem(props.blog.id)),
@@ -196,11 +197,11 @@ export default function BlogMetaSection(props) {
     } catch (error) {
       console.error(error);
       setError(error);
-      setVote(voteEnum.failed);
+      setVote(v=>voteEnum.failed);
     }
   }
   async function downVote() {
-    setVote(voteEnum.downVoting);
+    setVote(v=>voteEnum.downVoting);
     let headersList = {
       'Content-Type': 'application/json',
     };
@@ -219,17 +220,17 @@ export default function BlogMetaSection(props) {
           ...blogMeta,
           downVote: parseInt(blogMeta.downVote) + 1,
         }));
+        setVote(v=>voteEnum.downVoted);
+        //store vote locally
+        let localData = {
+          ...JSON.parse(localStorage.getItem(props.blog.id)),
+          vote: voteEnum.downVoted,
+        };
+        localStorage.setItem(props.blog.id, JSON.stringify(localData));
       }
-      setVote(voteEnum.downVoted);
-      //store vote locally
-      let localData = {
-        ...JSON.parse(localStorage.getItem(props.blog.id)),
-        vote: voteEnum.downVoted,
-      };
-      localStorage.setItem(props.blog.id, JSON.stringify(localData));
     } catch (error) {
       console.error(error);
-      setVote(voteEnum.idle);
+      setVote(v=>voteEnum.idle);
     }
   }
   async function editBlog(e) {
@@ -303,15 +304,15 @@ export default function BlogMetaSection(props) {
             <Button
               icon={
                 <FontAwesomeIcon
-                className="w-7 sm:w-7 "
-                icon={faArrowAltCircleUp}
+                  className="w-7 sm:w-7 "
+                  icon={faArrowAltCircleUp}
                 />
               }
               placeholder={'Up vote'}
               color="text-success"
-              background=''
+              background=""
               // width="w-40 sm:w-64"
-              width=''
+              width=""
               margin=""
               // className='hover:'
               disable={
@@ -375,8 +376,8 @@ export default function BlogMetaSection(props) {
               color="text-failure"
               // width="w-32 sm:w-64"
               margin=""
-              width=''
-              background=''
+              width=""
+              background=""
               disable={
                 vote === voteEnum.downVoting
                   ? true
@@ -415,16 +416,13 @@ export default function BlogMetaSection(props) {
         <div>
           <Button
             icon={
-              <FontAwesomeIcon
-                className="w-6 sm:w-6 "
-                icon={faPenToSquare}
-              />
+              <FontAwesomeIcon className="w-6 sm:w-6 " icon={faPenToSquare} />
             }
             placeholder="Edit"
             width=""
             margin=""
-            color='text-accent'
-            background=''
+            color="text-accent"
+            background=""
             // className='hover:text-primary hover:bg-accent'
             onClick={(e) => editBlog(e)}
           />
