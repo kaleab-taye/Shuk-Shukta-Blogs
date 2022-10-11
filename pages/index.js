@@ -22,14 +22,25 @@ let blogs =useContext( blogsContext)
 }
 
 export const getServerSideProps = async () => {
-  let url = process.env.url;
+  try {
+    
+    let url = process.env.url;
+  
+    let res = await fetch(`${url}/api/blogs`);
+    let blogs = await res.json();
+  
+    return {
+      props: {
+        blogs,
+      },
+    };
+  } catch (error) {
+    console.error(error)
 
-  let res = await fetch(`${url}/api/blogs`);
-  let blogs = await res.json();
-
-  return {
-    props: {
-      blogs,
-    },
-  };
+    return {
+      props: {
+        blogs:[]
+      },
+    };
+  }
 };

@@ -1,6 +1,6 @@
+import { faArrowAltCircleDown, faArrowAltCircleUp } from '@fortawesome/free-regular-svg-icons';
 import {
-  faArrowAltCircleDown,
-  faArrowAltCircleUp,
+  faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
@@ -19,6 +19,8 @@ export default function BlogMetaSection(props) {
     downVoting: 'Down Voting . . .',
     downVoted: 'Down Voted',
     upVoted: 'Up Voted',
+    unVoting: 'Removing Vote . . .',
+    removed: 'Removed',
     idle: 'idle',
     failed: 'Failed',
   };
@@ -29,10 +31,8 @@ export default function BlogMetaSection(props) {
     success: 'Success',
     failure: 'Process Failed',
   };
-
+  // check if blog has been voted
   useEffect(() => {
-    // localStorage.setItem(props.blog.id,JSON.stringify({seen : 'dd'}))
-    // console.log(localStorage.getItem(props.blog.id))
     try {
       if (
         JSON.parse(localStorage.getItem(props.blog.id)).vote ===
@@ -40,20 +40,124 @@ export default function BlogMetaSection(props) {
         JSON.parse(localStorage.getItem(props.blog.id)).vote ===
           voteEnum.upVoted
       ) {
-        // console.log('found')
         setVote(JSON.parse(localStorage.getItem(props.blog.id)).vote);
       } else {
-        // console.log('not found')
         setVote(voteEnum.idle);
       }
-    } catch (error){
-      // console.log()
+    } catch (error) {
       setVote(voteEnum.idle);
-
     }
   }, []);
 
   let date = new Date(parseInt(blogMeta.date));
+
+  async function upVoteHandler() {
+    if (vote === voteEnum.upVoted) {
+      await undoUpVote();
+    } else if (vote === voteEnum.downVoted) {
+      await undoDownVote();
+      console.log('undo down done', vote);
+      await upVote();
+    } else {
+      await upVote();
+    }
+  }
+  async function downVoteHandler() {
+    if (vote === voteEnum.downVoted) {
+      await undoDownVote();
+    } else if (vote === voteEnum.upVoted) {
+      await undoUpVote();
+      console.log('undo up done', vote);
+      await downVote();
+    } else {
+      await downVote();
+    }
+  }
+
+  async function undoUpVote() {
+    await setVote(voteEnum.unVoting);
+    let headersList = {
+      'Content-Type': 'application/json',
+    };
+    let bodyContent = JSON.stringify({});
+    try {
+      let response = await fetch(
+        `${webUrl}/api/blogs/${props.blog.id}/upvote_undo`,
+        {
+          method: 'POST',
+          body: bodyContent,
+          headers: headersList,
+        }
+      );
+      if (response.status === 200) {
+        // let newBlogMeta =
+        setBlogMeta((blogMeta) => ({
+          ...blogMeta,
+          upVote: parseInt(blogMeta.upVote) - 1,
+        }));
+        setVote(voteEnum.removed);
+        setTimeout(() => {
+          setVote(voteEnum.idle);
+        }, '3000');
+        //store vote locally
+        let localData = {
+          ...JSON.parse(localStorage.getItem(props.blog.id)),
+          vote: voteEnum.idle,
+        };
+        localStorage.setItem(props.blog.id, JSON.stringify(localData));
+      } else {
+        throw response.text();
+      }
+    } catch (error) {
+      console.error(error);
+      setError(error);
+      setVote(voteEnum.failed);
+    }
+  }
+  async function undoDownVote() {
+    await setVote(voteEnum.unVoting);
+    let headersList = {
+      'Content-Type': 'application/json',
+    };
+    let bodyContent = JSON.stringify({});
+    try {
+      let response = await fetch(
+        `${webUrl}/api/blogs/${props.blog.id}/downvote_undo`,
+        {
+          method: 'POST',
+          body: bodyContent,
+          headers: headersList,
+        }
+      );
+      if (response.status === 200) {
+        // let newBlogMeta = await {
+        //   ...blogMeta,
+        //   downVote: parseInt(blogMeta.downVote) - 1,
+        // };
+        // await setBlogMeta(newBlogMeta);
+        setBlogMeta((blogMeta) => ({
+          ...blogMeta,
+          downVote: parseInt(blogMeta.downVote) - 1,
+        }));
+        await setVote(voteEnum.removed);
+        await setTimeout(async () => {
+          await setVote(voteEnum.idle);
+        }, '3000');
+        //store vote locally
+        let localData = {
+          ...JSON.parse(localStorage.getItem(props.blog.id)),
+          vote: voteEnum.idle,
+        };
+        localStorage.setItem(props.blog.id, JSON.stringify(localData));
+      } else {
+        throw response.text();
+      }
+    } catch (error) {
+      console.error(error);
+      await setError(error);
+      await setVote(voteEnum.failed);
+    }
+  }
 
   async function upVote() {
     setVote(voteEnum.upVoting);
@@ -71,11 +175,15 @@ export default function BlogMetaSection(props) {
         }
       );
       if (response.status === 200) {
-        let newBlogMeta = {
+        // let newBlogMeta = {
+        //   ...blogMeta,
+        //   upVote: parseInt(blogMeta.upVote) + 1,
+        // };
+        // setBlogMeta(newBlogMeta);
+        setBlogMeta((blogMeta) => ({
           ...blogMeta,
           upVote: parseInt(blogMeta.upVote) + 1,
-        };
-        setBlogMeta(newBlogMeta);
+        }));
       }
       let data = await response.text();
       setVote(voteEnum.upVoted);
@@ -107,13 +215,11 @@ export default function BlogMetaSection(props) {
         }
       );
       if (response.status === 200) {
-        let newBlogMeta = {
+        setBlogMeta((blogMeta) => ({
           ...blogMeta,
           downVote: parseInt(blogMeta.downVote) + 1,
-        };
-        setBlogMeta(newBlogMeta);
+        }));
       }
-      let data = await response.text();
       setVote(voteEnum.downVoted);
       //store vote locally
       let localData = {
@@ -123,7 +229,7 @@ export default function BlogMetaSection(props) {
       localStorage.setItem(props.blog.id, JSON.stringify(localData));
     } catch (error) {
       console.error(error);
-      setVote('');
+      setVote(voteEnum.idle);
     }
   }
   async function editBlog(e) {
@@ -168,6 +274,10 @@ export default function BlogMetaSection(props) {
               ? 'text-failure'
               : vote === voteEnum.downVoting
               ? 'text-accent'
+              : vote === voteEnum.unVoting
+              ? 'text-accent'
+              : vote === voteEnum.removed
+              ? 'text-success'
               : null
           }
         >
@@ -179,6 +289,10 @@ export default function BlogMetaSection(props) {
             ? voteEnum.downVoted
             : vote === voteEnum.downVoting
             ? voteEnum.downVoting
+            : vote === voteEnum.unVoting
+            ? voteEnum.unVoting
+            : vote === voteEnum.removed
+            ? voteEnum.removed
             : null}
         </span>
       </div>
@@ -189,26 +303,31 @@ export default function BlogMetaSection(props) {
             <Button
               icon={
                 <FontAwesomeIcon
-                  className="w-6 sm:w-6 "
-                  icon={faArrowAltCircleUp}
+                className="w-7 sm:w-7 "
+                icon={faArrowAltCircleUp}
                 />
               }
               placeholder={'Up vote'}
-              background="bg-success"
-              width="w-40 sm:w-64"
+              color="text-success"
+              background=''
+              // width="w-40 sm:w-64"
+              width=''
               margin=""
+              // className='hover:'
               disable={
                 vote === voteEnum.downVoting
                   ? true
-                  : vote === voteEnum.upVoted
-                  ? true
                   : vote === voteEnum.upVoting
                   ? true
-                  : vote === voteEnum.downVoted
+                  : vote === voteEnum.unVoting
                   ? true
                   : null
+                // : vote === voteEnum.upVoted
+                // ? true
+                // : vote === voteEnum.downVoted
+                // ? true
               }
-              onClick={() => upVote()}
+              onClick={() => upVoteHandler()}
             />
           </div>
 
@@ -248,27 +367,31 @@ export default function BlogMetaSection(props) {
             <Button
               icon={
                 <FontAwesomeIcon
-                  className="w-6 sm:w-6 "
+                  className="w-7 sm:w-7 "
                   icon={faArrowAltCircleDown}
                 />
               }
               placeholder="Down vote"
-              background="bg-failure"
-              width="w-32 sm:w-64"
+              color="text-failure"
+              // width="w-32 sm:w-64"
               margin=""
+              width=''
+              background=''
               disable={
                 vote === voteEnum.downVoting
                   ? true
-                  : vote === voteEnum.downVoted
-                  ? true
                   : vote === voteEnum.upVoting
                   ? true
-                  : vote === voteEnum.upVoted
+                  : vote === voteEnum.unVoting
                   ? true
                   : null
+                // : vote === voteEnum.downVoted
+                // ? true
+                // : vote === voteEnum.upVoted
+                // ? true
               }
               // {vote === 'downVoted' ? '' : null}
-              onClick={() => downVote()}
+              onClick={() => downVoteHandler()}
             />
           </div>
 
@@ -294,12 +417,15 @@ export default function BlogMetaSection(props) {
             icon={
               <FontAwesomeIcon
                 className="w-6 sm:w-6 "
-                icon={faArrowAltCircleDown}
+                icon={faPenToSquare}
               />
             }
             placeholder="Edit"
-            width="w-28 sm:w-32"
+            width=""
             margin=""
+            color='text-accent'
+            background=''
+            // className='hover:text-primary hover:bg-accent'
             onClick={(e) => editBlog(e)}
           />
           <div className="py-1 font-commonFont text-l lg:text-xl ">

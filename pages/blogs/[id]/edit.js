@@ -104,7 +104,7 @@ export default function EditBlog(props) {
   return (
     <div className="sm:my-14">
       <hr />
-      <div className="px-6 py-10 m-auto max-w-contentWid">
+      <div className="px-6 py-10 m-auto max-w-contentWid 2xl:max-w-contentWidLg">
         <PageHeading
           heading="Edit Blog"
           backTo={`/blogs/${props.blog.id}`}

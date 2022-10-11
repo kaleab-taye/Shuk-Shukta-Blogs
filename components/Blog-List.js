@@ -10,7 +10,7 @@ export default function Blog_List() {
   return (
     <>
     {blogs.length > 0 ?  
-      <div className=" max-w-contentWid m-auto">
+      <div className=" max-w-contentWid 2xl:max-w-contentWidLg m-auto">
         {blogs.map((blog) => {
           return (
             <Link href={`blogs/${blog.id}`} key={blog.id}>

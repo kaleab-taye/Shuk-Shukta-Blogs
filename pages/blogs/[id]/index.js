@@ -38,18 +38,18 @@ export default function Blog(props) {
   return (
     <>
       <Header title={props.blog.title} description={props.blog.body} />
-      <div className="max-w-contentWid m-auto my-10 xl:my-20 px-5 ">
-        <div className="break-words  text-4xl lg:text-5xl font-semibold font-commonFont text-accent pb-2">
+      <div className="max-w-contentWid 2xl:max-w-contentWidLg m-auto my-10 xl:my-20 px-5 ">
+        <div className="break-words  text-3xl lg:text-4xl font-semibold font-commonFont text-accent pb-2">
           <PageHeading
             className=""
             heading={props.blog.title}
-            backTo={`/#${props.blog.id}`}
+            backTo={`/blogs#${props.blog.id}`}
           />
         </div>
         <hr />
         <div
           style={{ whiteSpace: 'pre-wrap' }}
-          className="text-justify break-words py-10 font-commonFont text-xl lg:text-2xl "
+          className="text-justify break-words py-10 font-commonFont text-lg lg:text-xl "
         >
           {props.blog.body}
         </div>

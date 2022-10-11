@@ -64,7 +64,7 @@ export default function NewBlog() {
   return (
     <div className="sm:my-14">
       <hr />
-      <div className="px-6 py-10 m-auto max-w-contentWid">
+      <div className="px-6 py-10 m-auto max-w-contentWid 2xl:max-w-contentWidLg">
         <PageHeading
           heading="New Blog"
           className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent"

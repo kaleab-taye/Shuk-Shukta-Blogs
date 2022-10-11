@@ -8,12 +8,16 @@ export default function Button(props) {
     ' ' +
     props.width +
     ' ' +
-    ' cursor-pointer flex px-6 py-2 rounded disabled:opacity-60' +
+    ' cursor-pointer flex px-6 py-2 rounded disabled:opacity-60 ' +
     ' ' +
+    ' ' +
+`shadow-${props.color}`
+    ' '
+    +
     props.className;
   return (
     <button onClick={props.onClick} type={props.type} className={classDesign} disabled={props.disable} >
-      <div className=" text-xl md:text-2xl m-auto font-bold flex gap-1 sm:gap-4"> 
+      <div className="hover:drop-shadow-xl text-2xl md:text-3xl  m-auto font-bold flex gap-1 sm:gap-4"> 
         {props.icon}
         {props.placeholder}
       </div>

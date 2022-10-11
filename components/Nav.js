@@ -60,20 +60,20 @@ export default function Nav() {
 
   return (
     <div className="sticky top-0 bg-primary border-b py-2">
-      <div className="max-w-contentWid mx-auto grid grid-cols-4">
-        <div className="bg-secondary col-start-1 col-end-3 mx-auto rounded-2xl">
+      <div className="max-w-contentWid 2xl:max-w-contentWidLg mx-auto grid grid-cols-4">
+        <div className="bg-secondary col-start-1 col-end-3 m-auto rounded-2xl">
           {/* search */}
-          <div className="py-2 px-3 flex m-auto">
-            <div className="m-auto flex ">
+          <div className="py-2 px-3 flex m-auto ">
+            <div className="m-auto flex m-auto">
               <input
-                className="bg-secondary sm:mx-2 p-1 w-16 sm:w-40 md:w-72 lg:w-96"
+                className="placeholder:text-onSecondary text-onSecondary focus:outline-none border-none m-auto flex bg-secondary text-sm sm:mx-2 p-1 w-16 sm:w-40 md:w-72 lg:w-96"
                 placeholder="Search"
                 id="search"
                 onChange={(e) => Search(e)}
               />
               <label htmlFor="search">
                 <FontAwesomeIcon
-                  className="cursor-pointer w-6 sm:w-6 text-onSecondary grid mt-1"
+                  className="cursor-pointer w-6 sm:w-6 text-onSecondary grid m-auto"
                   icon={faSearch}
                 />
               </label>
@@ -100,7 +100,7 @@ export default function Nav() {
             </select>
             <label htmlFor="sort" className="text-center m-auto">
               <FontAwesomeIcon
-                className="cursor-pointer w-6 sm:w-6 m-auto flex text-onSecondary"
+                className="cursor-pointer w-4 sm:w-4 m-auto flex text-onSecondary"
                 icon={faSort}
               />
             </label>
@@ -108,10 +108,15 @@ export default function Nav() {
         </div>
         <div className="m-auto flex">
           <Link href="/blogs/new">
-            <FontAwesomeIcon
-              className="cursor-pointer w-8 sm:w-8 text-onSecondary"
-              icon={faCirclePlus}
-            />
+            <div className="flex">
+              <div className="pr-2  text-lg font-normal text-onSecondary">
+                New
+              </div>
+              <FontAwesomeIcon
+                className="cursor-pointer w-7 sm:w-7 text-onSecondary"
+                icon={faCirclePlus}
+              />
+            </div>
           </Link>
           {/*           <div className='m-auto px-2 font-bold font-commonFont tracking-wide text-2xl'>New</div>
            */}

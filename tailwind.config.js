@@ -15,7 +15,8 @@ module.exports = {
         primary : '#FFF'
       },
       maxWidth : {
-        'contentWid': '93.1875em',
+        'contentWid': '65em',
+        'contentWidLg':'83.1875em',
         'searchBarWid' : '24em'
       },
       minWidth : {
@@ -33,3 +34,5 @@ module.exports = {
   },
   plugins: [],
 }
+
+// 93.1875
