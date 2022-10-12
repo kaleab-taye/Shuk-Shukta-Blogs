@@ -4,7 +4,6 @@ import BlogContextProvider, { blogsContext } from '../components/BlogContextProv
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import Nav from '../components/Nav';
-import NoBlogAvailable from '../components/NoBlogAvailable';
 
 export default function Home(props) {
   
@@ -39,7 +38,8 @@ export const getServerSideProps = async () => {
 
     return {
       props: {
-        blogs:[]
+        blogs:[],
+        error : error
       },
     };
   }

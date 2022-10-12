@@ -179,6 +179,7 @@ export default function EditBlog(props) {
           </div>
           <Button
             type="submit"
+            className=''
             disabled={status !== '' ? true : false}
             placeholder={
               status === statusEnum.publishing

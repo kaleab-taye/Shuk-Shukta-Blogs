@@ -59,7 +59,7 @@ export default function Nav() {
   // function showSortOption() {}
 
   return (
-    <div className="sticky top-0 bg-primary border-b py-2">
+    <div className="sticky top-0 bg-primary border-b py-2 mt-0">
       <div className="max-w-contentWid 2xl:max-w-contentWidLg mx-auto grid grid-cols-4">
         <div className="bg-secondary col-start-1 col-end-3 m-auto rounded-2xl">
           {/* search */}

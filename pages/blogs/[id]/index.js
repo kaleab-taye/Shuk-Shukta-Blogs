@@ -43,7 +43,7 @@ export default function Blog(props) {
           <PageHeading
             className=""
             heading={props.blog.title}
-            backTo={`/blogs#${props.blog.id}`}
+            backTo={`/#${props.blog.id}`}
           />
         </div>
         <hr />

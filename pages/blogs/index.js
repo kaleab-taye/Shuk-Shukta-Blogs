@@ -21,13 +21,26 @@ export const getServerSideProps = async ()=>{
 
     let url = process.env.url
 
-    let res = await fetch(`${url}/api/blogs`);
-    let blogs = await res.json();
-  
-    return {
+    try {
+      
+      let res = await fetch(`${url}/api/blogs`);
+      let blogs = await res.json();
+    
+      return {
+          props : {
+              blogs,
+          }
+      };
+    } catch (error) {
+      console.error(error)
+
+      return {
         props : {
-            blogs,
+            blogs : [],
+            error : error
         }
     };
+    }
+
   
   }

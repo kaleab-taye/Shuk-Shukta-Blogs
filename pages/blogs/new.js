@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import PageHeading from '../../components/PageHeading';
 
@@ -7,13 +7,40 @@ export default function NewBlog() {
   const router = useRouter();
   const [status, setStatus] = useState('unPublished');
   const [error, setError] = useState('');
-  // const [title, setTitle] = useState('');
-  // const [body, setBody] = useState('');
-  // const [author, setAuthor] = useState('');
-  // const [blogKey, setBlogKey] = useState('');
+
+  const [validity, setValidity] = useState('');
+  const validityEnum = {
+    valid: 'Valid',
+    invalid: 'Invalid',
+    invalidTitle: 'Invalid title',
+    invalidBlogBody: 'Invalid blog',
+    invalidBlogKey: 'Invalid blog key',
+  };
+
+  const [invalidType, setInvalidType] = useState('');
+  const invalidTypeEnum = {
+    smallLengthTitle: `set the title to 5 letters minimum`,
+    noTitle: "the title field can't be empty",
+    none: '',
+    noBlogBody: "blog field can't be empty",
+    smallBlogBodyLength: 'blog field must be more than 10 words',
+    noBlogKey: "key field can't be empty",
+    smallBlogKeyLength: 'key field must be more than 5 words',
+  };
+
+  useEffect(()=>{
+    checkSubmissionValidity()
+  },[])
 
   const publishBlog = async (form) => {
     form.preventDefault();
+
+    checkValidity()
+    if (validity !== validityEnum.valid  ) {
+      return;
+    }
+    // await checkValidity();
+
     setStatus('publishing');
     let webUrl = process.env.url;
 
@@ -27,7 +54,7 @@ export default function NewBlog() {
 
     let bodyContent = JSON.stringify({
       title: form.target.title.value,
-      body: form.target.blog.value,
+      body: form.target.blogBody.value,
       comment: [],
       blogMeta: {
         seen: 0,
@@ -61,6 +88,92 @@ export default function NewBlog() {
     }
   };
 
+  function checkSubmissionValidity(e){
+    const form = document.getElementById('newBlogForm');
+    const title = document.getElementById('title');
+    const blogBody = document.getElementById('blogBody');
+    const blogKey = document.getElementById('blogKey');
+    // form validation
+    form.addEventListener('submit', () => {
+      // title
+      if (title.value.length === 0) {
+        setValidity((a) => validityEnum.invalidTitle);
+        setInvalidType((b) => invalidTypeEnum.noTitle);
+      } else if (title.value.length < 5) {
+        setValidity((a) => validityEnum.invalidTitle);
+        setInvalidType((b) => invalidTypeEnum.smallLengthTitle);
+      }
+      // blog body
+      else if (blogBody.value.length === 0) {
+        setValidity((a) => validityEnum.invalidBlogBody);
+        setInvalidType((b) => invalidTypeEnum.noBlogBody);
+      } else if (blogBody.value.length < 10) {
+        setValidity((a) => validityEnum.invalidBlogBody);
+        setInvalidType((b) => invalidTypeEnum.smallBlogBodyLength);
+      }
+      // blog key
+      else if (blogKey.value.length === 0) {
+        setValidity((a) => validityEnum.invalidBlogKey);
+        setInvalidType((b) => invalidTypeEnum.noBlogKey);
+      } else if (blogKey.value.length < 5) {
+        setValidity((a) => validityEnum.invalidBlogKey);
+        setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
+      } else {
+        setValidity((a) => validityEnum.valid);
+        setInvalidType((b) => invalidTypeEnum.none);
+      }
+    });
+  }
+
+  function checkValidity(e) {
+    const form = document.getElementById('newBlogForm');
+    const title = document.getElementById('title');
+    const blogBody = document.getElementById('blogBody');
+    const blogKey = document.getElementById('blogKey');
+    
+    // title validation
+    title.addEventListener('input', () => {
+      if (title.value.length === 0) {
+        setValidity((a) => validityEnum.invalidTitle);
+        setInvalidType((b) => invalidTypeEnum.noTitle);
+      } else if (title.value.length < 5) {
+        setValidity((a) => validityEnum.invalidTitle);
+        setInvalidType((b) => invalidTypeEnum.smallLengthTitle);
+      } else {
+        setValidity((a) => validityEnum.valid);
+        setInvalidType((b) => invalidTypeEnum.none);
+      }
+    });
+    // blog body validation
+    blogBody.addEventListener('input', () => {
+      if (blogBody.value.length === 0) {
+        setValidity((a) => validityEnum.invalidBlogBody);
+        setInvalidType((b) => invalidTypeEnum.noBlogBody);
+      } else if (blogBody.value.length < 10) {
+        setValidity((a) => validityEnum.invalidBlogBody);
+        setInvalidType((b) => invalidTypeEnum.smallBlogBodyLength);
+      } else {
+        setValidity((a) => validityEnum.valid);
+        setInvalidType((b) => invalidTypeEnum.none);
+      }
+    });
+    // key validation
+    blogKey.addEventListener('input', () => {
+      if (blogKey.value.length === 0) {
+        setValidity((a) => validityEnum.invalidBlogKey);
+        setInvalidType((b) => invalidTypeEnum.noBlogKey);
+      } else if (blogKey.value.length < 5) {
+        setValidity((a) => validityEnum.invalidBlogKey);
+        setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
+      } else {
+        setValidity((a) => validityEnum.valid);
+        setInvalidType((b) => invalidTypeEnum.none);
+      }
+    });
+
+    return false;
+  }
+
   return (
     <div className="sm:my-14">
       <hr />
@@ -68,10 +181,10 @@ export default function NewBlog() {
         <PageHeading
           heading="New Blog"
           className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent"
-        backTo='/'
-          />
+          backTo="/"
+        />
 
-        <form onSubmit={(form) => publishBlog(form)}>
+        <form id="newBlogForm" onSubmit={(form) => publishBlog(form)}>
           <div className="grid grid-cols-1 gap-6 my-8">
             <div>
               <label htmlFor="title" className="text-onSecondary font-semibold">
@@ -80,28 +193,27 @@ export default function NewBlog() {
               </label>
               <input
                 id="title"
-                // onChange={(e) => {
-                //   setTitle(e.value);
-                // }}
-                required
-                minLength={5}
-                className="border m-1 p-1 ml-5 w-1/2"
-              />
+                className="invalid:border-failure border m-1 p-1 ml-5 w-1/2"
+              />{' '}
+              <div id="titleError" className="text-failure">
+                {validity === validityEnum.invalidTitle ? invalidType : null}
+              </div>
             </div>
             <div>
-              <label htmlFor="blog" className="text-onSecondary font-semibold">
+              <label
+                htmlFor="blogBody"
+                className="text-onSecondary font-semibold"
+              >
                 {' '}
                 Blog*
               </label>
               <textarea
-                id="blog"
-                // onChange={(e) => {
-                //   setBody(e.value);
-                // }}
-                required
-                minLength={45}
+                id="blogBody"
                 className="border m-1 p-1 w-full h-80 align-top"
               />
+              <div id="blogBodyError" className="text-failure">
+                {validity === validityEnum.invalidBlogBody ? invalidType : null}
+              </div>
             </div>
             <div>
               <label
@@ -113,10 +225,6 @@ export default function NewBlog() {
               </label>
               <input
                 id="author"
-                // onChange={(e) => {
-                //   setAuthor(e.value);
-                // }}
-
                 className="border m-1 p-1 ml-5 w-1/2"
               />
             </div>
@@ -130,19 +238,18 @@ export default function NewBlog() {
               </label>
               <input
                 id="blogKey"
-                // onChange={(e) => {
-                //   setBlogKey(e.value);
-                // }}
-                required
-                minLength={5}
                 className="border m-1 p-1 ml-5 w-1/2"
               />
+              <div id="blogBodyError" className="text-failure">
+                {validity === validityEnum.invalidBlogKey ? invalidType : null}
+              </div>
             </div>
           </div>
           <Button
             placeholder={
               status === 'publishing' ? 'Publishing . . .' : 'Publish'
             }
+            disable = { status === 'publishing' ? true : status === 'published' ? true : null}
             type="submit"
           />
           <div className="text-center">
