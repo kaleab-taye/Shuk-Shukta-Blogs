@@ -14,7 +14,7 @@ const nextConfig = {
     scrollRestoration: true,
   },
   env: {
-    url: 'http://shuk-shukta-blogs.vercel.app',
+    url: 'https://shuk-shukta-blogs.vercel.app',
     mongoDb_url:
       'mongodb+srv://shuk_shukta_blogger:X3909BYp366Q1lph@cluster0.tjsznqp.mongodb.net/?retryWrites=true&w=majority',
   },
