@@ -66,7 +66,7 @@ export default function BlogMetaSection(props) {
       await undoUpVote();
     } else if (vote === voteEnum.downVoted) {
       await undoDownVote();
-      console.log('undo down done', vote);
+      // console.log('undo down done', vote);
       await upVote();
     } else {
       await upVote();
@@ -77,13 +77,14 @@ export default function BlogMetaSection(props) {
       await undoDownVote();
     } else if (vote === voteEnum.upVoted) {
       await undoUpVote();
-      console.log('undo up done', vote);
+      // console.log('undo up done', vote);
       await downVote();
     } else {
       await downVote();
     }
   }
 
+  
   async function undoUpVote() {
     setVote((v) => voteEnum.unVoting);
     let headersList = {
