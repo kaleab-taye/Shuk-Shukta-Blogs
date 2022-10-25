@@ -350,7 +350,7 @@ export default function BlogMetaSection(props) {
           <div className="grid gap-3 px-4 py-4">
             <div className="font-commonFont text-l lg:text-xl ">
               Author :{' '}
-              <span className="text-xl lg:text-2xl">{props.blog.author}</span>
+              <span className="text-xl lg:text-2xl">{props.blog.author.userName}</span>
             </div>
             <div className="font-commonFont text-l lg:text-xl ">
               Date :{'  '}

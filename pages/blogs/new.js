@@ -28,15 +28,22 @@ export default function NewBlog() {
     smallBlogKeyLength: 'key field must be more than 5 words',
   };
 
-  useEffect(()=>{
-    checkSubmissionValidity()
-  },[])
+  useEffect(() => {
+    checkSubmissionValidity();
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+    } catch (error) {
+      console.error(error);
+      setError("you're not properly logged if please login again");
+      router.replace('/auth/login');
+    }
+  }, []);
 
   const publishBlog = async (form) => {
     form.preventDefault();
 
-    checkValidity()
-    if (validity !== validityEnum.valid  ) {
+    checkValidity();
+    if (validity !== validityEnum.valid) {
       return;
     }
     // await checkValidity();
@@ -48,8 +55,13 @@ export default function NewBlog() {
       'Content-Type': 'application/json',
     };
 
-    if (form.target.author.value.length < 1) {
-      form.target.author.value = 'Anonymous';
+    try {
+      var author = JSON.parse(localStorage.getItem('user')).user['_id'];
+    } catch (error) {
+      setError("you're not properly logged if please login again");
+      router.replace('/auth/login');
+      return;
+      // throw 'user not properly logged in';
     }
 
     let bodyContent = JSON.stringify({
@@ -63,8 +75,7 @@ export default function NewBlog() {
         date: 0,
         comment: 0,
       },
-      author: form.target.author.value,
-      blogKey: form.target.blogKey.value,
+      author: author,
     });
 
     try {
@@ -88,7 +99,7 @@ export default function NewBlog() {
     }
   };
 
-  function checkSubmissionValidity(e){
+  function checkSubmissionValidity(e) {
     const form = document.getElementById('newBlogForm');
     const title = document.getElementById('title');
     const blogBody = document.getElementById('blogBody');
@@ -112,13 +123,14 @@ export default function NewBlog() {
         setInvalidType((b) => invalidTypeEnum.smallBlogBodyLength);
       }
       // blog key
-      else if (blogKey.value.length === 0) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.noBlogKey);
-      } else if (blogKey.value.length < 5) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
-      } else {
+      // else if (blogKey.value.length === 0) {
+      //   setValidity((a) => validityEnum.invalidBlogKey);
+      //   setInvalidType((b) => invalidTypeEnum.noBlogKey);
+      // } else if (blogKey.value.length < 5) {
+      //   setValidity((a) => validityEnum.invalidBlogKey);
+      //   setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
+      // }
+      else {
         setValidity((a) => validityEnum.valid);
         setInvalidType((b) => invalidTypeEnum.none);
       }
@@ -130,7 +142,7 @@ export default function NewBlog() {
     const title = document.getElementById('title');
     const blogBody = document.getElementById('blogBody');
     const blogKey = document.getElementById('blogKey');
-    
+
     // title validation
     title.addEventListener('input', () => {
       if (title.value.length === 0) {
@@ -158,18 +170,18 @@ export default function NewBlog() {
       }
     });
     // key validation
-    blogKey.addEventListener('input', () => {
-      if (blogKey.value.length === 0) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.noBlogKey);
-      } else if (blogKey.value.length < 5) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
-      } else {
-        setValidity((a) => validityEnum.valid);
-        setInvalidType((b) => invalidTypeEnum.none);
-      }
-    });
+    // blogKey.addEventListener('input', () => {
+    //   if (blogKey.value.length === 0) {
+    //     setValidity((a) => validityEnum.invalidBlogKey);
+    //     setInvalidType((b) => invalidTypeEnum.noBlogKey);
+    //   } else if (blogKey.value.length < 5) {
+    //     setValidity((a) => validityEnum.invalidBlogKey);
+    //     setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
+    //   } else {
+    //     setValidity((a) => validityEnum.valid);
+    //     setInvalidType((b) => invalidTypeEnum.none);
+    //   }
+    // });
 
     return false;
   }
@@ -215,7 +227,7 @@ export default function NewBlog() {
                 {validity === validityEnum.invalidBlogBody ? invalidType : null}
               </div>
             </div>
-            <div>
+            {/* <div>
               <label
                 htmlFor="author"
                 className="text-onSecondary font-semibold"
@@ -223,10 +235,7 @@ export default function NewBlog() {
                 {' '}
                 Author
               </label>
-              <input
-                id="author"
-                className="border m-1 p-1 ml-5 w-1/2"
-              />
+              <input id="author" className="border m-1 p-1 ml-5 w-1/2" />
             </div>
             <div>
               <label
@@ -236,20 +245,23 @@ export default function NewBlog() {
                 {' '}
                 Key* <span className="font-normal">(to edit/delete)</span>
               </label>
-              <input
-                id="blogKey"
-                className="border m-1 p-1 ml-5 w-1/2"
-              />
+              <input id="blogKey" className="border m-1 p-1 ml-5 w-1/2" />
               <div id="blogBodyError" className="text-failure">
                 {validity === validityEnum.invalidBlogKey ? invalidType : null}
               </div>
-            </div>
+            </div> */}
           </div>
           <Button
             placeholder={
               status === 'publishing' ? 'Publishing . . .' : 'Publish'
             }
-            disable = { status === 'publishing' ? true : status === 'published' ? true : null}
+            disable={
+              status === 'publishing'
+                ? true
+                : status === 'published'
+                ? true
+                : null
+            }
             type="submit"
           />
           <div className="text-center">

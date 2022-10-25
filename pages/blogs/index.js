@@ -18,14 +18,10 @@ export default function index(props) {
 }
 
 export const getServerSideProps = async ()=>{
-
     let url = process.env.url
-
     try {
-      
       let res = await fetch(`${url}/api/blogs`);
       let blogs = await res.json();
-    
       return {
           props : {
               blogs,
@@ -41,6 +37,4 @@ export const getServerSideProps = async ()=>{
         }
     };
     }
-
-  
   }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Blog_List from '../components/Blog-List';
 import BlogContextProvider, { blogsContext } from '../components/BlogContextProvider';
 import Footer from '../components/Footer';
@@ -15,7 +15,7 @@ let blogs =useContext( blogsContext)
         <Nav />
          <Blog_List />
       </BlogContextProvider>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
