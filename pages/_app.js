@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Layout>
       <ReactTooltip
-        padding="4px"
+        padding="7px"
         delayShow={500}
         backgroundColor="primary"
         border={true}

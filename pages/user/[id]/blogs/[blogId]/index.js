@@ -1,24 +1,107 @@
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Popover } from '@nextui-org/react';
+import Image from 'next/image';
 import Link from 'next/link';
+import BlogMetaSection from '../../../../../components/BlogMetaSection';
+import CommentSection from '../../../../../components/CommentSection';
 import Footer from '../../../../../components/Footer';
+import Header from '../../../../../components/Header';
+import Nav from '../../../../../components/Nav';
+import BodyLayout from '../../../../../components/Ui/BodyLayout';
+import heroImage from '../../../../../public/swag-lion.png';
 
 export default function index(props) {
   return (
     <>
-      <div>
-        <div key={props.blog.id}>
-          <div>id : {props.blog.id}</div>
-          <div>title : {props.blog.title}</div>
-        </div>
-        <Link
-          href={{
-            pathname: `/user/${props.userId}/blogs/${props.blog.id}/edit`,
-            query: { token: props.token },
-          }}
-        >
-          edit
-        </Link>
+      <Header title={props.blog.title} description={props.blog.body} />
+      <div className="">
+        <Nav contentType={'notSearchable'} />
+        <BodyLayout>
+          {/* blog body content */}
+          <div className="max-w-blogCardWidLg m-auto grid my-5 pb-2 pt-4 px-5 border border-secondary rounded-md">
+            {/* user icon */}
+            <Popover>
+              <div className="grid grid-flow-col">
+                <Popover.Trigger>
+                  <div className=" grid grid-flow-col mr-auto my-auto">
+                    <div className="m-auto inline-block h-11 w-11 xl:h-12 xl:w-12 rounded-full ring-2 ring-secondary">
+                      <Image src={heroImage} alt="user image" />
+                    </div>
+                    <div className="mr-auto grid my-auto pl-3">
+                      <div className="mt-auto text-textColor1 text-md font-medium my-auto">
+                        {props.blog.author.firstName +
+                          ' ' +
+                          props.blog.author.lastName}
+                      </div>
+                      <div className=" leading-none mb-auto text-textColor3 text-xs">
+                        {new Date(props.blog.blogMeta.date).toUTCString()}
+                      </div>
+                    </div>
+                  </div>
+                </Popover.Trigger>
+                <div className="ml-auto my-auto mr-10">
+                  <Link
+                    href={{
+                      pathname: `/user/${props.userId}/blogs/${props.blog.id}/edit`,
+                      query: { token: props.token },
+                    }}
+                  >
+                    <a>
+                      <FontAwesomeIcon
+                        data_tip="edit this blog"
+                        className="cursor-pointer text-textColor2 max-w-iconWid w-5 h-5 m-auto"
+                        icon={faPenToSquare}
+                      />
+                    </a>
+                  </Link>
+                </div>
+              </div>
+              <Popover.Content css={{ px: '$4', py: '$2' }}>
+                <div className="grid">
+                  <div className=" grid grid-flow-col mr-auto my-auto">
+                    <div className="m-auto inline-block h-14 w-14 xl:h-14 xl:w-14 rounded-full ring-2 ring-secondary">
+                      <Image src={heroImage} alt="user image" />
+                    </div>
+                    <div className="mr-auto grid my-auto pl-3">
+                      <div className="mt-auto text-textColor1 text-md font-medium my-auto">
+                        {props.blog.author.firstName +
+                          ' ' +
+                          props.blog.author.lastName}
+                      </div>
+                      <div className=" leading-none mb-auto text-textColor3 text-xs">
+                        @{props.blog.author.userName}
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div>Total blogs {props.blog.author.blogs.length}</div>
+                    <div>Explore blogs </div>
+                  </div>
+                </div>
+              </Popover.Content>
+            </Popover>
+            <div className="grid ">
+              {/* blog content section */}
+              <div className="grid py-4 ">
+                <h1 className=" break-word font-semibold text-3xl pt-2 pb-2 text-textColor1 font-commonFont">
+                  {props.blog.title}
+                </h1>
+                <p className=" text-md text-textColor1 break-word text-justify ">
+                  {' '}
+                  {props.blog.body}
+                </p>
+              </div>
+              {/* blog meta section */}
+              <BlogMetaSection blog={props.blog} />
+            </div>
+          </div>
+          <div className="m-auto max-w-blogCardWidLg">
+            <CommentSection id={props.blog.id} comments={props.blog.comment} />
+          </div>
+        </BodyLayout>
+        {/* <Footer /> */}
       </div>
-      <Footer />
     </>
   );
 }

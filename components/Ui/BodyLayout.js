@@ -11,7 +11,7 @@ export default function BodyLayout(props) {
         </div>
       </div>
       <div className="col-span-12 lg:col-span-7 ">
-        <div className="m-auto max-w-blogCardWid 2xl:max-w-auto">
+        <div className="m-auto max-w-blogCardWid 2xl:max-w-contentWidLg">
           {props.children}
         </div>
       </div>

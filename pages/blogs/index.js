@@ -1,19 +1,19 @@
 import { useContext } from "react";
-import Blog_List from "../../components/Blog-List";
 import BlogContextProvider, { blogsContext } from "../../components/BlogContextProvider";
 import Footer from "../../components/Footer";
 import Nav from "../../components/Nav";
 import NoBlogAvailable from "../../components/NoBlogAvailable";
+import Blog_List from "../../components/Ui/Blog-List";
 
 export default function index(props) {
   return (
-    <>
-    <BlogContextProvider blogs={props.blogs} >
-    <Nav />
-     <Blog_List /> 
-  </BlogContextProvider>
-    <Footer/>
-    </>
+    <div className="">
+      <BlogContextProvider blogs={props.blogs}>
+        <Nav />
+        <Blog_List />
+      </BlogContextProvider>
+      {/* <Footer /> */}
+    </div>
   )
 }
 

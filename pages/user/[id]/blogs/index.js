@@ -1,28 +1,22 @@
 import Link from 'next/link';
+import BlogContextProvider from '../../../../components/BlogContextProvider';
 import Footer from '../../../../components/Footer';
+import Nav from '../../../../components/Nav';
+import Blog_List from '../../../../components/Ui/Blog-List';
+import My_Blog_List from '../../../../components/Ui/My-Blogs-list';
 
 export default function index(props) {
-    console.log(props.blogs)
+  console.log('vv',props.blogs);
   return (
     <>
-      <div>
-        {props.blogs.map((blog) => (blog !==null ?
-          <div key={blog.id}>
-            <Link
-              href={{
-                pathname: `/user/${props.userId}/blogs/${blog.id}`,
-                query: { token: props.token },
-              }}
-            >
-              <a>
-                <div>id : {blog.id}</div>
-                <div>title : {blog.title}</div>
-              </a>
-            </Link>
-          </div>:null
-        ))}
+      <div className="">
+        <BlogContextProvider blogs={props.blogs}>
+
+          <Nav />
+          <My_Blog_List userId={props.userId} token={props.token} />
+        </BlogContextProvider>
+        {/* <Footer /> */}
       </div>
-      <Footer />
     </>
   );
 }
@@ -47,7 +41,7 @@ export const getServerSideProps = async (context) => {
 
     return {
       props: {
-        notFound : true,
+        notFound: true,
         error: error,
       },
     };

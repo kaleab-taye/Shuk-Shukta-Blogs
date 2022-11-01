@@ -2290,6 +2290,11 @@
   optionalDependencies:
     "saslprep" "^1.0.3"
 
+"mongoose-autopopulate@^0.16.1":
+  "integrity" "sha512-/wWogmjgAbry7E0u99E6ulwLc522ubQRNdbLdsSJEQ10DBFUOMOzNHMsNs0NhILps+vRm9xcqxSAsqav6APviQ=="
+  "resolved" "https://registry.npmjs.org/mongoose-autopopulate/-/mongoose-autopopulate-0.16.1.tgz"
+  "version" "0.16.1"
+
 "mongoose@^6.6.4":
   "integrity" "sha512-gkH17ZFdwUHIadWXIjNfZ3y/Wa7WlWu54SeieHMnpDuk8QNaA9RezmFN+s4CvghfvdfVIgifsv/jviqUMFFdnw=="
   "resolved" "https://registry.npmjs.org/mongoose/-/mongoose-6.6.4.tgz"

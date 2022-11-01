@@ -24,7 +24,7 @@ import {
   userStatusSetterContext,
 } from './UserContextProvider';
 
-export default function Nav() {
+export default function Nav({ contentType }) {
   var router = useRouter();
   // user context
   const userState = useContext(userStatusContext);
@@ -54,7 +54,7 @@ export default function Nav() {
     notSearchable: 'notSearchable',
   };
   const [contentSearchableState, setContentSearchableState] = useState(
-    contentSearchableStateEnum.searchable
+    contentType ? contentType : contentSearchableStateEnum.searchable
   );
 
   // search feature
@@ -73,37 +73,39 @@ export default function Nav() {
   }
   // sort feature
   useEffect(() => {
-    setBlogs([]);
-    if (
-      (fullBlogs.length > 0 && sortBy === 'id') ||
-      sortBy === 'title' ||
-      sortBy === 'author' ||
-      sortBy === 'body'
-    ) {
-      if (fullBlogs.length > 0) {
-        let blogList = fullBlogs.sort((a, b) =>
-          a[sortBy] > b[sortBy] ? 1 : -1
-        );
-        setBlogs([...blogList]);
+    if (contentSearchableState === contentSearchableStateEnum.searchable) {
+      setBlogs([]);
+      if (
+        (fullBlogs.length > 0 && sortBy === 'id') ||
+        sortBy === 'title' ||
+        sortBy === 'author' ||
+        sortBy === 'body'
+      ) {
+        if (fullBlogs.length > 0) {
+          let blogList = fullBlogs.sort((a, b) =>
+            a[sortBy] > b[sortBy] ? 1 : -1
+          );
+          setBlogs([...blogList]);
+        } else {
+          setBlogs(fullBlogs);
+        }
+      } else if (
+        (fullBlogs.length > 0 && sortBy === 'seen') ||
+        sortBy === 'upVote' ||
+        sortBy === 'downVote' ||
+        sortBy === 'date'
+      ) {
+        if (fullBlogs.length > 0) {
+          var blogList = fullBlogs.sort((a, b) =>
+            a.blogMeta[sortBy] > b.blogMeta[sortBy] ? -1 : 1
+          );
+          setBlogs([...blogList]);
+        } else {
+          setBlogs(fullBlogs);
+        }
       } else {
         setBlogs(fullBlogs);
       }
-    } else if (
-      (fullBlogs.length > 0 && sortBy === 'seen') ||
-      sortBy === 'upVote' ||
-      sortBy === 'downVote' ||
-      sortBy === 'date'
-    ) {
-      if (fullBlogs.length > 0) {
-        var blogList = fullBlogs.sort((a, b) =>
-          a.blogMeta[sortBy] > b.blogMeta[sortBy] ? -1 : 1
-        );
-        setBlogs([...blogList]);
-      } else {
-        setBlogs(fullBlogs);
-      }
-    } else {
-      setBlogs(fullBlogs);
     }
   }, [sortBy, fullBlogs]);
 

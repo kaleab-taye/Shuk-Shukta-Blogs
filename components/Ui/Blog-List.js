@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import React, { useContext } from 'react';
-import { blogsContext } from './BlogContextProvider';
+import { blogsContext } from '../BlogContextProvider';
 import HomeBlogCard from './Home-Blog-Card';
-import NoBlogAvailable from './NoBlogAvailable';
-import BodyLayout from './Ui/BodyLayout';
+import NoBlogAvailable from '../NoBlogAvailable';
+import BodyLayout from './BodyLayout';
 
 export default function Blog_List() {
   const blogs = useContext(blogsContext);
@@ -12,7 +12,7 @@ export default function Blog_List() {
     <>
       <BodyLayout>
         {blogs.length > 0 ? (
-          <div className=" max-w-contentWid 2xl:max-w-contentWidLg m-auto">
+          <div >
             {blogs.map((blog) => {
               return (
                 <>

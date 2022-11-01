@@ -11,12 +11,13 @@ export default async function getBlogsFromUserId(id) {
       populate: {
         path: '_id',
         model: 'blog',
-      },
+      }
     });
+
     if (user === null) {
       throw 'user not found';
     }
-    // console.log('chalchi',user.blogs[0]._id)
+    console.log('chalchi',user)
     let blogs = []
     user.blogs.map((blog)=>blogs.push(blog._id))
     return blogs;

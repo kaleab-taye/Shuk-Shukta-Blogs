@@ -59,7 +59,7 @@ export default function CommentSection(props) {
 
  
   return (
-    <div className="py-5">
+    <div className="py-5 max-wid-contentWid">
       <div className="text-xl lg:text-2xl font-commonFont flex gap-3">
         <FontAwesomeIcon className="w-8 text-accent" icon={faCommentAlt} />
         {comments.length}{' '}
@@ -95,12 +95,12 @@ export default function CommentSection(props) {
             <input
               placeholder="@Name"
               id="name"
-              className="p-1 m-1 border w-full"
+              className="p-1 m-1 border rounded w-full"
             />
             <textarea
               placeholder="Comment Here !"
               id="comment"
-              className="border p-1 m-1 w-full h-28 align-top"
+              className="border rounded p-1 m-1 w-full h-28 align-top"
             />
           </div>
           <button type="submit" className="mx-5">
