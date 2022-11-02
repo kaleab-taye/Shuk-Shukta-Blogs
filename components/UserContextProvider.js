@@ -14,8 +14,6 @@ export default function UserContextProvider({children}) {
       if (user.accessToken) {
         setUserStatusState(true);
         setLoggedUser(user)
-        console.log('uou',userStatusState)
-        console.log('joj',loggedUser)
       } else {
         throw 'user not found';
       }

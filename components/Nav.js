@@ -31,7 +31,6 @@ export default function Nav({ contentType }) {
   const setUserState = useContext(userStatusSetterContext);
   const loggedInUser = useContext(loggedInUserContext);
   const setLoggedInUser = useContext(loggedInUserSetterContext);
-  console.log('ll', loggedInUser);
 
   // blog context
   const blogs = useContext(blogsContext);
@@ -149,7 +148,9 @@ export default function Nav({ contentType }) {
     <div className="z-50 sticky top-0 bg-primary border-b py-1  mt-0">
       <div className="max-w-contentWid 2xl:max-w-contentWidLg m-auto px-2 grid grid-cols-2">
         <div className="text-accent font-bold text-2xl my-auto">
-          Shuk-Shukta Blogs
+          <Link href='/'>
+            <a>Shuk-Shukta Blogs</a>
+          </Link>
         </div>
         {userState === true &&
         contentSearchableState === contentSearchableStateEnum.searchable ? (

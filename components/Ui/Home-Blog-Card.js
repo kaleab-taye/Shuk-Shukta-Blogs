@@ -102,7 +102,7 @@ export default function HomeBlogCard({ blog }) {
           <HomeBlogCardIcons
             icon={faCommentDots}
             data_tip="comments"
-            data={blog.blogMeta.seen}
+            data={blog.comment.length}
           />
 
           <HomeBlogCardIcons

@@ -5,7 +5,13 @@ export async function getBloggerWithId(id) {
   mongoose.connect(mongoDbUrl);
 
   try {
-    let user = await userModel.findOne({...id });
+    let user = await userModel.findOne({...id }).populate({
+      path: 'blogs',
+      populate: {
+        path: '_id',
+        model: 'blog',
+      }
+    })
     if (user === null) {
       throw 'no bloggers found';
     }

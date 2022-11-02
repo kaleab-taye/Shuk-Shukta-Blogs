@@ -1,11 +1,17 @@
+import BlogContextProvider from '../../components/BlogContextProvider';
+import Nav from '../../components/Nav';
+import Blog_List from '../../components/Ui/Blog-List';
+
 export default function blogger(props) {
   return (
     <div>
-      <div>userName {props.blogger.userName}</div>
-      <div>firstName {props.blogger.firstName}</div>
-      <div>lastName {props.blogger.lastName}</div>
-      <div>joinedDate {props.blogger.joinedDate}</div>
-      <div>id {props.blogger.id}</div>
+      <div className="">
+        <BlogContextProvider blogs={props.blogger.blogs}>
+          <Nav />
+          <Blog_List />
+        </BlogContextProvider>
+        {/* <Footer /> */}
+      </div>
     </div>
   );
 }
@@ -15,6 +21,7 @@ export const getServerSideProps = async (context) => {
   try {
     let res = await fetch(`${url}/api/bloggers/${context.params.id}`);
     let blogger = await res.json();
+    console.log('bb', blogger);
     return {
       props: {
         blogger,
