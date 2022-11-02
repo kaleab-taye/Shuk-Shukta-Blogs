@@ -37,8 +37,8 @@ const nextConfig = {
     scrollRestoration: true,
   },
   env: {
-    // url: 'https://shuk-shukta-blogs-v-2.vercel.app',
-    url: 'http://localhost:3000',
+    url: 'https://shuk-shukta-blogs-v-2.vercel.app',
+    // url: 'http://localhost:3000',
     mongoDb_url:
       'mongodb+srv://v-2_shuk_shukta_blogger:J1mpEKNyBJH4lmaU@cluster0.fzhsks4.mongodb.net/shuk_shukta_blogs?retryWrites=true&w=majority',
     jwtAccessToken:
