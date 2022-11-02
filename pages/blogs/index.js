@@ -10,6 +10,7 @@ export default function index(props) {
     <div className="">
       <BlogContextProvider blogs={props.blogs}>
         <Nav />
+        
         <Blog_List />
       </BlogContextProvider>
       {/* <Footer /> */}
