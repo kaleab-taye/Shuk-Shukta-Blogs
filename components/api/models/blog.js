@@ -17,7 +17,12 @@ const blogSchema = Mongoose.Schema({
     downVote: Number,
     date: { type: Date, default: () => Date.now() },
   },
-  author: { type: Mongoose.Schema.Types.ObjectId, ref: 'user', autopopulate: true },
+  category: [String],
+  author: {
+    type: Mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    autopopulate: true,
+  },
 });
 blogSchema.plugin(require('mongoose-autopopulate'));
 

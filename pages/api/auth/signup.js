@@ -16,10 +16,10 @@ export default async function handler(req, res) {
       const user = JSON.parse(req.body);
       if (!user.userName) {
         throw 'username not specified';
-      } else if (!user.firstName) {
-        throw 'first name not specified';
-      } else if (!user.lastName) {
-        throw 'last name not specified';
+      } else if (!user.fullName) {
+        throw 'full name not specified';
+      } else if (!user.email) {
+        throw 'email not specified';
       } else if (!user.password) {
         throw 'password not specified';
       }

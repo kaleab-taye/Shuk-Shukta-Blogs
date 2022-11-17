@@ -10,11 +10,14 @@
     "build:css": "tailwind build styles/globals.css -o style-output/output.css"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.10.14",
     "@nextui-org/react": "^1.0.0-beta.10",
     "express": "^4.18.2",
     "jose": "^4.10.0",
