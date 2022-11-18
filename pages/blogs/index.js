@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import BlogContextProvider, { blogsContext } from "../../components/BlogContextProvider";
-import Footer from "../../components/Footer";
 import Nav from "../../components/Nav";
 import NoBlogAvailable from "../../components/NoBlogAvailable";
 import Blog_List from "../../components/Ui/Blog-List";

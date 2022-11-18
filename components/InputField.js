@@ -11,9 +11,9 @@ export default function InputField({
   errorStateSetter,
 }) {
   return (
-    <div className={className + ' '}>
+    <div className={className + ' grid '}>
       <input
-        className="border border-secondary rounded py-1 px-3 text-sm w-full "
+        className="border border-secondary rounded py-1 px-3 text-sm w-full"
         placeholder={placeholder}
         id={id}
         // value={valueState}
@@ -22,7 +22,7 @@ export default function InputField({
         }}
         onInput={() => formValidatorFunc()}
       />
-      <span className="mr-auto text-failure text-xs h-0 col-span-5">
+      <span className="mr-auto text-failure text-xs  ">
         {errorState.length > 1 ? errorState : null}
       </span>
     </div>

@@ -9,17 +9,17 @@ export async function editBloggerWithId(id, blogger) {
     if (user === null) {
       throw 'no bloggers found';
     }
-    if(!blogger.userName || blogger.userName.length<1){
-      throw 'username not found'
+    if (!blogger.userName || blogger.userName.length < 1) {
+      throw 'username not found';
     }
-
-    user.userName = blogger.userName;
-    user.firstName = blogger.firstName;
-    user.lastName = blogger.lastName;
-    user.password = blogger.password;
-
-    user.save()
-
+    
+    const newUser = {
+      ...user._doc,
+      ...blogger,
+    };
+;
+    user.overwrite(newUser);
+    await user.save();
     return user;
   } catch (error) {
     console.error(error);

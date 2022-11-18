@@ -1,94 +1,407 @@
+import {
+  faEdit,
+  faTrashAlt,
+  faTrashCan,
+} from '@fortawesome/free-regular-svg-icons';
+import {
+  faDeleteLeft,
+  faRecycle,
+  faRemove,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert, Snackbar } from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import InputField from '../../../components/InputField';
+import Nav from '../../../components/Nav';
+import BodyLayout from '../../../components/Ui/BodyLayout';
+import Button_comp from '../../../components/Ui/Button_comp';
+import { userStatusSetterContext } from '../../../components/UserContextProvider';
+import heroImage from '../../../public/swag-lion.png';
+// import {
+//   loggedInUserContext,
+//   loggedInUserSetterContext,
+//   userStatusContext,
+//   userStatusSetterContext,
+// } from './../../..components/UserContextProvider';
 
-export default function User(props) {
-  const url = process.env.url
+export default function User({ user, token, userId }) {
+  const url = process.env.url;
   const router = useRouter();
-  const profileUpdateStateEnum = {
-    idl: 'ild',
-    publishing: 'Publishing . . .',
-    deleting: 'Deleting . . .',
-    success: 'Success',
-    failed: 'Failed',
+  const setUserState = useContext(userStatusSetterContext);
+
+  const [fullNameError, setFullNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [userNameError, setUserNameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const updateProfileStateEnum = {
+    idl: 'idl',
+    updating: 'Updating . . .',
+    success: 'Successfully Updated',
+    failed: 'Updating Failed',
   };
-  const [profileUpdateState, setProfileUpdateState] = useState(
-    profileUpdateStateEnum.idl
+  const [updateProfileState, setUpdateProfileState] = useState(
+    updateProfileStateEnum.idl
   );
 
-  const errorStateEnum = {
-    idl: 'idl',
+  const deleteProfileStateEnum = {
+    idl: 'Idl',
+    deleting: 'Deleting . . .',
+    success: 'Successfully Deleted',
+    failed: 'Failed to delete profile',
   };
-  const [errorState, setErrorState] = useState(errorStateEnum.idl);
+  const [deleteProfileState, setDeleteProfileState] = useState(
+    deleteProfileStateEnum.idl
+  );
 
-  async function handleProfileUpdate(form) {
-    form.preventDefault();
-    setProfileUpdateState(profileUpdateStateEnum.publishing);
+  const [errorState, setErrorState] = useState('');
+
+  let fullNameValidation = () => {
+    if (document.editProfile.fullName.value.length === 0) {
+      setFullNameError("*this field can't be empty");
+      return false;
+    } else {
+      setFullNameError('');
+
+      return true;
+    }
+  };
+  let emailValidation = () => {
+    if (document.editProfile.email.value.length === 0) {
+      setEmailError("*this field can't be empty");
+      return false;
+    } else {
+      setEmailError('');
+
+      return true;
+    }
+  };
+  let userNameValidation = () => {
+    if (document.editProfile.userName.value.length === 0) {
+      setUserNameError("*this field can't be empty");
+      return false;
+    } else {
+      setUserNameError('');
+
+      return true;
+    }
+  };
+  let passwordValidation = () => {
+    if (document.editProfile.password.value.length === 0) {
+      setPasswordError("*this field can't be empty");
+      return false;
+    } else {
+      setPasswordError('');
+
+      return true;
+    }
+  };
+  function checkValidity(e) {
+    passwordValidation();
+    userNameValidation();
+    emailValidation();
+    fullNameValidation();
+    if (
+      passwordValidation() &&
+      userNameValidation() &&
+      emailValidation() &&
+      fullNameValidation()
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  async function handleLogout() {
+    // setLogoutState(logoutStateEnum.loggingOut);
+    try {
+      let headersList = {
+        Accept: '*/*',
+        'Content-Type': 'multipart/json',
+      };
+
+      const user = JSON.parse(localStorage.getItem('user'));
+      const url = process.env.url;
+      let bodyContent = JSON.stringify({
+        id: user.user.id,
+        token: user.revalidateAccessToken,
+      });
+
+      let response = await fetch(`${url}/api/auth/logout`, {
+        method: 'POST',
+        body: bodyContent,
+        headers: headersList,
+      });
+      let resp = await response.text();
+
+      if (response.status === 200) {
+        // setLogoutState(logoutStateEnum.success);
+        // check type and save login data in local storage
+        localStorage.removeItem('user');
+        setUserState((e) => false);
+      } else {
+        throw resp;
+      }
+      return true;
+    } catch (error) {
+      console.error('error', error.toString() || JSON.stringify(error));
+      setErrorState('error', error.toString() || JSON.stringify(error));
+    return false;
+    }
+  }
+  async function handleProfileUpdate(click) {
+    if (!checkValidity()) {
+      return;
+    }
+    setUpdateProfileState(updateProfileStateEnum.updating);
     const url = process.env.url;
     // console.log('lll', form.target.userName);
     try {
       let headersList = {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem('user')).accessToken
-        }`,
+        Authorization: `Bearer ${token}`,
       };
-
       let bodyContent = JSON.stringify({
-        userName: form.target.userName.value,
-        firstName: form.target.firstName.value,
-        lastName: form.target.lastName.value,
-        password: form.target.password.value,
+        userName: document.editProfile.userName.value,
+        fullName: document.editProfile.fullName.value,
+        email: document.editProfile.email.value,
+        password: document.editProfile.password.value,
       });
-      let response = await fetch(`${url}/api/user/${props.user.id}`, {
+      // console.log(bodyContent);
+      let response = await fetch(`${url}/api/user/${user.id}`, {
         method: 'POST',
         body: bodyContent,
         headers: headersList,
       });
-      const resp = await response.text();
-      // console.log(resp)
-      if ((await response.status) === 200) {
-        setProfileUpdateState(profileUpdateStateEnum.success);
-        router.push(`/user/${props.user.id}?token=${props.accessToken}`);
+      // console.log('rr', await response.text());
+      if (response.status === 200) {
+        setUpdateProfileState(updateProfileStateEnum.success);
+        // setProfileUpdateState(profileUpdateStateEnum.success);
+        router.push(`/user/${user.id}?token=${token}`);
       } else {
+        // setUpdateProfileState(updateProfileStateEnum.failed);
+
+        const resp = await response.text();
+
         throw `editing profile failed ${JSON.parse(resp).error.message}`;
       }
     } catch (error) {
       console.error('error', error);
-      setProfileUpdateState(profileUpdateStateEnum.failed);
+      setUpdateProfileState(updateProfileStateEnum.failed);
+
+      // setProfileUpdateState(profileUpdateStateEnum.failed);
       setErrorState(error.toString());
       //   setStatus(statusEnum.notDeleted);
       //   setError(`error ${error}`);
     }
   }
-
   async function handleDeleteAccount(event) {
-    setProfileUpdateState(profileUpdateStateEnum.deleting);
-    try {     
-  
-      let result = await fetch(
-        `${url}/api/user/${props.userId}`,
-        {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${props.token}` },
-        }
-      );
-      let res = await result.text();
+    setDeleteProfileState(deleteProfileStateEnum.deleting);
+    if(!handleLogout()){
+      return;
+    }
+    try {
+      let result = await fetch(`${url}/api/user/${userId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (result.status === 200) {
-        setProfileUpdateState(profileUpdateStateEnum.success);
+        setDeleteProfileState(deleteProfileStateEnum.success);
+
+        router.push('/');
       } else {
+        let res = await result.text();
         throw res;
       }
     } catch (error) {
       console.error(error);
-      setProfileUpdateState(profileUpdateStateEnum.failed);
+      setDeleteProfileState(deleteProfileStateEnum.failed);
       setErrorState(error);
     }
   }
+  useEffect(() => {
+    document.editProfile.password.value = user.password;
+    document.editProfile.userName.value = user.userName;
+    document.editProfile.email.value = user.email;
+    document.editProfile.fullName.value = user.fullName;
+  }, []);
 
   return (
-    <div className="max-w-contentWid m-auto py-10">
-      <form id={`profileUpdateForm`} onSubmit={(e) => handleProfileUpdate(e)}>
+    <div className="">
+      <Nav contentType="notSearchable" />
+      {/* snackbar start */}
+      <div>
+        {/* updating profile */}
+        <Snackbar
+          open={updateProfileState === updateProfileStateEnum.failed}
+          autoHideDuration={6000}
+          onClose={() => setUpdateProfileState(updateProfileStateEnum.idl)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="error" sx={{ width: '100%' }}>
+            {updateProfileState}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={updateProfileState === updateProfileStateEnum.updating}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="info" sx={{ width: '100%' }}>
+            {updateProfileState}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={updateProfileState === updateProfileStateEnum.success}
+          autoHideDuration={6000}
+          onClose={() => setUpdateProfileState(updateProfileStateEnum.idl)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="success" sx={{ width: '100%' }}>
+            {updateProfileState}
+          </Alert>
+        </Snackbar>
+        {/* deleting profile */}
+        <Snackbar
+          open={deleteProfileState === deleteProfileStateEnum.success}
+          autoHideDuration={6000}
+          onClose={() => setDeleteProfileState(deleteProfileStateEnum.idl)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="success" sx={{ width: '100%' }}>
+            {deleteProfileState}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={deleteProfileState === deleteProfileStateEnum.failed}
+          autoHideDuration={6000}
+          onClose={() => setDeleteProfileState(deleteProfileStateEnum.idl)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="error" sx={{ width: '100%' }}>
+            {deleteProfileState}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={deleteProfileState === deleteProfileStateEnum.deleting}
+          autoHideDuration={6000}
+          // onClose={() => setDeleteProfileState(deleteProfileStateEnum.idl)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="info" sx={{ width: '100%' }}>
+            {deleteProfileState}
+          </Alert>
+        </Snackbar>
+        {/* error display snack */}
+        <Snackbar
+          open={errorState.length > 0}
+          autoHideDuration={6000}
+          onClose={() => setErrorState('')}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="error" sx={{ width: '100%' }}>
+            {errorState}
+          </Alert>
+        </Snackbar>
+      </div>
+      <BodyLayout>
+        <div className="grid ">
+          <div className="max-w-blogCardWidLg  grid gap-9 grid-flow-row my-5 pb-14 pt-10 px-5 border border-secondary rounded-md">
+            <div className="mx-auto grid gap-2">
+              <div className=" m-auto inline-block h-40 w-40 rounded-full ring-2 ring-secondary">
+                <Image src={heroImage} alt="user image" />
+              </div>
+              <div className="text-sm text-textColor3 mx-auto">
+                {' '}
+                Joined in {new Date(user.joinedDate).toUTCString()}
+              </div>
+            </div>
+            <form
+              id="editProfile"
+              name="editProfile"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <div className="grid gap-2 w-max  mx-auto text-md ">
+                <div className="grid grid-cols-5 gap-5">
+                  <div className="text-textColor3 col-span-2  my-auto">
+                    Full Name
+                  </div>
+                  <InputField
+                    onChangeSetterState={fullNameValidation}
+                    errorStateSetter={setFullNameError}
+                    errorState={fullNameError}
+                    id="fullName"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-5  gap-5">
+                  <div className="text-textColor3 col-span-2  my-auto">
+                    Email Address
+                  </div>
+                  <InputField
+                    onChangeSetterState={emailValidation}
+                    errorStateSetter={setEmailError}
+                    errorState={emailError}
+                    id="email"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-5  gap-5">
+                  <div className="text-textColor3 col-span-2 my-auto">
+                    Username
+                  </div>
+                  <InputField
+                    onChangeSetterState={userNameValidation}
+                    errorStateSetter={setUserNameError}
+                    errorState={userNameError}
+                    id="userName"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-5  gap-5">
+                  <div className="text-textColor3 col-span-2 my-auto">
+                    Password
+                  </div>
+                  <InputField
+                    onChangeSetterState={passwordValidation}
+                    errorStateSetter={setPasswordError}
+                    errorState={passwordError}
+                    id="password"
+                    className="col-span-3"
+                  />
+                  {/* <div className="col-span-3 my-auto text-textColor1 font-bold ">
+                  {user.blogs.length}
+                </div> */}
+                </div>
+
+                <div className="my-5">
+                  <Button_comp onClick={(e) => handleProfileUpdate(e)}>
+                    Update Profile
+                  </Button_comp>
+                </div>
+                <div className="w-full border-b border-secondary"></div>
+
+                <div
+                  onClick={(e) => handleDeleteAccount(e)}
+                  className="cursor-pointer text-danger  grid grid-flow-col mr-auto gap-2 text-sm"
+                >
+                  <FontAwesomeIcon
+                    className="w-5 h-5 my-auto"
+                    icon={faTrashCan}
+                  />{' '}
+                  <div className="my-auto">delete account</div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </BodyLayout>
+      {/*  <form id={`profileUpdateForm`} onSubmit={(e) => handleProfileUpdate(e)}>
         <div>
           {profileUpdateState !== null &&
           profileUpdateState !== profileUpdateStateEnum.idl
@@ -145,6 +458,7 @@ export default function User(props) {
         </button>
       </form>
       <button onClick={(e) => handleDeleteAccount(e)}>delete account</button>
+    */}{' '}
     </div>
   );
 }
@@ -172,8 +486,8 @@ export const getServerSideProps = async (context) => {
   return {
     props: {
       user,
-      token:accessToken,
-      userId : context.params.id
+      token: accessToken,
+      userId: context.params.id,
     },
   };
 };

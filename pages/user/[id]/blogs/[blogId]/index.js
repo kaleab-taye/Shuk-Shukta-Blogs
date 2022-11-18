@@ -5,10 +5,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import BlogMetaSection from '../../../../../components/BlogMetaSection';
 import CommentSection from '../../../../../components/CommentSection';
-import Footer from '../../../../../components/Footer';
 import Header from '../../../../../components/Header';
 import Nav from '../../../../../components/Nav';
 import BodyLayout from '../../../../../components/Ui/BodyLayout';
+import ProfilePopover from '../../../../../components/Ui/ProfilePopover';
 import heroImage from '../../../../../public/swag-lion.png';
 
 export default function index(props) {
@@ -30,9 +30,7 @@ export default function index(props) {
                     </div>
                     <div className="mr-auto grid my-auto pl-3">
                       <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                        {props.blog.author.firstName +
-                          ' ' +
-                          props.blog.author.lastName}
+                        {props.blog.author.fullName}
                       </div>
                       <div className=" leading-none mb-auto text-textColor3 text-xs">
                         {new Date(props.blog.blogMeta.date).toUTCString()}
@@ -58,27 +56,7 @@ export default function index(props) {
                 </div>
               </div>
               <Popover.Content css={{ px: '$4', py: '$2' }}>
-                <div className="grid">
-                  <div className=" grid grid-flow-col mr-auto my-auto">
-                    <div className="m-auto inline-block h-14 w-14 xl:h-14 xl:w-14 rounded-full ring-2 ring-secondary">
-                      <Image src={heroImage} alt="user image" />
-                    </div>
-                    <div className="mr-auto grid my-auto pl-3">
-                      <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                        {props.blog.author.firstName +
-                          ' ' +
-                          props.blog.author.lastName}
-                      </div>
-                      <div className=" leading-none mb-auto text-textColor3 text-xs">
-                        @{props.blog.author.userName}
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div>Total blogs {props.blog.author.blogs.length}</div>
-                    <div>Explore blogs </div>
-                  </div>
-                </div>
+                <ProfilePopover user={props.blog.author} />
               </Popover.Content>
             </Popover>
             <div className="grid ">

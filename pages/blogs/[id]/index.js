@@ -18,6 +18,8 @@ import Blog_List from '../../../components/Ui/Blog-List';
 import BodyLayout from '../../../components/Ui/BodyLayout';
 import HomeBlogCard from '../../../components/Ui/Home-Blog-Card';
 import HomeBlogCardIcons from '../../../components/Ui/Home-Blog-Card-Icons';
+import ProfilePopover from '../../../components/Ui/ProfilePopover';
+import ChipSection from '../../../components/Ui/section/ChipSection';
 import heroImage from '../../../public/swag-lion.png';
 
 export default function Blog(props) {
@@ -56,7 +58,11 @@ export default function Blog(props) {
       <Header title={props.blog.title} description={props.blog.body} />
       <div className="">
         <Nav contentType={'notSearchable'} />
-        <BodyLayout>
+        <BodyLayout
+          rightContent={
+            <ChipSection options={props.blog.category} disabled={true} />
+          }
+        >
           {/* blog body content */}
           <div className="max-w-blogCardWidLg m-auto grid my-5 pb-2 pt-4 px-5 border border-secondary rounded-md">
             {/* user icon */}
@@ -68,9 +74,7 @@ export default function Blog(props) {
                   </div>
                   <div className="mr-auto grid my-auto pl-3">
                     <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                      {props.blog.author.firstName +
-                        ' ' +
-                        props.blog.author.lastName}
+                      {props.blog.author.fullName}
                     </div>
                     <div className=" leading-none mb-auto text-textColor3 text-xs">
                       {new Date(props.blog.blogMeta.date).toUTCString()}
@@ -79,27 +83,7 @@ export default function Blog(props) {
                 </div>
               </Popover.Trigger>
               <Popover.Content css={{ px: '$4', py: '$2' }}>
-                <div className="grid">
-                  <div className=" grid grid-flow-col mr-auto my-auto">
-                    <div className="m-auto inline-block h-14 w-14 xl:h-14 xl:w-14 rounded-full ring-2 ring-secondary">
-                      <Image src={heroImage} alt="user image" />
-                    </div>
-                    <div className="mr-auto grid my-auto pl-3">
-                      <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                        {props.blog.author.firstName +
-                          ' ' +
-                          props.blog.author.lastName}
-                      </div>
-                      <div className=" leading-none mb-auto text-textColor3 text-xs">
-                        @{props.blog.author.userName}
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div>Total blogs {props.blog.author.blogs.length}</div>
-                    <div>Explore blogs </div>
-                  </div>
-                </div>
+                <ProfilePopover user={props.blog.author} />
               </Popover.Content>
             </Popover>
             <div className="grid ">

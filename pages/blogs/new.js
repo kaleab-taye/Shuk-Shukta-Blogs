@@ -78,11 +78,7 @@ export default function NewBlog() {
     }
   };
 
-  useEffect(() => {
-    console.log('title', titleContent);
-    console.log('blog', blogBodyContent);
-  }, [blogBodyContent, titleContent]);
-
+ 
   const publishBlog = async (form) => {
     form.preventDefault();
     setError('');

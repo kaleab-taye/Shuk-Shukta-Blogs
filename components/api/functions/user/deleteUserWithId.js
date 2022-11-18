@@ -12,8 +12,8 @@ export default async function deleteUserWithId(id) {
     }
 
     user.userName = 'deleted account';
-    user.firstName = 'deleted';
-    user.lastName = 'account';
+    user.fullName = 'deleted account';
+    user.email = 'deleted account';
     user.password = 'deleted account';
 
     user.save();

@@ -38,7 +38,7 @@ export default function MyBlogCard({ blog, token, userId }) {
               </div>
               <div className="mr-auto grid my-auto pl-3">
                 <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                  {blog.author.firstName + ' ' + blog.author.lastName}
+                  {blog.author.fullName}
                 </div>
                 <div className=" leading-none mb-auto text-textColor3 text-xs">
                   {new Date(blog.blogMeta.date).toUTCString()}

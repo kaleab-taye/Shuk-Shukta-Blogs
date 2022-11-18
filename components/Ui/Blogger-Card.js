@@ -12,7 +12,7 @@ export default function Blogger_Card({ blogger }) {
           <Image src={heroImage} alt="user image" />
         </div>
         <div className="mr-auto font-bold text-xl text-textColor1">
-          {blogger.firstName + ' ' + blogger.lastName}
+          {blogger.fullName}
         </div>
         <div className="mr-auto text-textColor3 text-sm">
           Joined in {new Date(blogger.joinedDate).toUTCString()}
