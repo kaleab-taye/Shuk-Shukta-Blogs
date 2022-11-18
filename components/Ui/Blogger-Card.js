@@ -26,7 +26,7 @@ export default function Blogger_Card({ blogger }) {
             <div>Total posted blogs</div>
           </div>
           <div className="grid grid-rows-3 text-textColor1 text-lg font-medium gap-1 mb-auto">
-            <div>{blogger.email}ff</div>
+            <div>{blogger.email}</div>
             <div>{blogger.userName}</div>
             <div>{blogger.blogs.length}</div>
           </div>

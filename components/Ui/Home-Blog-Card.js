@@ -30,13 +30,13 @@ export default function HomeBlogCard({ blog }) {
       {/* user icon */}
       <Popover>
         <Popover.Trigger>
-          <div className=" grid grid-flow-col mr-auto my-auto">
+          <div className=" grid grid-flow-col mr-auto my-auto cursor-pointer">
             <div className="m-auto inline-block h-11 w-11 xl:h-12 xl:w-12 rounded-full ring-2 ring-secondary">
               <Image src={heroImage} alt="user image" />
             </div>
             <div className="mr-auto grid my-auto pl-3">
               <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                {blog.author.firstName + ' ' + blog.author.lastName}
+                {blog.author.fullName }
               </div>
               <div className=" leading-none mb-auto text-textColor3 text-xs">
                 {(new Date(blog.blogMeta.date)).toUTCString()}
@@ -52,7 +52,7 @@ export default function HomeBlogCard({ blog }) {
               </div>
               <div className="mr-auto grid my-auto pl-3">
                 <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                  {blog.author.firstName + ' ' + blog.author.lastName}
+                  {blog.author.fullName}
                 </div>
                 <div className=" leading-none mb-auto text-textColor3 text-xs">
                   @{blog.author.userName}

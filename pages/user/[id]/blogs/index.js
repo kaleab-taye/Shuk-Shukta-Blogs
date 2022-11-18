@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import BlogContextProvider from '../../../../components/BlogContextProvider';
-import Footer from '../../../../components/Footer';
 import Nav from '../../../../components/Nav';
 import Blog_List from '../../../../components/Ui/Blog-List';
 import My_Blog_List from '../../../../components/Ui/My-Blogs-list';

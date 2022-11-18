@@ -13,7 +13,7 @@ export default function InputField({
   return (
     <div className={className + ' '}>
       <input
-        className="border border-secondary rounded py-1 px-3 text-sm "
+        className="border border-secondary rounded py-1 px-3 text-sm w-full "
         placeholder={placeholder}
         id={id}
         // value={valueState}
@@ -22,7 +22,7 @@ export default function InputField({
         }}
         onInput={() => formValidatorFunc()}
       />
-      <span className="mr-auto text-failure text-xs bg-red-500 h-0 col-span-5">
+      <span className="mr-auto text-failure text-xs h-0 col-span-5">
         {errorState.length > 1 ? errorState : null}
       </span>
     </div>

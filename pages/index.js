@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import BlogContextProvider, {
   blogsContext,
 } from '../components/BlogContextProvider';
-import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import Nav from '../components/Nav';
 import Blog_List from '../components/Ui/Blog-List';
