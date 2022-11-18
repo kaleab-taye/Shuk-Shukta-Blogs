@@ -12,6 +12,8 @@ export default function ChipSection({ options, selectedSetter,selected }) {
           {options.map((option) => (
             <Chip key={option} text={option} selectedSetter={selectedSetter} selected={selected} />
           ))}
+          <Chip  text={'X clear all'} selectedSetter={selectedSetter} selected={selected} />
+
         </div>
         
       </div>

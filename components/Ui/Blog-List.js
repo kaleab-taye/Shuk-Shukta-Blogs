@@ -24,7 +24,7 @@ export default function Blog_List() {
         {blogs.length > 0 ? (
           <div>
             {blogs.map((blog) => {
-              // category filtering 
+              // category filtering  
               let validCategory = false;
               for (let cat in blog.category) {
                 if (selectedCategoryList.length==0 || selectedCategoryList.includes(blog.category[cat])) {
