@@ -88,11 +88,12 @@ export default function EditBlog(props) {
         body: bodyContent,
         headers: headersList,
       });
+      let resp = await response.text()
       if (response.status === 200) {
         setStatus(statusEnum.published);
         router.push(`/#${props.blog.id}`);
       } else {
-        setError('error publishing content @1 please try again');
+        setError(`error publishing content ${JSON.parse(resp).error.message}`);
         setStatus(statusEnum.notPublished);
       }
     } catch (error) {

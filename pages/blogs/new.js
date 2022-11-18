@@ -1,60 +1,113 @@
+import { Alert, Snackbar } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Button from '../../components/Button';
+import InputField from '../../components/InputField';
+import Nav from '../../components/Nav';
 import PageHeading from '../../components/PageHeading';
+import BodyLayout from '../../components/Ui/BodyLayout';
+import Button_comp from '../../components/Ui/Button_comp';
+import Chip from '../../components/Ui/Chip';
+import ChipSection from '../../components/Ui/section/ChipSection';
 
 export default function NewBlog() {
   const router = useRouter();
   const [status, setStatus] = useState('unPublished');
   const [error, setError] = useState('');
 
-  const [validity, setValidity] = useState('');
-  const validityEnum = {
-    valid: 'Valid',
-    invalid: 'Invalid',
-    invalidTitle: 'Invalid title',
-    invalidBlogBody: 'Invalid blog',
-    invalidBlogKey: 'Invalid blog key',
+  const [selectedCategoryState, setSelectedCategoryState] = useState([]);
+  const categoryOptionList = [
+    'sport',
+    'romance',
+    'health',
+    'comedy',
+    'lifestyle',
+    'psychology',
+  ];
+
+  const [titleContent, setTitleContent] = useState('');
+  const [titleContentError, setTitleContentError] = useState('');
+
+  const [blogBodyContent, setBlogBodyContent] = useState('');
+  const [blogBodyContentError, setBlogBodyContentError] = useState('');
+
+  const publishingStatusEnum = {
+    idl: 'idl',
+    publishing: 'publishing',
+    success: 'success',
+    failed: 'failed',
+  };
+  const [publishingStatus, setPublishingStatus] = useState(
+    publishingStatusEnum.idl
+  );
+
+  useEffect(() => {
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+    } catch (error) {
+      console.error(error);
+      setError("you're not properly logged if please login again");
+      router.replace('/auth/login');
+    }
+  }, []);
+
+  let blogContentValidation = () => {
+    if (document.newBlog.blogContent.value.length === 0) {
+      setBlogBodyContentError("*this field can't be empty");
+      return false;
+    } else if (document.newBlog.blogContent.value.length <= 10) {
+      setBlogBodyContentError('*blog must be at least 10 letters');
+      return false;
+    } else {
+      setBlogBodyContentError('');
+      return true;
+    }
   };
 
-  const [invalidType, setInvalidType] = useState('');
-  const invalidTypeEnum = {
-    smallLengthTitle: `set the title to 5 letters minimum`,
-    noTitle: "the title field can't be empty",
-    none: '',
-    noBlogBody: "blog field can't be empty",
-    smallBlogBodyLength: 'blog field must be more than 10 words',
-    noBlogKey: "key field can't be empty",
-    smallBlogKeyLength: 'key field must be more than 5 words',
+  let titleValidation = () => {
+    if (document.newBlog.title.value.length === 0) {
+      setTitleContentError("*this field can't be empty");
+      return false;
+    } else if (document.newBlog.title.value.length <= 5) {
+      setTitleContentError('*title must be at least 5 letters');
+      return false;
+    } else {
+      setTitleContentError('');
+
+      return true;
+    }
   };
 
-  useEffect(()=>{
-    checkSubmissionValidity()
-  },[])
-
+ 
   const publishBlog = async (form) => {
     form.preventDefault();
-
-    checkValidity()
-    if (validity !== validityEnum.valid  ) {
+    setError('');
+    if (!checkValidity()) {
+      console.log('form not valid');
       return;
     }
-    // await checkValidity();
+    setPublishingStatus(publishingStatusEnum.publishing);
+    // setStatus('publishing');
 
-    setStatus('publishing');
     let webUrl = process.env.url;
 
     let headersList = {
       'Content-Type': 'application/json',
     };
 
-    if (form.target.author.value.length < 1) {
-      form.target.author.value = 'Anonymous';
+    try {
+      var author = JSON.parse(localStorage.getItem('user')).user['_id'];
+    } catch (error) {
+      setError("you're not properly logged if please login again");
+      router.replace('/auth/login');
+      return;
+      // throw 'user not properly logged in';
     }
 
     let bodyContent = JSON.stringify({
-      title: form.target.title.value,
-      body: form.target.blogBody.value,
+      title: document.newBlog.title.value,
+      body: document.newBlog.blogContent.value,
+      category: selectedCategoryState,
       comment: [],
       blogMeta: {
         seen: 0,
@@ -63,8 +116,7 @@ export default function NewBlog() {
         date: 0,
         comment: 0,
       },
-      author: form.target.author.value,
-      blogKey: form.target.blogKey.value,
+      author: author,
     });
 
     try {
@@ -75,194 +127,130 @@ export default function NewBlog() {
       });
 
       if (response.status === 200) {
-        setStatus('published');
+        // setStatus('published');
+        setPublishingStatus(publishingStatusEnum.success);
         router.push(`/#${JSON.parse(await response.text()).id}`);
       } else {
-        setError('error publishing content @1 please try again');
-        setStatus('unPublished');
+        let resp = await response.text();
+
+        setError(`error publishing content ${resp}`);
+        // setStatus('unPublished');
+        setPublishingStatus(publishingStatusEnum.failed);
       }
     } catch (error) {
       console.error('error', error);
-      setStatus('unPublished');
+      // setStatus('unPublished');
+      setPublishingStatus(publishingStatusEnum.failed);
+
       setError(`error ${error}`);
     }
   };
 
-  function checkSubmissionValidity(e){
-    const form = document.getElementById('newBlogForm');
-    const title = document.getElementById('title');
-    const blogBody = document.getElementById('blogBody');
-    const blogKey = document.getElementById('blogKey');
-    // form validation
-    form.addEventListener('submit', () => {
-      // title
-      if (title.value.length === 0) {
-        setValidity((a) => validityEnum.invalidTitle);
-        setInvalidType((b) => invalidTypeEnum.noTitle);
-      } else if (title.value.length < 5) {
-        setValidity((a) => validityEnum.invalidTitle);
-        setInvalidType((b) => invalidTypeEnum.smallLengthTitle);
-      }
-      // blog body
-      else if (blogBody.value.length === 0) {
-        setValidity((a) => validityEnum.invalidBlogBody);
-        setInvalidType((b) => invalidTypeEnum.noBlogBody);
-      } else if (blogBody.value.length < 10) {
-        setValidity((a) => validityEnum.invalidBlogBody);
-        setInvalidType((b) => invalidTypeEnum.smallBlogBodyLength);
-      }
-      // blog key
-      else if (blogKey.value.length === 0) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.noBlogKey);
-      } else if (blogKey.value.length < 5) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
-      } else {
-        setValidity((a) => validityEnum.valid);
-        setInvalidType((b) => invalidTypeEnum.none);
-      }
-    });
-  }
-
   function checkValidity(e) {
-    const form = document.getElementById('newBlogForm');
-    const title = document.getElementById('title');
-    const blogBody = document.getElementById('blogBody');
-    const blogKey = document.getElementById('blogKey');
-    
-    // title validation
-    title.addEventListener('input', () => {
-      if (title.value.length === 0) {
-        setValidity((a) => validityEnum.invalidTitle);
-        setInvalidType((b) => invalidTypeEnum.noTitle);
-      } else if (title.value.length < 5) {
-        setValidity((a) => validityEnum.invalidTitle);
-        setInvalidType((b) => invalidTypeEnum.smallLengthTitle);
-      } else {
-        setValidity((a) => validityEnum.valid);
-        setInvalidType((b) => invalidTypeEnum.none);
-      }
-    });
-    // blog body validation
-    blogBody.addEventListener('input', () => {
-      if (blogBody.value.length === 0) {
-        setValidity((a) => validityEnum.invalidBlogBody);
-        setInvalidType((b) => invalidTypeEnum.noBlogBody);
-      } else if (blogBody.value.length < 10) {
-        setValidity((a) => validityEnum.invalidBlogBody);
-        setInvalidType((b) => invalidTypeEnum.smallBlogBodyLength);
-      } else {
-        setValidity((a) => validityEnum.valid);
-        setInvalidType((b) => invalidTypeEnum.none);
-      }
-    });
-    // key validation
-    blogKey.addEventListener('input', () => {
-      if (blogKey.value.length === 0) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.noBlogKey);
-      } else if (blogKey.value.length < 5) {
-        setValidity((a) => validityEnum.invalidBlogKey);
-        setInvalidType((b) => invalidTypeEnum.smallBlogKeyLength);
-      } else {
-        setValidity((a) => validityEnum.valid);
-        setInvalidType((b) => invalidTypeEnum.none);
-      }
-    });
-
-    return false;
+    titleValidation();
+    blogContentValidation();
+    if (titleValidation() && blogContentValidation()) {
+      
+      return true;
+    } else {
+      return false;
+    }
   }
 
   return (
-    <div className="sm:my-14">
-      <hr />
-      <div className="px-6 py-10 m-auto max-w-contentWid 2xl:max-w-contentWidLg">
-        <PageHeading
-          heading="New Blog"
-          className="text-5xl lg:text-6xl xl:text-7xl font-semibold font-commonFont text-accent"
-          backTo="/"
-        />
+    <div className="">
+      <Nav contentType="notSearchable" />
+      <BodyLayout>
+        {/* snackbar display start */}
+        <div>
+          <Snackbar
+            open={publishingStatus === publishingStatusEnum.failed}
+            autoHideDuration={6000}
+            onClose={() => setPublishingStatus(publishingStatusEnum.idl)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="error" sx={{ width: '100%' }}>
+              failed to publish blog
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={publishingStatus === publishingStatusEnum.publishing}
+            autoHideDuration={6000}
+            // onClose={() => setPublishingStatus(publishingStatusEnum.idl)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="info" sx={{ width: '100%' }}>
+              publishing ...
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={publishingStatus === publishingStatusEnum.success}
+            autoHideDuration={6000}
+            onClose={() => setPublishingStatus(publishingStatusEnum.idl)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="success" sx={{ width: '100%' }}>
+              successfully published
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={error}
+            autoHideDuration={6000}
+            // onClose={() => setPublishingStatus(publishingStatusEnum.idl)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="error" sx={{ width: '100%' }}>
+              {error}
+            </Alert>
+          </Snackbar>
+        </div>
+        {/* snackbar display end */}
 
-        <form id="newBlogForm" onSubmit={(form) => publishBlog(form)}>
-          <div className="grid grid-cols-1 gap-6 my-8">
-            <div>
-              <label htmlFor="title" className="text-onSecondary font-semibold">
-                {' '}
-                Title*
-              </label>
-              <input
-                id="title"
-                className="invalid:border-failure border m-1 p-1 ml-5 w-1/2"
-              />{' '}
-              <div id="titleError" className="text-failure">
-                {validity === validityEnum.invalidTitle ? invalidType : null}
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="blogBody"
-                className="text-onSecondary font-semibold"
-              >
-                {' '}
-                Blog*
-              </label>
-              <textarea
-                id="blogBody"
-                className="border m-1 p-1 w-full h-80 align-top"
-              />
-              <div id="blogBodyError" className="text-failure">
-                {validity === validityEnum.invalidBlogBody ? invalidType : null}
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="author"
-                className="text-onSecondary font-semibold"
-              >
-                {' '}
-                Author
-              </label>
-              <input
-                id="author"
-                className="border m-1 p-1 ml-5 w-1/2"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="blogKey"
-                className="text-onSecondary font-semibold"
-              >
-                {' '}
-                Key* <span className="font-normal">(to edit/delete)</span>
-              </label>
-              <input
-                id="blogKey"
-                className="border m-1 p-1 ml-5 w-1/2"
-              />
-              <div id="blogBodyError" className="text-failure">
-                {validity === validityEnum.invalidBlogKey ? invalidType : null}
-              </div>
-            </div>
+        <div className="max-w-blogCardWidLg mx-auto grid">
+          <div className="font-bold text-onSecondary text-2xl my-8 ml-5">
+            New Blog
           </div>
-          <Button
-            placeholder={
-              status === 'publishing' ? 'Publishing . . .' : 'Publish'
-            }
-            disable = { status === 'publishing' ? true : status === 'published' ? true : null}
-            type="submit"
-          />
-          <div className="text-center">
-            <div className="inline-flex text-failure">
-              {error.length > 1 ? error : null}
-              <span className="text-success">
-                {status === 'published' ? 'published' : null}
-              </span>
+          <form id="newBlog" name="newBlog" onSubmit={(e) => publishBlog(e)}>
+            <div className="grid gap-5 py-10 px-5 border border-secondary rounded-md">
+              <div className="grid gap-1 grid-flow-row">
+                <div className="text-sm text-textColor3">Title</div>
+                <div className="w-full grid">
+                  <InputField
+                    errorState={titleContentError}
+                    className="w-full"
+                    id="title"
+                    onChangeSetterState={titleValidation}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-1 grid-flow-row">
+                <div className="text-sm text-textColor3">Body</div>
+                <div className="w-full grid grid-cols-1">
+                  <textarea
+                    id="blogContent"
+                    onChange={(e) => blogContentValidation()}
+                    className=" border border-secondary rounded py-1 px-3 text-sm w-full h-48"
+                  />
+                  <span className="pt-1 mr-auto text-failure text-xs col-span-5">
+                    {blogBodyContentError.length > 1
+                      ? blogBodyContentError
+                      : null}
+                  </span>
+                </div>
+              </div>
+              <div className="grid gap-1 grid-flow-row">
+                <div className="text-sm text-textColor3">Category</div>
+                <ChipSection
+                  options={categoryOptionList}
+                  selectedSetter={setSelectedCategoryState}
+                  selected={selectedCategoryState}
+                />
+              </div>
+              <Button_comp>Publish Blog</Button_comp>
             </div>
-          </div>
-        </form>
-      </div>
-      <hr />
+          </form>
+        </div>
+      </BodyLayout>
     </div>
   );
 }
