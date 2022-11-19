@@ -1,18 +1,10 @@
 import {
-  faEdit,
-  faTrashAlt,
   faTrashCan,
 } from '@fortawesome/free-regular-svg-icons';
-import {
-  faDeleteLeft,
-  faRecycle,
-  faRemove,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert, Snackbar } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import InputField from '../../../components/InputField';
@@ -21,12 +13,7 @@ import BodyLayout from '../../../components/Ui/BodyLayout';
 import Button_comp from '../../../components/Ui/Button_comp';
 import { userStatusSetterContext } from '../../../components/UserContextProvider';
 import heroImage from '../../../public/swag-lion.png';
-// import {
-//   loggedInUserContext,
-//   loggedInUserSetterContext,
-//   userStatusContext,
-//   userStatusSetterContext,
-// } from './../../..components/UserContextProvider';
+
 
 export default function User({ user, token, userId }) {
   const url = process.env.url;

@@ -1,13 +1,10 @@
 import { Alert, Snackbar } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Button from '../../components/Button';
 import InputField from '../../components/InputField';
 import Nav from '../../components/Nav';
-import PageHeading from '../../components/PageHeading';
 import BodyLayout from '../../components/Ui/BodyLayout';
 import Button_comp from '../../components/Ui/Button_comp';
-import Chip from '../../components/Ui/Chip';
 import ChipSection from '../../components/Ui/section/ChipSection';
 
 export default function NewBlog() {

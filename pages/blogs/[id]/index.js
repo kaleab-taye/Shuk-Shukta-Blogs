@@ -6,18 +6,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Popover } from '@nextui-org/react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import BlogContextProvider from '../../../components/BlogContextProvider';
+import { useEffect } from 'react';
 import BlogMetaSection from '../../../components/BlogMetaSection';
 import CommentSection from '../../../components/CommentSection';
 import Header from '../../../components/Header';
 import Nav from '../../../components/Nav';
-import PageHeading from '../../../components/PageHeading';
-import Blog_List from '../../../components/Ui/Blog-List';
 import BodyLayout from '../../../components/Ui/BodyLayout';
-import HomeBlogCard from '../../../components/Ui/Home-Blog-Card';
-import HomeBlogCardIcons from '../../../components/Ui/Home-Blog-Card-Icons';
 import ProfilePopover from '../../../components/Ui/ProfilePopover';
 import ChipSection from '../../../components/Ui/section/ChipSection';
 import heroImage from '../../../public/swag-lion.png';
@@ -131,44 +125,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
-// export async function getStaticPaths() {
-//   let url = process.env.url;
-
-//   let res = await fetch(`${url}/api/blogs`);
-//   let blogs = await res.json();
-
-//   const ids = blogs.map((blog) => blog.id);
-//   const paths = ids.map((id) => ({
-//     params: {
-//       id: id.toString(),
-//     },
-//   }));
-
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// }
-
-// <div className="max-w-contentWid 2xl:max-w-contentWidLg m-auto my-10 xl:my-20 px-5 ">
-//         <div className="break-words  text-3xl lg:text-4xl font-semibold font-commonFont text-accent pb-2">
-//           <PageHeading
-//             className=""
-//             heading={props.blog.title}
-//             backTo={`/#${props.blog.id}`}
-//           />
-//         </div>
-//         <hr />
-//         <div
-//           style={{ whiteSpace: 'pre-wrap' }}
-//           className="text-justify break-words py-10 font-commonFont text-lg lg:text-xl "
-//         >
-//           {props.blog.body}
-//         </div>
-//         <hr />
-//         <BlogMetaSection blog={props.blog} />
-//         <hr />
-//         <CommentSection id={props.blog.id} comments={props.blog.comment} />
-//         <hr />
-//       </div>
