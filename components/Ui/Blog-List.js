@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { blogsContext } from '../BlogContextProvider';
 import HomeBlogCard from './Home-Blog-Card';
 import NoBlogAvailable from '../NoBlogAvailable';
@@ -10,6 +10,7 @@ export default function Blog_List() {
   const blogs = useContext(blogsContext);
   const [selectedCategoryList, setSelectedCategoryList] = useState([]);
 
+  
   return (
     <>
       <BodyLayout
@@ -24,10 +25,13 @@ export default function Blog_List() {
         {blogs.length > 0 ? (
           <div>
             {blogs.map((blog) => {
-              // category filtering  
+              // category filtering
               let validCategory = false;
               for (let cat in blog.category) {
-                if (selectedCategoryList.length==0 || selectedCategoryList.includes(blog.category[cat])) {
+                if (
+                  selectedCategoryList.length == 0 ||
+                  selectedCategoryList.includes(blog.category[cat])
+                ) {
                   validCategory = true;
                 }
               }

@@ -14,5 +14,9 @@ export const categoryList = [
   'technology',
   'history',
   'love',
-  'teenager','news','politics'
+  'teenager',
+  'news',
+  'politics',
+  'advice',
+  'thought','dark humor'
 ];
