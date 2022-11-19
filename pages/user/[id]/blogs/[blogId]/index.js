@@ -65,7 +65,7 @@ export default function index(props) {
                 <h1 className=" break-word font-semibold text-3xl pt-2 pb-2 text-textColor1 font-commonFont">
                   {props.blog.title}
                 </h1>
-                <p className=" text-md text-textColor1 break-word text-justify ">
+                <p className="whitespace-pre-line text-md text-textColor1 break-word text-justify ">
                   {' '}
                   {props.blog.body}
                 </p>
