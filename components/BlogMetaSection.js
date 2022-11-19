@@ -11,15 +11,17 @@ import {
   faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert, Snackbar } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Button from './Button';
 import ConfirmationDialogue, { toggleModal } from './ConfirmationDialogue';
 import HomeBlogCardIcons from './Ui/Home-Blog-Card-Icons';
 
 export default function BlogMetaSection(props) {
   const webUrl = process.env.url;
   const router = useRouter();
+
+  const [votingAlert, setVotingAlert] = useState('');
 
   const blogKeyEnum = {
     idl: 'idl',
@@ -39,7 +41,7 @@ export default function BlogMetaSection(props) {
     upVoted: 'Up Voted',
     unVoting: 'Removing Vote . . .',
     removed: 'Removed',
-    idle: 'idle',
+    idle: '',
     failed: 'Failed',
   };
   const [error, setError] = useState('');
@@ -280,10 +282,8 @@ export default function BlogMetaSection(props) {
     }
   }
   useEffect(() => {
-    if (blogKeyStatus === blogKeyEnum.logged) {
-      editBlog();
-    }
-  }, [blogKeyStatus]);
+    setVotingAlert(vote);
+  }, [vote]);
   return (
     <>
       {/* new blog meta */}
@@ -350,200 +350,61 @@ export default function BlogMetaSection(props) {
         />
       </div>
       <div className="mx-auto text-center my-auto h-2">
-        {/* status display */}
-        <div
-          className={
-            vote === voteEnum.upVoted
-              ? 'text-success'
-              : vote === voteEnum.upVoting
-              ? 'text-accent'
-              : vote === voteEnum.downVoted
-              ? 'text-failure'
-              : vote === voteEnum.downVoting
-              ? 'text-accent'
-              : vote === voteEnum.unVoting
-              ? 'text-accent'
-              : vote === voteEnum.removed
-              ? 'text-success'
-              : null
-          }
-        >
-          {vote === voteEnum.upVoted
-            ? voteEnum.upVoted
-            : vote === voteEnum.upVoting
-            ? voteEnum.upVoting
-            : vote === voteEnum.downVoted
-            ? voteEnum.downVoted
-            : vote === voteEnum.downVoting
-            ? voteEnum.downVoting
-            : vote === voteEnum.unVoting
-            ? voteEnum.unVoting
-            : vote === voteEnum.removed
-            ? voteEnum.removed
-            : null}
+        <div>
+          <Snackbar
+            open={votingAlert === voteEnum.upVoted}
+            autoHideDuration={3000}
+            onClose={() => setVotingAlert(voteEnum.idle)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            // onClose={handleClose}
+          >
+            <Alert
+              // onClose={handleClose}
+              severity="success"
+              sx={{ width: '100%' }}
+            >
+              {votingAlert}
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={votingAlert === voteEnum.downVoted ||votingAlert === voteEnum.failed}
+            autoHideDuration={3000}
+            onClose={() => setVotingAlert(voteEnum.idle)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            // onClose={handleClose}
+          >
+            <Alert
+              // onClose={handleClose}
+              severity="error"
+              sx={{ width: '100%' }}
+            >
+              {votingAlert}
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={
+              votingAlert === voteEnum.upVoting ||
+              votingAlert === voteEnum.downVoting ||
+              votingAlert === voteEnum.unVoting ||
+              votingAlert === voteEnum.removed
+            }
+            autoHideDuration={6000}
+            // onClose={() => setVotingAlert('')}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            // onClose={handleClose}
+          >
+            <Alert
+              // onClose={handleClose}
+              severity="info"
+              sx={{ width: '100%' }}
+            >
+              {votingAlert}
+            </Alert>
+          </Snackbar>
         </div>
+
+        
       </div>
     </>
   );
 }
-
-// <div className="py-10 grid grid-cols-2">
-//       <div className="">
-//         {/* up vote begin */}
-//         <div className="flex ">
-//           <Button
-//             icon={
-//               <FontAwesomeIcon
-//                 className="w-7 sm:w-7 "
-//                 icon={faArrowAltCircleUp}
-//               />
-//             }
-//             placeholder={'Up vote'}
-//             color="text-success"
-//             background=""
-//             // width="w-40 sm:w-64"
-//             width=""
-//             margin=""
-//             // className='hover:'
-//             disable={
-//               vote === voteEnum.downVoting
-//                 ? true
-//                 : vote === voteEnum.upVoting
-//                 ? true
-//                 : vote === voteEnum.unVoting
-//                 ? true
-//                 : null
-//               // : vote === voteEnum.upVoted
-//               // ? true
-//               // : vote === voteEnum.downVoted
-//               // ? true
-//             }
-//             onClick={() => upVoteHandler()}
-//           />
-//         </div>
-
-//         <div className="grid gap-3 px-4 py-4">
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Author :{' '}
-//             <span className="text-xl lg:text-2xl">
-//               {props.blog.author.userName}
-//             </span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Date :{'  '}
-//             <span className="text-xl lg:text-2xl">
-//               {
-//                 ' ' +
-//                   date.getDate() +
-//                   '/' +
-//                   (date.getMonth() + 1) +
-//                   '/' +
-//                   date.getFullYear()
-//                 // +'  ' +
-//                 // date.getHours() +
-//                 // ':' +
-//                 // date.getMinutes() +
-//                 // ':' +
-//                 // date.getSeconds()
-//               }
-//             </span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Interacted readers :{' '}
-//             <span className="text-xl lg:text-2xl">{blogMeta.seen}</span>
-//           </div>
-//         </div>
-//       </div>
-//       <div>
-//         {/* down vote start*/}
-//         <div className="flex">
-//           <Button
-//             icon={
-//               <FontAwesomeIcon
-//                 className="w-7 sm:w-7 "
-//                 icon={faArrowAltCircleDown}
-//               />
-//             }
-//             placeholder="Down vote"
-//             color="text-failure"
-//             // width="w-32 sm:w-64"
-//             margin=""
-//             width=""
-//             background=""
-//             disable={
-//               vote === voteEnum.downVoting
-//                 ? true
-//                 : vote === voteEnum.upVoting
-//                 ? true
-//                 : vote === voteEnum.unVoting
-//                 ? true
-//                 : null
-//               // : vote === voteEnum.downVoted
-//               // ? true
-//               // : vote === voteEnum.upVoted
-//               // ? true
-//             }
-//             // {vote === 'downVoted' ? '' : null}
-//             onClick={() => downVoteHandler()}
-//           />
-//         </div>
-
-//         <div className="grid gap-3 px-4 py-4">
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Up votes :{' '}
-//             <span className="text-xl lg:text-2xl">{blogMeta.upVote}</span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Down votes :{' '}
-//             <span className="text-xl lg:text-2xl">{blogMeta.downVote}</span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Comments :{' '}
-//             <span className="text-xl lg:text-2xl">
-//               {props.blog.comment.length}
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-//       <div>
-//         <Button
-//           icon={
-//             <FontAwesomeIcon className="w-6 sm:w-6 " icon={faPenToSquare} />
-//           }
-//           placeholder="Edit"
-//           width=""
-//           margin=""
-//           color="text-accent"
-//           background=""
-//           onClick={() => setBlogKeyStatus(blogKeyEnum.keyLogging)}
-//         />
-//         {blogKeyStatus === blogKeyEnum.keyLogging ? (
-//           <ConfirmationDialogue
-//             blogKeyEnum={blogKeyEnum}
-//             setBlogKey={setBlogKey}
-//             setBlogKeyStatus={setBlogKeyStatus}
-//             blogKeyStatus={blogKeyStatus}
-//           />
-//         ) : null}
-
-//         <div className="py-1 font-commonFont text-l lg:text-xl ">
-//           only for Author
-//           <br />
-//           <div
-//             className={
-//               status === statusEnum.failure
-//                 ? `text-failure`
-//                 : status == statusEnum.success
-//                 ? 'text-success'
-//                 : 'text-accent'
-//             }
-//           >
-//             {status.length > 1 ? status : null}
-//           </div>
-//           <div className="text-failure">
-//             {error.length > 1 ? error : null}
-//           </div>
-//         </div>
-
-//       </div>
-//     </div>
