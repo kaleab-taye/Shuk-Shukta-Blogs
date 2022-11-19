@@ -1,13 +1,12 @@
-import mongoose from "mongoose"
-import { blogModel } from "../models/blog"
+import mongoose from 'mongoose';
+import { blogModel } from '../models/blog';
 
-export default async function getBlogWithId({id}) {
-
-    let mongoDb_url = process.env.mongoDb_url
-    mongoose.connect(mongoDb_url)
-
+export default async function getBlogWithId({ id }) {
   try {
-    let blog = await blogModel.findOne({id : id});
+    let mongoDb_url = process.env.mongoDb_url;
+    mongoose.connect(mongoDb_url);
+
+    let blog = await blogModel.findOne({ id: id }).populate('author');
     if (blog === null) {
       throw 'blog not found';
     }

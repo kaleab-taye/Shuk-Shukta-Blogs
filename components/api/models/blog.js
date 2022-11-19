@@ -12,14 +12,19 @@ const blogSchema = Mongoose.Schema({
     },
   ],
   blogMeta: {
-    seen: String,
-    upVote: String,
-    downVote: String,
-    date: String,
+    seen: Number,
+    upVote: Number,
+    downVote: Number,
+    date: { type: Date, default: () => Date.now() },
   },
-  author: String,
-  blogKey: String,
+  category: [String],
+  author: {
+    type: Mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    autopopulate: true,
+  },
 });
+blogSchema.plugin(require('mongoose-autopopulate'));
 
 export const blogModel =
   Mongoose.models.blog || Mongoose.model('blog', blogSchema);

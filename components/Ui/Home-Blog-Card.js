@@ -36,10 +36,10 @@ export default function HomeBlogCard({ blog }) {
             </div>
             <div className="mr-auto grid my-auto pl-3">
               <div className="mt-auto text-textColor1 text-md font-medium my-auto">
-                {blog.author.fullName}
+                {blog.author.fullName }
               </div>
               <div className=" leading-none mb-auto text-textColor3 text-xs">
-                {new Date(blog.blogMeta.date).toUTCString()}
+                {(new Date(blog.blogMeta.date)).toUTCString()}
               </div>
             </div>
           </div>
@@ -68,7 +68,7 @@ export default function HomeBlogCard({ blog }) {
       </Popover>
       <div className="grid ">
         {/* blog content section */}
-        <Link href={`/blogs/${blog.id}`} key={blog.id}>
+        <Link href={`blogs/${blog.id}`} key={blog.id}>
           <a id={blog.id}>
             <div className="grid cursor-pointer py-4 ">
               <h1 className=" break-word font-semibold text-3xl pt-2 pb-2 text-textColor1 font-commonFont">
