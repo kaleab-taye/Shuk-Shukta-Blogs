@@ -95,7 +95,7 @@ export default function Blog(props) {
               <BlogMetaSection blog={props.blog} />
             </div>
           </div>
-          <div className="m-auto max-w-blogCardWidLg">
+          <div className="m-auto grid max-w-blogCardWidLg">
             <CommentSection id={props.blog.id} comments={props.blog.comment} />
           </div>
         </BodyLayout>
