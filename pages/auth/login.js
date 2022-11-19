@@ -37,7 +37,7 @@ export default function Login() {
   const [errorState, setErrorState] = useState(errorStateEnum.idl);
 
   useEffect(() => {
-    console.log('looking for a user');
+    // console.log('looking for a user');
     if (router.query['userName'] && router.query['password']) {
       // automatically login if user is provided in query param
       document.getElementById('userName').value = router.query['userName'];
@@ -72,7 +72,7 @@ export default function Login() {
     }
   };
   async function handleLogin() {
-    console.log('handling login');
+    // console.log('handling login');
     setErrorState(errorStateEnum.idl);
     setLoginState(loginEnum.loggingIn);
     if (!formValidation()) {
@@ -127,42 +127,13 @@ export default function Login() {
   }
   return (
     <div>
-      {/* <form
-        id="loginForm"
-        name="loginForm"
-        onSubmit={(e) => e.preventDefault()}
-      >
-        <div className="text-accent">
-          {loginState !== loginEnum.idl ? loginState : null}
-          <br />
-          {errorState !== errorStateEnum.idl && errorState !== null
-            ? errorState
-            : null}
-        </div>
-        <div className="">
-          <label htmlFor="userName">userName </label>
-          <input id="userName" required />
-        </div>
-        <br />
-        <div className="">
-          <label htmlFor="password">password </label>
-          <input id="password" required />
-        </div>
-        <button
-          type="none"
-          onClick={() => handleLogin()}
-          placeholder="Submit"
-          className="flex px-3 py-1 m-auto text-primary bg-green-400"
-        >
-          Submit
-        </button>
-      </form> */}
+      
       <Nav contentType="notSearchable" />
       <BodyLayout>
         <div className=" ">
           <div className="max-w-blogCardWidLg mx-auto grid my-5 py-10 px-5 border border-secondary rounded-md">
             <div className="mx-auto text-accent font-bold text-xl lg:text-3xl">
-              Signup
+              Login
             </div>
             {/* snackbar notifications start */}
             <div>

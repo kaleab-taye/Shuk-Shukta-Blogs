@@ -68,7 +68,7 @@ export default function HomeBlogCard({ blog }) {
       </Popover>
       <div className="grid ">
         {/* blog content section */}
-        <Link href={`blogs/${blog.id}`} key={blog.id}>
+        <Link href={`/blogs/${blog.id}`} key={blog.id}>
           <a id={blog.id}>
             <div className="grid cursor-pointer py-4 ">
               <h1 className=" break-word font-semibold text-3xl pt-2 pb-2 text-textColor1 font-commonFont">

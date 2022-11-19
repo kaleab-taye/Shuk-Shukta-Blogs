@@ -24,6 +24,8 @@ import {
   userStatusContext,
   userStatusSetterContext,
 } from './UserContextProvider';
+import { Drawer } from '@mui/material';
+import { Box } from '@mui/system';
 
 export default function Nav({ contentType }) {
   var router = useRouter();
@@ -37,6 +39,9 @@ export default function Nav({ contentType }) {
   const blogs = useContext(blogsContext);
   const fullBlogs = useContext(fullBlogsContext);
   const setBlogs = useContext(setBlogContext);
+
+  // menu drawer state
+  const [drawerState, setDrawerState] = useState(false);
 
   const [sortBy, setSortBy] = useState('id');
 
@@ -500,15 +505,15 @@ export default function Nav({ contentType }) {
                     </div>
                   </Link>
                   <Link href="/bloggers">
-                  <div
-                    data-tip="Bloggers"
-                    className="p-2  my-auto max-w-iconWid1 "
-                  >
-                    <FontAwesomeIcon
-                      className="cursor-pointer w-6 text-onSecondary m-auto"
-                      icon={faUsers}
-                    />
-                  </div>
+                    <div
+                      data-tip="Bloggers"
+                      className="p-2  my-auto max-w-iconWid1 "
+                    >
+                      <FontAwesomeIcon
+                        className="cursor-pointer w-6 text-onSecondary m-auto"
+                        icon={faUsers}
+                      />
+                    </div>
                   </Link>
 
                   {/* auth start */}
@@ -662,12 +667,243 @@ export default function Nav({ contentType }) {
             </div>
           ) : null}
         </div>
-        <div className="grid sm:hidden ml-auto">
+        <div
+          className="grid sm:hidden ml-auto"
+          onClick={() => setDrawerState(true)}
+        >
           <FontAwesomeIcon
             className="cursor-pointer w-5 text-onSecondary m-auto"
             icon={faBars}
           />
         </div>
+        <Drawer
+          anchor={'right'}
+          open={drawerState}
+          onClose={() => setDrawerState(false)}
+        >
+          {' '}
+          <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            // onClick={() => setDrawerState(false)}
+            onKeyDown={() => setDrawerState(false)}
+          >
+            {userState === false ? (
+              <>
+                {/* user not logged in + not searchable nav start */}
+                <div className="my-auto ml-auto grid">
+                  <div className="grid grid-flow-row  gap-4 mx-5 my-5">
+                    {/* auth start */}
+                    <div
+                      onClick={() => setDrawerState(false)}
+                      className="ml-3 mr-auto my-auto grid grid-cols-2 col-span-2 text-sm font-bold text-textColor1"
+                    >
+                      <Link href="/auth/signup">
+                        <a>
+                          <div
+                            data-tip="Get an account"
+                            className=" border-r text-end pr-2 cursor-pointer"
+                          >
+                            Signup
+                          </div>
+                        </a>
+                      </Link>
+                      <Link href="/auth/login">
+                        <a>
+                          <div
+                            data-tip="Log into your account"
+                            className=" text-start pl-2 cursor-pointer"
+                          >
+                            Login
+                          </div>
+                        </a>
+                      </Link>
+                    </div>
+                    {/* auth end */}
+                    <div
+                      className="grid "
+                      onClick={() => setDrawerState(false)}
+                    >
+                      <div className="grid">
+                        <Link className="grid " href={'/'}>
+                          <div
+                            data-tip="Home"
+                            className="p-2   my-auto flex gap-4 max-w-iconWid1  "
+                          >
+                            <FontAwesomeIcon
+                              className="cursor-pointer w-5 text-onSecondary w- my-auto"
+                              icon={faHome}
+                            />
+                            <span className="text-textColor1 text-md font-medium my-auto">
+                              Home
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="grid">
+                        <Link href="/bloggers">
+                          <div
+                            data-tip="Bloggers"
+                            className="p-2 flex gap-4  my-auto max-w-iconWid1 "
+                          >
+                            <FontAwesomeIcon
+                              className="cursor-pointer w-6 text-onSecondary my-auto"
+                              icon={faUsers}
+                            />
+                            <span className="text-textColor1 text-md font-medium my-auto">
+                              bloggers
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* user not logged in + not searchable nav end */}
+              </>
+            ) : userState === true ? (
+              <div className="ml-auto">
+                {/* user logged in + not searchable nav start */}
+                <div className="grid grid-flow-row gap-4 mx-5 my-5">
+                  <Link href="/" >
+                    <a onClick={() => setDrawerState(false)}>
+                      <div
+                        data-tip="Home"
+                        className="p-2  my-auto flex gap-4  max-w-iconWid"
+                      >
+                        <FontAwesomeIcon
+                          className="cursor-pointer w-5 text-onSecondary m-auto"
+                          icon={faHome}
+                        />
+                        <div className="my-auto text-textColor1 text-md font-medium">
+                          Home
+                        </div>
+                      </div>
+                    </a>
+                  </Link>
+                  <Link href="/bloggers">
+                  <a onClick={() => setDrawerState(false)}>
+                  <div
+                        data-tip="Bloggers"
+                        className="p-2  my-auto flex gap-4  max-w-iconWid"
+                      >
+                        <FontAwesomeIcon
+                          className="cursor-pointer w-6 text-onSecondary m-auto"
+                          icon={faUsers}
+                        />
+                        <div className="my-auto text-textColor1 text-md font-medium">
+                          Bloggers
+                        </div>
+                      </div>
+                    </a>
+                  </Link>
+
+                  <Dropdown offset={0} className="text-sm">
+                    <Dropdown.Trigger>
+                      <div
+                        data-tip="Blogs"
+                        className="p-2  my-auto flex gap-4  max-w-iconWid"
+                      >
+                        <FontAwesomeIcon
+                          className="cursor-pointer w-5 text-onSecondary m-auto"
+                          icon={faBlog}
+                        />
+                        <div className="my-auto text-textColor1 text-md font-medium">
+                          Blogs
+                        </div>
+                      </div>
+                    </Dropdown.Trigger>
+                    <div className="w-28">
+                      <Dropdown.Menu
+                        aria-label="Static Actions"
+                        className="py-0"
+                      >
+                        <Dropdown.Item
+                          key="myBlogs"
+                          className=" text-textColor1 text-sm p-0 my-2"
+                        >
+                          <Link
+                            href={{
+                              pathname: `/user/${loggedInUser.user.id}/blogs`,
+                              query: { token: loggedInUser.accessToken },
+                            }}
+                          >
+                            <div className="p-2 ">My Blogs</div>
+                          </Link>
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </div>
+                  </Dropdown>
+
+                  <Link href="/blogs/new">
+                  <a onClick={() => setDrawerState(false)}>
+                  <div
+                        data-tip="Add New Blog"
+                        className="p-2  my-auto flex gap-4  max-w-iconWid "
+                      >
+                        <FontAwesomeIcon
+                          className="cursor-pointer w-5 text-onSecondary m-auto"
+                          icon={faCirclePlus}
+                        />
+                        <div className="my-auto text-textColor1 text-md flex flex-nowrap no-wrap font-medium">
+                          New blog
+                        </div>
+                      </div>
+                    </a>
+                  </Link>
+                  <Dropdown offset={0} className="text-sm">
+                    <Dropdown.Trigger>
+                      <div
+                        data-tip="User Option"
+                        className="p-2  my-auto flex gap-4  max-w-iconWid"
+                      >
+                        <FontAwesomeIcon
+                          className="cursor-pointer w-5 text-onSecondary m-auto"
+                          icon={faCircleUser}
+                        />
+                        <div className="my-auto text-textColor1 text-md font-medium">
+                          Profile
+                        </div>
+                      </div>
+                    </Dropdown.Trigger>
+                    <div className="w-28">
+                      <Dropdown.Menu
+                        aria-label="Static Actions"
+                        className="py-0"
+                      >
+                        <Dropdown.Item
+                          key="profile"
+                          className=" text-textColor1 text-sm p-0 my-2"
+                        >
+                          <Link
+                            href={{
+                              pathname: `/user/${loggedInUser.user.id}`,
+                              query: { token: loggedInUser.accessToken },
+                            }}
+                          >
+                            <div className="p-2 ">Profile</div>
+                          </Link>
+                        </Dropdown.Item>
+
+                        <Dropdown.Item
+                          key="delete"
+                          withDivider
+                          color="error"
+                          className="text-danger text-sm p-0 my-2"
+                        >
+                          <div className="p-2" onClick={() => handleLogout()}>
+                            Logout
+                          </div>
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </div>
+                  </Dropdown>
+                </div>
+                {/* user logged in + not searchable nav end */}
+              </div>
+            ) : null}
+          </Box>
+        </Drawer>
       </div>
     </div>
   );
