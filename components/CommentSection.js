@@ -33,7 +33,7 @@ export default function CommentSection(props) {
 
     if (userStatus) {
       commenter =
-        loggedInUser.user.firstName + ' ' + loggedInUser.user.lastName;
+        loggedInUser.user.fullName;
     }
     if (form.target.comment.value.length < 1) {
       setStatus('uncommented');
@@ -71,7 +71,7 @@ export default function CommentSection(props) {
   }
 
   return (
-    <div className="grid">
+    <div className="grid w-[100%]">
       <div className="text-textColor3 py-1 grid gap-2 grid-flow-col mr-auto">
         <div className="flex mr-auto ml-2">comments </div>
         <FontAwesomeIcon
@@ -79,7 +79,7 @@ export default function CommentSection(props) {
           icon={faCommentAlt}
         />
       </div>
-      <div className=" px-5 border border-secondary rounded-md max-wid-contentWid grid">
+      <div className=" px-2 sm:px-5 border border-secondary rounded-md max-wid-contentWid grid">
         <div className="px-5 py-0 max-h-96 overflow-auto">
           {comments.map((comment) => {
             return (
@@ -93,7 +93,7 @@ export default function CommentSection(props) {
                       <div className="mt-auto text-textColor1 text-md font-medium my-auto">
                         {comment.by}
                       </div>
-                      <div className=" leading-none mb-auto text-textColor2 text-sm">
+                      <div className=" break-words overflow-hidden leading-none mb-auto text-textColor2 text-sm">
                         {comment.comment}
                       </div>
                     </div>
@@ -105,7 +105,7 @@ export default function CommentSection(props) {
         </div>
         <form onSubmit={(e) => sendComment(e)}>
           <div className="py-5 grid ">
-            <div className="m-1 ">
+            <div className="sm:m-1 grid">
               <div>
                 <div className="text-failure">
                   {error.length > 1 ? error : null}
@@ -114,7 +114,7 @@ export default function CommentSection(props) {
                   {status === 'commenting' ? 'Loading . . .' : null}
                 </div>
               </div>
-              <div className="m-auto grid-cols-10 grid gap-0 grid-flow-col">
+              <div className=" m-auto grid-cols-10 grid gap-1 sm:gap-5 grid-flow-col">
                 <div className=" mb-auto inline-block h-9 w-9 xl:h-10 xl:w-10 rounded-full ring-2 ring-secondary">
                   <Image src={heroImage} alt="user image" />
                 </div>
@@ -124,7 +124,7 @@ export default function CommentSection(props) {
                   className="col-span-7 border rounded p-1 w-full h-10 align-top"
                 />
                 <div className=" col-span-2 mb-auto">
-                <Button_comp data_tip='comment on this blog' type="submit" >
+                <Button_comp className='text-xs sm:text-sm' data_tip='comment on this blog' type="submit" >
                   comment
                 </Button_comp>
                 </div>
