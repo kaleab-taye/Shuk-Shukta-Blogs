@@ -1,3 +1,5 @@
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert, Snackbar } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -62,7 +64,7 @@ export default function Index({ blog, token, userId }) {
       console.log('form not valid');
       return;
     }
-    setEditState(editPageStateEnum.editing);
+    setEditState(editStateEnum.editing);
 
     try {
       let bodyContent = JSON.stringify({
@@ -79,7 +81,10 @@ export default function Index({ blog, token, userId }) {
 
       if (result.status === 200) {
         setEditState(editStateEnum.success);
-        router.push({ pathname: `/user/${userId}/blogs/${blog.id}`, query:{token} });
+        router.push({
+          pathname: `/user/${userId}/blogs/${blog.id}`,
+          query: { token },
+        });
       } else {
         let res = await result.text();
         throw res;
@@ -92,26 +97,24 @@ export default function Index({ blog, token, userId }) {
   }
 
   async function handleDelete(event) {
-    setEditPageState(editPageStateEnum.deletingBlog);
+    setDeleteState(deleteStateEnum.deleting);
     try {
-      let result = await fetch(
-        `${url}/api/user/${props.userId}/blogs/${props.blog.id}`,
-        {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${props.token}` },
-        }
-      );
+      let result = await fetch(`${url}/api/user/${userId}/blogs/${blog.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
       let res = await result.text();
 
       if (result.status === 200) {
-        setEditPageState(editPageStateEnum.success);
+        setDeleteState(deleteStateEnum.success);
+        router.push({ pathname: `/user/${userId}/blogs`,query:{token} });
       } else {
         throw res;
       }
     } catch (error) {
       console.error(error);
-      setEditPageState(editPageStateEnum.failed);
-      setStateError(error);
+      setDeleteState(deleteStateEnum.failed);
+      setError(error.toString());       
     }
   }
   function checkValidity(e) {
@@ -164,7 +167,7 @@ export default function Index({ blog, token, userId }) {
           <div>
             {/* edit state start */}
             <Snackbar
-              open={error.length > 0}
+              open={error.length > 0 ? true : false}
               autoHideDuration={6000}
               onClose={() => setError('')}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -174,7 +177,7 @@ export default function Index({ blog, token, userId }) {
               </Alert>
             </Snackbar>
             <Snackbar
-              open={editState === editStateEnum.failed}
+              open={error.length < 1 && editState === editStateEnum.failed}
               autoHideDuration={6000}
               onClose={() => setEditState(editStateEnum.idl)}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -184,7 +187,7 @@ export default function Index({ blog, token, userId }) {
               </Alert>
             </Snackbar>
             <Snackbar
-              open={editState === editStateEnum.success}
+              open={error.length < 1 && editState === editStateEnum.success}
               autoHideDuration={6000}
               onClose={() => setEditState(editStateEnum.idl)}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -194,7 +197,7 @@ export default function Index({ blog, token, userId }) {
               </Alert>
             </Snackbar>
             <Snackbar
-              open={editState === editStateEnum.editing}
+              open={error.length < 1 && editState === editStateEnum.editing}
               autoHideDuration={6000}
               // onClose={() => setEditState(editStateEnum.idl)}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -205,7 +208,7 @@ export default function Index({ blog, token, userId }) {
             </Snackbar>
             {/* delete state start */}
             <Snackbar
-              open={deleteState === deleteStateEnum.failed}
+              open={error.length < 1 && deleteState === deleteStateEnum.failed}
               autoHideDuration={6000}
               onClose={() => setDeleteState(deleteStateEnum.idl)}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -215,7 +218,7 @@ export default function Index({ blog, token, userId }) {
               </Alert>
             </Snackbar>
             <Snackbar
-              open={deleteState === deleteStateEnum.success}
+              open={error.length < 1 && deleteState === deleteStateEnum.success}
               autoHideDuration={6000}
               onClose={() => setDeleteState(deleteStateEnum.idl)}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -225,7 +228,9 @@ export default function Index({ blog, token, userId }) {
               </Alert>
             </Snackbar>
             <Snackbar
-              open={deleteState === deleteStateEnum.deleting}
+              open={
+                error.length < 1 && deleteState === deleteStateEnum.deleting
+              }
               autoHideDuration={6000}
               // onClose={() => setDeleteState(deleteStateEnum.idl)}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -282,6 +287,18 @@ export default function Index({ blog, token, userId }) {
                   />
                 </div>
                 <Button_comp>Update Blog</Button_comp>
+                <div className="w-full border-b border-secondary"></div>
+
+                <div
+                  onClick={(e) => handleDelete(e)}
+                  className="cursor-pointer text-danger  grid grid-flow-col mr-auto gap-2  text-sm"
+                >
+                  <FontAwesomeIcon
+                    className="w-5 h-5 my-auto"
+                    icon={faTrashCan}
+                  />{' '}
+                  <div className="my-auto">delete blog</div>
+                </div>
               </div>
             </form>
           </div>
