@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import InputField from '../../../../../components/InputField';
 import Nav from '../../../../../components/Nav';
+import { categoryList } from '../../../../../components/tempData/category';
 import BodyLayout from '../../../../../components/Ui/BodyLayout';
 import Button_comp from '../../../../../components/Ui/Button_comp';
 import ChipSection from '../../../../../components/Ui/section/ChipSection';
@@ -13,15 +14,7 @@ export default function Index({ blog, token, userId }) {
   const router = useRouter();
 
   const [selectedCategoryState, setSelectedCategoryState] = useState([]);
-  const categoryOptionList = [
-    'sport',
-    'romance',
-    'health',
-    'comedy',
-    'lifestyle',
-    'psychology',
-  ];
-
+  
   const [titleContent, setTitleContent] = useState('');
   const [titleContentError, setTitleContentError] = useState('');
 
@@ -281,7 +274,7 @@ export default function Index({ blog, token, userId }) {
                 <div className="grid gap-1 grid-flow-row">
                   <div className="text-sm text-textColor3">Category</div>
                   <ChipSection
-                    options={categoryOptionList}
+                    options={categoryList}
                     selectedSetter={setSelectedCategoryState}
                     selected={selectedCategoryState}
                   />

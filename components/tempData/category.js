@@ -5,5 +5,14 @@ export const categoryList = [
   'comedy',
   'lifestyle',
   'psychology',
-  'nutrition'
+  'nutrition',
+  'relationship',
+  'education',
+  'business',
+  'food',
+  'social',
+  'technology',
+  'history',
+  'love',
+  'teenager','news','politics'
 ];
