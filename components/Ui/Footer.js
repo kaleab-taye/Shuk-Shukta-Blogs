@@ -7,6 +7,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -22,7 +23,15 @@ export default function Footer() {
       <div className="grid grid-rows-auto m-auto gap-0 ">
         <div className="text-sm text-textColor3">created and owned by</div>
         <div className="grid grid-rows-auto gap-1 m-auto">
-          <div className="text-lg font-bold text-textColor1">Qmem devs</div>
+          <div className="text-lg font-bold text-textColor1">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://qmem-developers.vercel.app/"
+            >
+              Qmem devs
+            </a>
+          </div>
           <div className=" grid grid-flow-col text-textColor3  ">
             <FontAwesomeIcon
               data-tip="Qmem Developer on Linkedin"

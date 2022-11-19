@@ -193,8 +193,8 @@ export default function Signup() {
     <div>
       <Nav contentType="notSearchable" />
       <BodyLayout>
-        <div className=" ">
-          <div className="max-w-blogCardWidLg mx-auto grid my-5 py-10 px-5 border border-secondary rounded-md">
+        <div className="">
+          <div className="mx-auto max-w-blogCardWidLg mx-auto grid my-5 py-10 px-5 border border-secondary rounded-md">
             <div className="mx-auto text-accent font-bold text-xl lg:text-3xl">
               Signup
             </div>

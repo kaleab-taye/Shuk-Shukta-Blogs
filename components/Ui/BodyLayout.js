@@ -10,7 +10,7 @@ export default function BodyLayout({ leftContent, children, rightContent }) {
         </div>
       </div>
       <div className="col-span-12 lg:col-span-7 ">
-        <div className="m-auto max-w-blogCardWid 2xl:max-w-contentWidLg">
+        <div className="m-auto grid max-w-blogCardWid 2xl:max-w-contentWidLg">
           {children}
         </div>
       </div>

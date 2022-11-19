@@ -7,7 +7,7 @@ export default function Bloggers_List({bloggers}) {
         <>
           <BodyLayout>
             {bloggers.length > 0 ? (
-              <div >
+              <div className="grid m-auto" >
                 {bloggers.map((blogger) => {
                   return (
                     <>
