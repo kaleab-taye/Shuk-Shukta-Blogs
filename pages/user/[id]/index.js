@@ -15,7 +15,7 @@ export default function User({ user, token }) {
 
   //   router.push('/auth/login');
   // }
-
+console.log(user.joinedDate)
   return (
     <div>
       <Nav contentType="notSearchable" />

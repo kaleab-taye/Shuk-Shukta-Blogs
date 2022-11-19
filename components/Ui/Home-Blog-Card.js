@@ -25,6 +25,7 @@ import HomeBlogCardIcons from './Home-Blog-Card-Icons';
 import Link from 'next/link';
 
 export default function HomeBlogCard({ blog }) {
+  // console.log(blog.blogMeta.date)
   return (
     <div className="max-w-blogCardWidLg m-auto grid my-5 pb-2 pt-4 px-5 border border-secondary rounded-md">
       {/* user icon */}
@@ -39,7 +40,7 @@ export default function HomeBlogCard({ blog }) {
                 {blog.author.fullName }
               </div>
               <div className=" leading-none mb-auto text-textColor3 text-xs">
-                {(new Date(blog.blogMeta.date)).toUTCString()}
+                {new Date(blog.blogMeta.date).toUTCString()}
               </div>
             </div>
           </div>

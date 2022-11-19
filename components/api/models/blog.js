@@ -15,7 +15,7 @@ const blogSchema = Mongoose.Schema({
     seen: Number,
     upVote: Number,
     downVote: Number,
-    date: { type: Date, default: () => Date.now() },
+    date: { type: Date, default: () =>new Date.now(), immutable: true },
   },
   category: [String],
   author: {

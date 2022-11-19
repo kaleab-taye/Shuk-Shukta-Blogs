@@ -13,7 +13,7 @@ export async function createNewBlog(blog) {
       ...blog,
     };
 
-    // newBlog.blogMeta.date = Date.now();
+    newBlog.blogMeta.date = Date.now();
 
     let response = await blogModel.create(newBlog);
 
