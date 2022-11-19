@@ -1,21 +1,13 @@
 import {
   faArrowAltCircleDown,
   faArrowAltCircleUp,
-  faCommentDots,
-  faEye,
 } from '@fortawesome/free-regular-svg-icons';
-import {
-  faArrowDown,
-  faArrowUp,
-  faEllipsis,
-  faPenToSquare,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Button from './Button';
 import ConfirmationDialogue, { toggleModal } from './ConfirmationDialogue';
-import HomeBlogCardIcons from './Ui/Home-Blog-Card-Icons';
 
 export default function BlogMetaSection(props) {
   const webUrl = process.env.url;
@@ -92,6 +84,7 @@ export default function BlogMetaSection(props) {
     }
   }
 
+  
   async function undoUpVote() {
     setVote((v) => voteEnum.unVoting);
     let headersList = {
@@ -286,72 +279,8 @@ export default function BlogMetaSection(props) {
   }, [blogKeyStatus]);
   return (
     <>
-      {/* new blog meta */}
-      <div className="grid grid-cols-5 my-auto mr-auto gap-5  px-4">
-        {/* upvote */}
-        {vote === voteEnum.upVoted ? (
-          <HomeBlogCardIcons
-            icon={faArrowUp}
-            icon_data_tip="up vote"
-            data_data_tip="total upVotes"
-            data={blogMeta.upVote}
-            className="cursor-pointer"
-            onClick={() => upVoteHandler()}
-            theme={'selected'}
-            color={'text-success'}
-          />
-        ) : (
-          <HomeBlogCardIcons
-            icon={faArrowUp}
-            icon_data_tip="up vote"
-            data_data_tip="total upVotes"
-            data={blogMeta.upVote}
-            className="cursor-pointer"
-            onClick={() => upVoteHandler()}
-          />
-        )}
-        {/* downvote */}
-        {vote === voteEnum.downVoted ? (
-          <HomeBlogCardIcons
-            icon={faArrowDown}
-            icon_data_tip="down vote"
-            data_data_tip="total downVotes"
-            data={blogMeta.downVote}
-            className="cursor-pointer"
-            onClick={() => downVoteHandler()}
-            theme={'selected'}
-            color={'text-failure'}
-          />
-        ) : (
-          <HomeBlogCardIcons
-            icon={faArrowDown}
-            icon_data_tip="down vote"
-            data_data_tip="total downVotes"
-            data={blogMeta.downVote}
-            className="cursor-pointer"
-            onClick={() => downVoteHandler()}
-          />
-        )}
-        {/* comment */}
-        <HomeBlogCardIcons
-          icon={faCommentDots}
-          icon_data_tip="comment"
-          data_data_tip="total comments"
-          data={props.blog.comment.length}
-          className="cursor-pointer"
-        />
-        {/* seen */}
-        <HomeBlogCardIcons icon={faEye} data_tip="seen" data={blogMeta.seen} />
-        {/* more option */}
-        <HomeBlogCardIcons
-          icon={faEllipsis}
-          data_tip="more option"
-          className="cursor-pointer"
-        />
-      </div>
       <div className="mx-auto text-center my-auto h-2">
-        {/* status display */}
-        <div
+        <span
           className={
             vote === voteEnum.upVoted
               ? 'text-success'
@@ -381,169 +310,165 @@ export default function BlogMetaSection(props) {
             : vote === voteEnum.removed
             ? voteEnum.removed
             : null}
+        </span>
+      </div>
+      <div className="py-10 grid grid-cols-2">
+        <div className="">
+          {/* up vote begin */}
+          <div className="flex ">
+            <Button
+              icon={
+                <FontAwesomeIcon
+                  className="w-7 sm:w-7 "
+                  icon={faArrowAltCircleUp}
+                />
+              }
+              placeholder={'Up vote'}
+              color="text-success"
+              background=""
+              // width="w-40 sm:w-64"
+              width=""
+              margin=""
+              // className='hover:'
+              disable={
+                vote === voteEnum.downVoting
+                  ? true
+                  : vote === voteEnum.upVoting
+                  ? true
+                  : vote === voteEnum.unVoting
+                  ? true
+                  : null
+                // : vote === voteEnum.upVoted
+                // ? true
+                // : vote === voteEnum.downVoted
+                // ? true
+              }
+              onClick={() => upVoteHandler()}
+            />
+          </div>
+
+          <div className="grid gap-3 px-4 py-4">
+            <div className="font-commonFont text-l lg:text-xl ">
+              Author :{' '}
+              <span className="text-xl lg:text-2xl">{props.blog.author}</span>
+            </div>
+            <div className="font-commonFont text-l lg:text-xl ">
+              Date :{'  '}
+              <span className="text-xl lg:text-2xl">
+                {
+                  ' ' +
+                    date.getDate() +
+                    '/' +
+                    (date.getMonth() + 1) +
+                    '/' +
+                    date.getFullYear()
+                  // +'  ' +
+                  // date.getHours() +
+                  // ':' +
+                  // date.getMinutes() +
+                  // ':' +
+                  // date.getSeconds()
+                }
+              </span>
+            </div>
+            <div className="font-commonFont text-l lg:text-xl ">
+              Interacted readers :{' '}
+              <span className="text-xl lg:text-2xl">{blogMeta.seen}</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          {/* down vote start*/}
+          <div className="flex">
+            <Button
+              icon={
+                <FontAwesomeIcon
+                  className="w-7 sm:w-7 "
+                  icon={faArrowAltCircleDown}
+                />
+              }
+              placeholder="Down vote"
+              color="text-failure"
+              // width="w-32 sm:w-64"
+              margin=""
+              width=""
+              background=""
+              disable={
+                vote === voteEnum.downVoting
+                  ? true
+                  : vote === voteEnum.upVoting
+                  ? true
+                  : vote === voteEnum.unVoting
+                  ? true
+                  : null
+                // : vote === voteEnum.downVoted
+                // ? true
+                // : vote === voteEnum.upVoted
+                // ? true
+              }
+              // {vote === 'downVoted' ? '' : null}
+              onClick={() => downVoteHandler()}
+            />
+          </div>
+
+          <div className="grid gap-3 px-4 py-4">
+            <div className="font-commonFont text-l lg:text-xl ">
+              Up votes :{' '}
+              <span className="text-xl lg:text-2xl">{blogMeta.upVote}</span>
+            </div>
+            <div className="font-commonFont text-l lg:text-xl ">
+              Down votes :{' '}
+              <span className="text-xl lg:text-2xl">{blogMeta.downVote}</span>
+            </div>
+            <div className="font-commonFont text-l lg:text-xl ">
+              Comments :{' '}
+              <span className="text-xl lg:text-2xl">
+                {props.blog.comment.length}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <Button
+            icon={
+              <FontAwesomeIcon className="w-6 sm:w-6 " icon={faPenToSquare} />
+            }
+            placeholder="Edit"
+            width=""
+            margin=""
+            color="text-accent"
+            background=""
+            onClick={() => setBlogKeyStatus(blogKeyEnum.keyLogging)}
+          />
+          {blogKeyStatus === blogKeyEnum.keyLogging ? (
+            <ConfirmationDialogue
+              blogKeyEnum={blogKeyEnum}
+              setBlogKey={setBlogKey}
+              setBlogKeyStatus={setBlogKeyStatus}
+              blogKeyStatus={blogKeyStatus}
+            />
+          ) : null}
+
+          <div className="py-1 font-commonFont text-l lg:text-xl ">
+            only for Author
+            <br />
+            <div
+              className={
+                status === statusEnum.failure
+                  ? `text-failure`
+                  : status == statusEnum.success
+                  ? 'text-success'
+                  : 'text-accent'
+              }
+            >
+              {status.length > 1 ? status : null}
+            </div>
+            <div className="text-failure">
+              {error.length > 1 ? error : null}
+            </div>
+          </div>
         </div>
       </div>
     </>
   );
 }
-
-// <div className="py-10 grid grid-cols-2">
-//       <div className="">
-//         {/* up vote begin */}
-//         <div className="flex ">
-//           <Button
-//             icon={
-//               <FontAwesomeIcon
-//                 className="w-7 sm:w-7 "
-//                 icon={faArrowAltCircleUp}
-//               />
-//             }
-//             placeholder={'Up vote'}
-//             color="text-success"
-//             background=""
-//             // width="w-40 sm:w-64"
-//             width=""
-//             margin=""
-//             // className='hover:'
-//             disable={
-//               vote === voteEnum.downVoting
-//                 ? true
-//                 : vote === voteEnum.upVoting
-//                 ? true
-//                 : vote === voteEnum.unVoting
-//                 ? true
-//                 : null
-//               // : vote === voteEnum.upVoted
-//               // ? true
-//               // : vote === voteEnum.downVoted
-//               // ? true
-//             }
-//             onClick={() => upVoteHandler()}
-//           />
-//         </div>
-
-//         <div className="grid gap-3 px-4 py-4">
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Author :{' '}
-//             <span className="text-xl lg:text-2xl">
-//               {props.blog.author.userName}
-//             </span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Date :{'  '}
-//             <span className="text-xl lg:text-2xl">
-//               {
-//                 ' ' +
-//                   date.getDate() +
-//                   '/' +
-//                   (date.getMonth() + 1) +
-//                   '/' +
-//                   date.getFullYear()
-//                 // +'  ' +
-//                 // date.getHours() +
-//                 // ':' +
-//                 // date.getMinutes() +
-//                 // ':' +
-//                 // date.getSeconds()
-//               }
-//             </span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Interacted readers :{' '}
-//             <span className="text-xl lg:text-2xl">{blogMeta.seen}</span>
-//           </div>
-//         </div>
-//       </div>
-//       <div>
-//         {/* down vote start*/}
-//         <div className="flex">
-//           <Button
-//             icon={
-//               <FontAwesomeIcon
-//                 className="w-7 sm:w-7 "
-//                 icon={faArrowAltCircleDown}
-//               />
-//             }
-//             placeholder="Down vote"
-//             color="text-failure"
-//             // width="w-32 sm:w-64"
-//             margin=""
-//             width=""
-//             background=""
-//             disable={
-//               vote === voteEnum.downVoting
-//                 ? true
-//                 : vote === voteEnum.upVoting
-//                 ? true
-//                 : vote === voteEnum.unVoting
-//                 ? true
-//                 : null
-//               // : vote === voteEnum.downVoted
-//               // ? true
-//               // : vote === voteEnum.upVoted
-//               // ? true
-//             }
-//             // {vote === 'downVoted' ? '' : null}
-//             onClick={() => downVoteHandler()}
-//           />
-//         </div>
-
-//         <div className="grid gap-3 px-4 py-4">
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Up votes :{' '}
-//             <span className="text-xl lg:text-2xl">{blogMeta.upVote}</span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Down votes :{' '}
-//             <span className="text-xl lg:text-2xl">{blogMeta.downVote}</span>
-//           </div>
-//           <div className="font-commonFont text-l lg:text-xl ">
-//             Comments :{' '}
-//             <span className="text-xl lg:text-2xl">
-//               {props.blog.comment.length}
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-//       <div>
-//         <Button
-//           icon={
-//             <FontAwesomeIcon className="w-6 sm:w-6 " icon={faPenToSquare} />
-//           }
-//           placeholder="Edit"
-//           width=""
-//           margin=""
-//           color="text-accent"
-//           background=""
-//           onClick={() => setBlogKeyStatus(blogKeyEnum.keyLogging)}
-//         />
-//         {blogKeyStatus === blogKeyEnum.keyLogging ? (
-//           <ConfirmationDialogue
-//             blogKeyEnum={blogKeyEnum}
-//             setBlogKey={setBlogKey}
-//             setBlogKeyStatus={setBlogKeyStatus}
-//             blogKeyStatus={blogKeyStatus}
-//           />
-//         ) : null}
-
-//         <div className="py-1 font-commonFont text-l lg:text-xl ">
-//           only for Author
-//           <br />
-//           <div
-//             className={
-//               status === statusEnum.failure
-//                 ? `text-failure`
-//                 : status == statusEnum.success
-//                 ? 'text-success'
-//                 : 'text-accent'
-//             }
-//           >
-//             {status.length > 1 ? status : null}
-//           </div>
-//           <div className="text-failure">
-//             {error.length > 1 ? error : null}
-//           </div>
-//         </div>
-
-//       </div>
-//     </div>

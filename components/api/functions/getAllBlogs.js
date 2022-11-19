@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
 import { blogModel } from '../models/blog';
-
 export async function getAllBlogs() {
+  
+  const mongoDbUrl = process.env.mongoDb_url;
+  mongoose.connect(mongoDbUrl);
+
   try {
-    const mongoDbUrl = process.env.mongoDb_url;
-    mongoose.connect(mongoDbUrl);
-    let blogs = await blogModel.find().populate('author').lean();
+    let blogs = await blogModel.find().lean();
     if (blogs === null || blogs.length === 0) {
       throw 'no blog found';
     }
