@@ -141,7 +141,7 @@ export default function Nav({ contentType }) {
         // check type and save login data in local storage
         localStorage.removeItem('user');
         setUserState((e) => false);
-        router.reload();
+        router.replace('/');
       } else {
         throw resp;
       }

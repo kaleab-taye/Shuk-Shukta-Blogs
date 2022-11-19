@@ -71,7 +71,7 @@ export default function CommentSection(props) {
   }
 
   return (
-    <div className="grid w-[100%]">
+    <div className="grid w-[100%] ">
       <div className="text-textColor3 py-1 grid gap-2 grid-flow-col mr-auto">
         <div className="flex mr-auto ml-2">comments </div>
         <FontAwesomeIcon
