@@ -30,7 +30,7 @@ export default function Blog_List() {
               for (let cat in blog.category) {
                 if (
                   selectedCategoryList.length == 0 ||
-                  selectedCategoryList.includes(blog.category[cat])
+                  selectedCategoryList.includes(blog.category[cat]||blog.category[cat].length===0)
                 ) {
                   validCategory = true;
                 }

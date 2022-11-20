@@ -17,7 +17,7 @@ export default async function getBlogsFromUserId(id) {
     if (user === null) {
       throw 'user not found';
     }
-    console.log('chalchi',user)
+    // console.log('chalchi',user)
     let blogs = []
     user.blogs.map((blog)=>blogs.push(blog._id))
     return blogs;
