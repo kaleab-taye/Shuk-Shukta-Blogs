@@ -93,7 +93,7 @@ export default function CommentSection(props) {
                       <div className="mt-auto text-textColor1 text-md font-medium my-auto">
                         {comment.by}
                       </div>
-                      <div className=" break-words overflow-hidden leading-none mb-auto text-textColor2 text-sm">
+                      <div className=" break-words overflow-hidden  mb-auto text-textColor2 text-sm">
                         {comment.comment}
                       </div>
                     </div>

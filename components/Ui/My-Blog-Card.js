@@ -28,7 +28,7 @@ import ProfilePopover from './ProfilePopover';
 
 export default function MyBlogCard({ blog, token, userId }) {
   return (
-    <div className="max-w-blogCardWidLg m-auto grid my-5 pb-2 pt-4 px-5 border border-secondary rounded-md">
+    <div className="max-w-blogCardWidLg mx-2  sm:m-auto grid my-5 pb-2 pt-4 px-5 border border-secondary rounded-md">
       {/* user icon */}
       <Popover>
         <div className="grid grid-flow-col">
@@ -79,12 +79,12 @@ export default function MyBlogCard({ blog, token, userId }) {
         >
           <a id={blog.id}>
             <div className="grid cursor-pointer py-4 ">
-              <h1 className=" break-word font-semibold text-3xl pt-2 pb-2 text-textColor1 font-commonFont">
+              <h1 className=" break-word font-semibold text-xl sm:text-3xl pt-2 pb-2 text-textColor1 font-commonFont">
                 {blog.title.length > 92
                   ? blog.title.substr(1, 92) + ' . . .'
                   : blog.title}
               </h1>
-              <p className=" text-md text-textColor1 break-word text-justify ">
+              <p className=" text-sm sm:text-md text-textColor1 break-word text-justify ">
                 {' '}
                 {blog.emphasis
                   ? blog.empasis
@@ -119,7 +119,7 @@ export default function MyBlogCard({ blog, token, userId }) {
             data={blog.blogMeta.seen}
           />
 
-          <HomeBlogCardIcons icon={faEllipsis} data_tip="more option" />
+          {/* <HomeBlogCardIcons icon={faEllipsis} data_tip="more option" /> */}
         </div>
       </div>
     </div>

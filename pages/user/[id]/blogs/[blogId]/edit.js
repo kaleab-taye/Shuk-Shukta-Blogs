@@ -274,6 +274,7 @@ export default function Index({ blog, token, userId }) {
                 <div className="grid gap-1 grid-flow-row">
                   <div className="text-sm text-textColor3">Category</div>
                   <ChipSection
+
                     options={categoryList}
                     selectedSetter={setSelectedCategoryState}
                     selected={selectedCategoryState}

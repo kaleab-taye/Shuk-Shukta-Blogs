@@ -343,11 +343,11 @@ export default function BlogMetaSection(props) {
         {/* seen */}
         <HomeBlogCardIcons icon={faEye} data_tip="seen" data={blogMeta.seen} />
         {/* more option */}
-        <HomeBlogCardIcons
+        {/* <HomeBlogCardIcons
           icon={faEllipsis}
           data_tip="more option"
           className="cursor-pointer"
-        />
+        /> */}
       </div>
       <div className="mx-auto text-center my-auto h-2">
         <div>

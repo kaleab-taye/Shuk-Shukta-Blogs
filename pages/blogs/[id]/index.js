@@ -54,7 +54,9 @@ export default function Blog(props) {
         <Nav contentType={'notSearchable'} />
         <BodyLayout
           rightContent={
-            <ChipSection options={props.blog.category} disabled={true} />
+            <ChipSection 
+
+            options={props.blog.category} disabled={true} />
           }
         >
           {/* blog body content */}

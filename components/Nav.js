@@ -805,7 +805,7 @@ export default function Nav({ contentType }) {
                         className="p-2  my-auto flex gap-4  max-w-iconWid"
                       >
                         <FontAwesomeIcon
-                          className="cursor-pointer w-5 text-onSecondary m-auto"
+                          className="w-5 text-onSecondary m-auto"
                           icon={faBlog}
                         />
                         <div className="my-auto text-textColor1 text-md font-medium">
