@@ -24,6 +24,7 @@ const blogSchema = Mongoose.Schema({
     autopopulate: true,
   },
 });
+
 blogSchema.plugin(require('mongoose-autopopulate'));
 
 export const blogModel =
