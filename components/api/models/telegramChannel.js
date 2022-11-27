@@ -11,8 +11,9 @@ const telegramChannelSchema = Mongoose.Schema({
   account: {
     name: { type: String },
     username: { type: String },
-    password:{type:String},
-    
+    email: { type: String },
+    password: { type: String },
+    blogTitle: { type: String },
   },
 });
 
