@@ -1,7 +1,7 @@
 import Mongoose from 'mongoose';
 
 const sessionSchema = Mongoose.Schema({
-  id: { type: String, required: true },
+  // id: { type: String, required: true },
   time: { type: String, required: true },
   last: { type: String, default: false },
   user: {

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { sessionModel } from '../../../../models/session';
 import { telegramAdminModel } from '../../../../models/telegramAdmin';
 import { telegramChannelModel } from '../../../../models/telegramChannel';
 
@@ -50,6 +51,7 @@ export default async function setSession(body) {
   mongoose.connect(mongoDbUrl);
 
   try {
+    // setup admin user
     let user = await telegramAdminModel.findOne({ id: userId });
 
     if (user === null) {
@@ -61,18 +63,49 @@ export default async function setSession(body) {
       user = await telegramAdminModel.create(adminUser);
     }
 
-    const channelData = {
-      id: channelId,
-      channel: channelChat,
+    // setup the joined channel
+    let channel = await telegramChannelModel.findOne({ id: channelId });
+
+    if (channel === null) {
+      const channelData = {
+        id: channelId,
+        channel: channelChat,
+        user: user._id,
+      };
+      channel = await telegramChannelModel.create(channelData);
+    }
+    user.telegramChannels.push(channel._id);
+    const newUser = await user.save();
+
+    // setup the session
+    let oldSession = await sessionModel.findOne({ user: user._id, last: true });
+    if (oldSession !== null) {
+      oldSession.last = false;
+      const updatedOldSession = await oldSession.save();
+    }
+
+    const currentTime = Date.now();
+    let newSession = await sessionModel.create({
+      time: currentTime,
+      last: true,
       user: user._id,
-    };
-    let channel = await telegramChannelModel.create(channelData);
-
-
-    user.telegramChannels.push(channel._id)
-    user.save()
+      channel: channel._id,
+    });
+    //   const time= { type: String, required: true },
+    // last: { type: String, default: false },
+    // user: {
+    //   type: Mongoose.Schema.Types.ObjectId,
+    //   ref: 'telegramAdmin',
+    //   autopopulate: true,
+    // },
+    // channel: {
+    //   type: Mongoose.Schema.Types.ObjectId,
+    //   ref: 'telegramChannel',
+    //   autopopulate: true,
+    // },
 
     // return response;
+    // console.log('ss', newSession);
   } catch (error) {
     console.error(error);
     throw error;

@@ -2,8 +2,6 @@
 
 import BotInitializationContent from '../../../components/api/functions/telegram/actions/botInitializationContent';
 
-import { Markup, Telegraf } from 'telegraf';
-import Message from '../../../components/api/functions/telegram/components/sendMessage';
 import NewChannelJoined from '../../../components/api/functions/telegram/actions/NewChannelJoined';
 import CallbackQueryRoute from '../../../components/api/functions/telegram/routes/callbackQuery';
 import messageRoute from '../../../components/api/functions/telegram/routes/message';
@@ -12,7 +10,8 @@ import messageRoute from '../../../components/api/functions/telegram/routes/mess
 export default async function handler(req, res) {
   const { body } = req;
 
-  console.log('incoming request', body, '*******');
+  console.log('******incoming request******', body, '*****request end****');
+  
   const testContent = {
     update_id: 869174453,
     my_chat_member: {
@@ -24,6 +23,7 @@ export default async function handler(req, res) {
       },
       from: {
         id: 308921082,
+        // id:5382451716,
         is_bot: false,
         first_name: 'kaleab',
         username: 'kaleab_taye',
@@ -75,7 +75,9 @@ export default async function handler(req, res) {
     // message route
     else if ('message' in body) {
       messageRoute(body.message);
-    } else {
+    } 
+    
+    else {
       console.log('nothing found');
     }
   } catch (error) {

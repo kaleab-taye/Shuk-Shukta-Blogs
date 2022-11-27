@@ -8,6 +8,12 @@ const telegramChannelSchema = Mongoose.Schema({
     ref: 'telegramAdmin',
     autopopulate: true,
   },
+  account: {
+    name: { type: String },
+    username: { type: String },
+    password:{type:String},
+    
+  },
 });
 
 telegramChannelSchema.plugin(require('mongoose-autopopulate'));
