@@ -3,6 +3,7 @@
 import BotInitializationContent from '../../../components/api/functions/telegram/actions/botInitializationContent';
 
 import NewChannelJoined from '../../../components/api/functions/telegram/actions/NewChannelJoined';
+import sendMessage from '../../../components/api/functions/telegram/components/sendMessage';
 import CallbackQueryRoute from '../../../components/api/functions/telegram/routes/callbackQuery';
 import messageRoute from '../../../components/api/functions/telegram/routes/message';
 // import { button } from 'telegraf/typings/markup';
@@ -11,7 +12,7 @@ export default async function handler(req, res) {
   const { body } = req;
 
   console.log('******incoming request******', body, '*****request end****');
-  
+
   const testContent = {
     update_id: 869174453,
     my_chat_member: {
@@ -49,7 +50,7 @@ export default async function handler(req, res) {
       },
     },
   };
-  
+
   try {
     // new channel joined intro
     if (
@@ -75,13 +76,16 @@ export default async function handler(req, res) {
     // message route
     else if ('message' in body) {
       messageRoute(body.message);
-    } 
-    
-    else {
+    } else {
       console.log('nothing found');
     }
   } catch (error) {
     console.log('err', error);
+    try {
+      const resp = fetch(
+        sendMessage({ chat_id: body.message.from.id, text: 'Oops try again!' })
+      );
+    } catch (error) {}
   }
   res.end();
 }

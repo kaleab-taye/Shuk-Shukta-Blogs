@@ -20,5 +20,10 @@ export default async function CallbackQueryRoute(callbackQuery) {
     const resp1 = await receiveBloggerUsername(callbackQuery);
   } else if (callbackQuery.data === 'resetBloggerEmail') {
     const resp1 = await receiveEmail(callbackQuery);
+  } else if (callbackQuery.data === 'startPublishingToWebsite') {
+    
+    const resp1 = await signupForAccount(callbackQuery);
   } 
 }
+
+// startPublishingToWebsite

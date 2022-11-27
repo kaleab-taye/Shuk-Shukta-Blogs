@@ -11,6 +11,7 @@ import saveBloggerUsername from './accountSetup/saveBloggerUsername';
 import saveEmail from './accountSetup/saveEmail';
 import savePassword from './accountSetup/savePassword';
 import saveSignupData from './accountSetup/saveSignupData';
+import saveTitle from './accountSetup/saveTitle';
 
 export default async function accountSetup(message) {
   // replied blogger name
@@ -51,7 +52,7 @@ export default async function accountSetup(message) {
     tagRemover(textContentData.accountSetup.retryPasswordQuery)
   ) {
     const resp = await analyzeConfirmPassword(message);
-    if (!true) {
+    if (!resp) {
       const resp0 = await fetch(
         sendMessage({
           text: "your password doesn't match",
@@ -60,8 +61,14 @@ export default async function accountSetup(message) {
       );
       const resp1 = await receivePassword(message);
     } else {
-        const resp2 = await saveSignupData(message)
+        const resp = await receiveTitle(message)
     }
     
+  }else if (
+    message.reply_to_message.text ===
+    tagRemover(textContentData.accountSetup.titleQuery)
+  ){
+    const resp = await saveTitle(message)
+    const resp2 = await saveSignupData(message)
   }
 }

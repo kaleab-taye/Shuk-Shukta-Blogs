@@ -71,11 +71,13 @@ export default async function setSession(body) {
         id: channelId,
         channel: channelChat,
         user: user._id,
+        
       };
       channel = await telegramChannelModel.create(channelData);
+
+      user.telegramChannels.push(channel._id);
+      const newUser = await user.save();
     }
-    user.telegramChannels.push(channel._id);
-    const newUser = await user.save();
 
     // setup the session
     let oldSession = await sessionModel.findOne({ user: user._id, last: true });
@@ -90,22 +92,11 @@ export default async function setSession(body) {
       last: true,
       user: user._id,
       channel: channel._id,
+      userId: user.id,
+      channelId: channel.id,
     });
-    //   const time= { type: String, required: true },
-    // last: { type: String, default: false },
-    // user: {
-    //   type: Mongoose.Schema.Types.ObjectId,
-    //   ref: 'telegramAdmin',
-    //   autopopulate: true,
-    // },
-    // channel: {
-    //   type: Mongoose.Schema.Types.ObjectId,
-    //   ref: 'telegramChannel',
-    //   autopopulate: true,
-    // },
 
     // return response;
-    // console.log('ss', newSession);
   } catch (error) {
     console.error(error);
     throw error;
